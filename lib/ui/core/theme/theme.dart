@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
 
 class AppTheme {
-  static const Color primaryColor =
-      Color(0xFF4B0082); // Roxo escuro (botões, destaques)
-  static const Color secondaryColor =
-      Color(0xFF800080); // Roxo claro (bordas, seleções)
-  static const Color backgroundColor = Color(0xFF131418); // Fundo escuro
-  static const Color textColor = Color(0xFFFFFFFF); // Texto branco
-  static const Color errorColor =
-      Color(0xFFFF4040); // Vermelho para erros (opcional)
+  static const Color primaryColor = Color(0xFF4B0082);
+  static const Color secondaryColor = Color(0xFF800080);
+  static const Color backgroundColor = Color(0xFF131418);
+  static const Color textColor = Color(0xFFFFFFFF);
+  static const Color errorColor = Color(0xFFFF4040);
 
   static ThemeData get themeData => ThemeData(
         brightness: Brightness.dark,

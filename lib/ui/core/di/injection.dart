@@ -6,6 +6,7 @@ import 'package:untold/data/repositories/auth/auth_repository_imp.dart';
 
 import '../../../data/services/api_client/api_client.dart';
 import '../../../data/services/api_client/dio_api_client.dart';
+import '../../login/view_model/login_view_model.dart';
 
 final GetIt getIt = GetIt.instance;
 
@@ -14,15 +15,13 @@ void setupDependencies() {
   getIt.registerSingleton<ApiClient>(
     DioApiClient(baseUrl: 'https://untold-strapi.api.prod.loomi.com.br/api'),
   );
-  getIt.registerSingleton<FirebaseAuth>(FirebaseAuth.instance);
-  getIt.registerSingleton<GoogleSignIn>(GoogleSignIn());
 
   // Repositories
   getIt.registerSingleton<AuthRepository>(
     AuthRepositoryImp(
       apiClient: getIt(),
-      auth: getIt(),
-      googleSignIn: getIt(),
+      auth: FirebaseAuth.instance,
+      googleSignIn: GoogleSignIn(),
     ),
   );
 
@@ -30,4 +29,9 @@ void setupDependencies() {
   // getIt.registerFactory<AuthViewModel>(
   //   () => AuthViewModel(getIt<AuthService>()),
   // );
+  getIt.registerFactory<LoginViewModel>(
+    () => LoginViewModel(
+      authRepository: getIt(),
+    ),
+  );
 }
