@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:untold/ui/forgot_password/screen/forgot_password_instructions_screen.dart';
 import 'package:untold/ui/forgot_password/screen/forgot_password_screen.dart';
 import 'package:untold/ui/login/screen/login_screen.dart';
+import 'package:untold/ui/onboarding/screens/onboarding_screen.dart';
 import 'package:untold/ui/sign_up/screen/sign_up_screen.dart';
 
 class AppRoutes {
@@ -13,6 +14,8 @@ class AppRoutes {
   static const String login = '/login';
   static const String register = '/register';
   static const String resetPassword = '/reset-password';
+  static const String splash = '/splash';
+  static const String onboarding = '/onboarding';
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -33,6 +36,10 @@ class AppRoutes {
       case forgotPasswordInstructions:
         return MaterialPageRoute(
             builder: (_) => ForgotPasswordInstructionsScreen());
+      case splash:
+        return MaterialPageRoute(builder: (_) => LoginScreen());
+      case onboarding:
+        return MaterialPageRoute(builder: (_) => OnboardingScreen());
 
       default:
         return MaterialPageRoute(

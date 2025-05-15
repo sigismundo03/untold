@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:untold/routing/app_routes.dart';
 
 import '../../login/widgets/primary_button_widget.dart';
 import '../../login/widgets/primary_text_field_widget.dart';
@@ -147,7 +148,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
               const SizedBox(height: 16),
               Observer(builder: (_) {
                 return PrimaryButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.pushNamed(context, AppRoutes.onboarding);
+                  },
                   text: 'Create Account',
                 );
               }),
