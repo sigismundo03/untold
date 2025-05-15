@@ -1,17 +1,15 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
+import 'routing/app_routes.dart';
 import 'ui/core/di/injection.dart';
 import 'ui/core/theme/theme.dart';
-import 'ui/login/screen/login_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    
-  );
+  await Firebase.initializeApp();
 
-setupDependencies();
+  setupDependencies();
   runApp(const MyApp());
 }
 
@@ -25,7 +23,8 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: AppTheme.themeData,
-      home: const LoginScreen(),
+      initialRoute: AppRoutes.home,
+      onGenerateRoute: AppRoutes.generateRoute,
     );
   }
 }
