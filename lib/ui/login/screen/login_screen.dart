@@ -4,7 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:untold/routing/app_routes.dart';
 import 'package:untold/ui/core/di/injection.dart';
 import 'package:untold/ui/login/view_model/login_view_model.dart';
-import 'package:untold/ui/login/widgets/sign_up_prompt_widget.dart';
+import 'package:untold/ui/login/widgets/prompt_widget.dart';
 
 import '../widgets/primary_button_widget.dart';
 import '../widgets/primary_text_field_widget.dart';
@@ -33,7 +33,7 @@ class _LoginScreenState extends State<LoginScreen> {
             children: [
               const SizedBox(height: 16),
               SvgPicture.asset(
-                'assets/Subtract.svg',
+                'assets/small_logo.svg',
                 width: 32,
                 height: 32,
                 colorFilter: ColorFilter.mode(
@@ -155,7 +155,12 @@ class _LoginScreenState extends State<LoginScreen> {
                 ],
               ),
               const SizedBox(height: 8),
-              SignUpPromptWidget(onSignUpTap: () {})
+              PromptWidget(
+                  buttonText: 'Sign Up!',
+                  text: "Don't have an account? ",
+                  onTap: () {
+                    Navigator.pushNamed(context, AppRoutes.register);
+                  })
             ],
           ),
         ),
@@ -171,14 +176,11 @@ class SecondaryButtonWidget extends StatelessWidget {
     required this.onPressed,
     this.crossAxisAlignment = CrossAxisAlignment.center,
     this.mainAxisAlignment = MainAxisAlignment.center,
-
   });
   final String value;
   final CrossAxisAlignment crossAxisAlignment;
   final MainAxisAlignment mainAxisAlignment;
   final void Function()? onPressed;
-  
-
 
   @override
   Widget build(BuildContext context) {
