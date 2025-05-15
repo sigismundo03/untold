@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:untold/routing/app_routes.dart';
 import 'package:untold/ui/core/di/injection.dart';
 import 'package:untold/ui/login/view_model/login_view_model.dart';
 import 'package:untold/ui/login/widgets/sign_up_prompt_widget.dart';
@@ -83,20 +84,13 @@ class _LoginScreenState extends State<LoginScreen> {
                   onChanged: _loginViewModel.setPassword,
                 );
               }),
-              Row(
+              SecondaryButtonWidget(
+                value: 'Forgot password?',
                 crossAxisAlignment: CrossAxisAlignment.end,
                 mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  TextButton(
-                    onPressed: () {},
-                    child: Text('Forgot password?',
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w700,
-                          color: Color.fromRGBO(170, 115, 240, 1),
-                        )),
-                  ),
-                ],
+                onPressed: () {
+                  Navigator.pushNamed(context, AppRoutes.forgotPassword);
+                },
               ),
               const SizedBox(height: 16),
               Observer(builder: (_) {
@@ -106,8 +100,9 @@ class _LoginScreenState extends State<LoginScreen> {
                       )
                     : PrimaryButton(
                         onPressed: () {
-                          if (_loginViewModel.isFormValid)
+                          if (_loginViewModel.isFormValid) {
                             _loginViewModel.login();
+                          }
                         },
                         text: 'Login',
                       );
@@ -165,6 +160,42 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
         ),
       ),
+    );
+  }
+}
+
+class SecondaryButtonWidget extends StatelessWidget {
+  const SecondaryButtonWidget({
+    super.key,
+    required this.value,
+    required this.onPressed,
+    this.crossAxisAlignment = CrossAxisAlignment.center,
+    this.mainAxisAlignment = MainAxisAlignment.center,
+
+  });
+  final String value;
+  final CrossAxisAlignment crossAxisAlignment;
+  final MainAxisAlignment mainAxisAlignment;
+  final void Function()? onPressed;
+  
+
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      crossAxisAlignment: crossAxisAlignment,
+      mainAxisAlignment: mainAxisAlignment,
+      children: [
+        TextButton(
+          onPressed: onPressed,
+          child: Text(value,
+              style: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w700,
+                color: Color.fromRGBO(170, 115, 240, 1),
+              )),
+        ),
+      ],
     );
   }
 }
