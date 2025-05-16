@@ -27,7 +27,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
               children: [
                 const SizedBox(height: 32),
                 SvgPicture.asset(
-                  'assets/Subtract.svg',
+                  'assets/small_logo.svg',
                   width: 32,
                   height: 32,
                   colorFilter: ColorFilter.mode(

@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:untold/ui/forgot_password/screen/forgot_password_instructions_screen.dart';
 import 'package:untold/ui/forgot_password/screen/forgot_password_screen.dart';
 import 'package:untold/ui/login/screen/login_screen.dart';
-import 'package:untold/ui/profile/screen/profile_screen.dart';
+import 'package:untold/ui/onboarding/screens/onboarding_screen.dart';
+import 'package:untold/ui/sign_up/screen/sign_up_screen.dart';
+
+import '../ui/profile/screen/profile_screen.dart';
 
 class AppRoutes {
   static const String home = '/';
@@ -13,8 +16,9 @@ class AppRoutes {
   static const String login = '/login';
   static const String register = '/register';
   static const String resetPassword = '/reset-password';
+  static const String splash = '/splash';
+  static const String onboarding = '/onboarding';
   static const String profile = '/profile';
-
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -28,13 +32,17 @@ class AppRoutes {
         return MaterialPageRoute(builder: (_) => LoginScreen());
 
       case register:
-        return MaterialPageRoute(builder: (_) => LoginScreen());
+        return MaterialPageRoute(builder: (_) => SignUpScreen());
       case resetPassword:
         return MaterialPageRoute(builder: (_) => LoginScreen());
 
       case forgotPasswordInstructions:
         return MaterialPageRoute(
             builder: (_) => ForgotPasswordInstructionsScreen());
+      case splash:
+        return MaterialPageRoute(builder: (_) => LoginScreen());
+      case onboarding:
+        return MaterialPageRoute(builder: (_) => OnboardingScreen());
       case profile:
         return MaterialPageRoute(builder: (_) => ProfileScreen());
       default:
