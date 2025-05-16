@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:untold/ui/forgot_password/screen/forgot_password_instructions_screen.dart';
 import 'package:untold/ui/forgot_password/screen/forgot_password_screen.dart';
 import 'package:untold/ui/login/screen/login_screen.dart';
+import 'package:untold/ui/profile/screen/profile_screen.dart';
 
 class AppRoutes {
   static const String home = '/';
@@ -12,6 +13,8 @@ class AppRoutes {
   static const String login = '/login';
   static const String register = '/register';
   static const String resetPassword = '/reset-password';
+  static const String profile = '/profile';
+
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -32,7 +35,8 @@ class AppRoutes {
       case forgotPasswordInstructions:
         return MaterialPageRoute(
             builder: (_) => ForgotPasswordInstructionsScreen());
-
+      case profile:
+        return MaterialPageRoute(builder: (_) => ProfileScreen());
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(

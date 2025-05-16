@@ -100,9 +100,11 @@ class _LoginScreenState extends State<LoginScreen> {
                       )
                     : PrimaryButton(
                         onPressed: () {
-                          if (_loginViewModel.isFormValid) {
-                            _loginViewModel.login();
-                          }
+                          // if (_loginViewModel.isFormValid) {
+                          //   _loginViewModel.login();
+                          // }
+
+                          Navigator.pushNamed(context, AppRoutes.profile);
                         },
                         text: 'Login',
                       );
@@ -171,14 +173,11 @@ class SecondaryButtonWidget extends StatelessWidget {
     required this.onPressed,
     this.crossAxisAlignment = CrossAxisAlignment.center,
     this.mainAxisAlignment = MainAxisAlignment.center,
-
   });
   final String value;
   final CrossAxisAlignment crossAxisAlignment;
   final MainAxisAlignment mainAxisAlignment;
   final void Function()? onPressed;
-  
-
 
   @override
   Widget build(BuildContext context) {
