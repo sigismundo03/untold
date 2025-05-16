@@ -19,7 +19,7 @@ class ForgotPasswordInstructionsScreen extends StatelessWidget {
               children: [
                 const SizedBox(height: 64),
                 SvgPicture.asset(
-                  'assets/Subtract.svg',
+                  'assets/small_logo.svg',
                   width: 32,
                   height: 32,
                   colorFilter: ColorFilter.mode(
