@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../routing/app_routes.dart';
 import '../widgets/avatar_widget.dart';
 import '../widgets/historyItem_widget.dart';
 import '../widgets/option_Button_widget.dart';
@@ -42,10 +43,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
               AvatarWidget(),
               const SizedBox(height: 30),
               OptionButtonWidget(
-                  icon: 'assets/lock.svg', title: "Change Password"),
+                icon: 'assets/lock.svg',
+                title: "Change Password",
+                onTap: () {
+                  Navigator.pushNamed(context, AppRoutes.changePassword);
+                },
+              ),
               const SizedBox(height: 10),
               OptionButtonWidget(
-                  icon: 'assets/delete.svg', title: "Delete my account"),
+                icon: 'assets/delete.svg',
+                title: "Delete my account",
+                onTap: () {},
+              ),
               const SizedBox(height: 30),
               const Text(
                 "Subscriptions",

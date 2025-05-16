@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:untold/ui/change_password/screens/change_password_scren.dart';
 import 'package:untold/ui/forgot_password/screen/forgot_password_instructions_screen.dart';
 import 'package:untold/ui/forgot_password/screen/forgot_password_screen.dart';
 import 'package:untold/ui/login/screen/login_screen.dart';
@@ -15,7 +16,7 @@ class AppRoutes {
       '/forgot-password-instructions';
   static const String login = '/login';
   static const String register = '/register';
-  static const String resetPassword = '/reset-password';
+  static const String changePassword = '/change-password';
   static const String splash = '/splash';
   static const String onboarding = '/onboarding';
   static const String profile = '/profile';
@@ -33,8 +34,8 @@ class AppRoutes {
 
       case register:
         return MaterialPageRoute(builder: (_) => SignUpScreen());
-      case resetPassword:
-        return MaterialPageRoute(builder: (_) => LoginScreen());
+      case changePassword:
+        return MaterialPageRoute(builder: (_) => ChangePasswordScreen());
 
       case forgotPasswordInstructions:
         return MaterialPageRoute(
