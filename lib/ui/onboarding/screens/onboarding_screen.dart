@@ -26,7 +26,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     final XFile? image = await _picker.pickImage(source: source);
     if (image != null) {
       _image = File(image.path);
-      setState(() {});
+      setState(() {});/// remove e coloc mobx
     }
     Navigator.pop(context);
   }

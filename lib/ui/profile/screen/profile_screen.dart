@@ -30,6 +30,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
             borderSideColor: Color.fromRGBO(188, 76, 241, 0.2),
             text: 'Edit Profile',
             textColor: Color.fromRGBO(170, 115, 240, 1),
+            onPressed: () {
+              Navigator.pushNamed(context, AppRoutes.editProfile);
+            },
           ),
         ],
       ),
@@ -40,7 +43,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(height: 16),
-              AvatarWidget(),
+              AvatarWidget(
+                assetName: 'assets/avatar.png',
+                text: Text(
+                  'Hello',
+                  style: TextStyle(
+                    color: Color.fromRGBO(255, 255, 255, 1),
+                    fontSize: 14,
+                  ),
+                ),
+                subtext: Text(
+                  'Eva Mendes',
+                  style: TextStyle(
+                    color: Color.fromRGBO(255, 255, 255, 1),
+                    fontSize: 26,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
               const SizedBox(height: 30),
               OptionButtonWidget(
                 icon: 'assets/lock.svg',
@@ -100,6 +120,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   borderSideColor: Color.fromRGBO(255, 255, 255, 0.45),
                   text: 'Log out',
                   textColor: Color.fromRGBO(217, 218, 222, 1),
+                  onPressed: () {},
                 ),
               ),
             ],
@@ -116,17 +137,19 @@ class TertiaryButtonWidget extends StatelessWidget {
     required this.borderSideColor,
     this.textColor,
     required this.text,
+    required this.onPressed,
   });
   final Color borderSideColor;
   final Color? textColor;
   final String text;
+  final void Function()? onPressed;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(right: 16.0),
       child: OutlinedButton(
-        onPressed: () {},
+        onPressed: onPressed,
         style: OutlinedButton.styleFrom(
           side: BorderSide(color: borderSideColor),
           shape:
