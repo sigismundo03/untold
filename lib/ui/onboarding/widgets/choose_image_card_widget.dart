@@ -1,9 +1,16 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 
 class ChooseImageCardWidget extends StatelessWidget {
-  final VoidCallback? onTap;
+  const ChooseImageCardWidget({
+    super.key,
+    this.onTap,
+    required this.image,
+  });
 
-  const ChooseImageCardWidget({super.key, this.onTap});
+  final VoidCallback? onTap;
+  final File? image;
 
   @override
   Widget build(BuildContext context) {
@@ -15,15 +22,23 @@ class ChooseImageCardWidget extends StatelessWidget {
             width: 100,
             height: 100,
             decoration: BoxDecoration(
+              image: image != null
+                  ? DecorationImage(
+                      image: FileImage(image!),
+                      fit: BoxFit.cover,
+                    )
+                  : null,
               color: const Color.fromRGBO(188, 76, 241, 0.2),
               borderRadius: BorderRadius.circular(28),
             ),
-            child: const Center(
-              child: Icon(
-                Icons.camera_alt_outlined,
-                color: Color.fromRGBO(170, 115, 240, 1),
-                size: 24,
-              ),
+            child: Center(
+              child: image == null
+                  ? Icon(
+                      Icons.camera_alt_outlined,
+                      color: Color.fromRGBO(170, 115, 240, 1),
+                      size: 24,
+                    )
+                  : null,
             ),
           ),
         ),

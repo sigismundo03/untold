@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 
 class ImagePickerDialogWidget extends StatelessWidget {
-  const ImagePickerDialogWidget(
-      {super.key, required this.onCameraTap, required this.onGalleryTap});
+  const ImagePickerDialogWidget({
+    super.key,
+    required this.onCameraTap,
+    required this.onGalleryTap,
+  });
 
   final VoidCallback onCameraTap;
   final VoidCallback onGalleryTap;
@@ -51,7 +54,7 @@ class ImagePickerDialogWidget extends StatelessWidget {
                 iconColor: Color.fromRGBO(170, 115, 240, 1),
                 backgroundColor: Color.fromRGBO(188, 76, 241, 0.2),
                 onTap: () {
-                  // lógica para tirar foto
+                  onCameraTap();
                 },
               ),
               const SizedBox(width: 20),
@@ -62,7 +65,7 @@ class ImagePickerDialogWidget extends StatelessWidget {
                 backgroundColor: Color.fromRGBO(187, 187, 187, 0.1),
                 iconColor: Color.fromRGBO(222, 222, 222, 1),
                 onTap: () {
-                  // lógica para escolher da galeria
+                  onGalleryTap();
                 },
               ),
             ],
