@@ -96,11 +96,11 @@ class _LoginScreenState extends State<LoginScreen> {
                       )
                     : PrimaryButtonWidget(
                         onPressed: () {
-                          // if (_loginViewModel.isFormValid) {
-                          //   _loginViewModel.login();
-                          // }
+                          if (_loginViewModel.isFormValid) {
+                            _loginViewModel.login();
+                          }
 
-                          Navigator.pushNamed(context, AppRoutes.profile);
+                          _loginViewModel.login();
                         },
                         text: 'Login',
                       );
@@ -117,6 +117,9 @@ class _LoginScreenState extends State<LoginScreen> {
                   SocialLoginButtonWidget(
                     color: Color.fromRGBO(188, 76, 241, 0.2),
                     image: 'assets/google.svg',
+                    onPressed: () {
+                      _loginViewModel.loginWithGoogle();
+                    },
                   ),
                   SocialLoginButtonWidget(
                     color: Color.fromRGBO(255, 255, 255, 0.33),
