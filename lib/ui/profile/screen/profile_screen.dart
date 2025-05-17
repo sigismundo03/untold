@@ -3,7 +3,7 @@ import 'package:untold/ui/core/widgets/exports.dart';
 
 import '../../../routing/app_routes.dart';
 import '../widgets/historyItem_widget.dart';
-import '../widgets/option_Button_widget.dart';
+import '../widgets/option_button_widget.dart';
 import '../widgets/subscription_widget.dart';
 
 class ProfileScreen extends StatefulWidget {
