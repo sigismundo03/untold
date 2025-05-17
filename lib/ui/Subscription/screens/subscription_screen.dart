@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-
-import '../../core/widgets/warning_show_modal_bottom_sheet.dart';
-import '../../core/widgets/primary_button_widget.dart';
+import 'package:untold/ui/core/widgets/exports.dart';
 
 class SubscriptionScreen extends StatefulWidget {
   const SubscriptionScreen({super.key});

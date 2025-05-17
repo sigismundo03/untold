@@ -3,13 +3,8 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:untold/routing/app_routes.dart';
 import 'package:untold/ui/core/di/injection.dart';
-import 'package:untold/ui/core/widgets/prompt_widget.dart';
+import 'package:untold/ui/core/widgets/exports.dart';
 import 'package:untold/ui/login/view_model/login_view_model.dart';
-
-import '../../core/widgets/secondary_button_widget.dart';
-import '../../core/widgets/primary_button_widget.dart';
-import '../../core/widgets/primary_text_field_widget.dart';
-import '../../core/widgets/social_login_button_widget.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -111,36 +106,8 @@ class _LoginScreenState extends State<LoginScreen> {
                       );
               }),
               const SizedBox(height: 16),
-              Row(
-                spacing: 16,
-                children: [
-                  Expanded(
-                    child: Divider(
-                      thickness: 1,
-                      color: Color.fromRGBO(244, 244, 244, 0.2),
-                      endIndent: 1,
-                      indent: 1,
-                      height: 1,
-                    ),
-                  ),
-                  Text(
-                    'Or Sign in With',
-                    style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                      color: Color.fromRGBO(85, 82, 82, 1),
-                    ),
-                  ),
-                  Expanded(
-                    child: Divider(
-                      thickness: 1,
-                      color: Color.fromRGBO(244, 244, 244, 0.2),
-                      endIndent: 1,
-                      indent: 1,
-                      height: 1,
-                    ),
-                  ),
-                ],
+              DividerNameWidget(
+                text: 'Or Sign in With',
               ),
               const SizedBox(height: 4),
               Row(

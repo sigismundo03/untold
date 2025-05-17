@@ -4,11 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:untold/ui/core/widgets/image_picker_dialog_widget.dart';
+import 'package:untold/ui/core/widgets/exports.dart';
 
-import '../../core/widgets/primary_button_widget.dart';
-import '../../core/widgets/primary_text_field_widget.dart';
-import '../../core/widgets/secondary_button_widget.dart';
 import '../widgets/choose_image_card_widget.dart';
 
 class OnboardingScreen extends StatefulWidget {

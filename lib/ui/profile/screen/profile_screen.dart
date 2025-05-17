@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:untold/ui/core/widgets/exports.dart';
 
 import '../../../routing/app_routes.dart';
-import '../../core/widgets/tertiary_button_widget.dart';
-import '../../core/widgets/warning_show_modal_bottom_sheet.dart';
-import '../../core/widgets/avatar_widget.dart';
 import '../widgets/historyItem_widget.dart';
 import '../widgets/option_Button_widget.dart';
 import '../widgets/subscription_widget.dart';

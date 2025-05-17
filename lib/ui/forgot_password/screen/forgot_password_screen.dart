@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:untold/ui/core/widgets/exports.dart';
 
 import '../../../routing/app_routes.dart';
-import '../../core/widgets/secondary_button_widget.dart';
-import '../../core/widgets/primary_button_widget.dart';
-import '../../core/widgets/primary_text_field_widget.dart';
 
 class ForgotPasswordScreen extends StatefulWidget {
   const ForgotPasswordScreen({super.key});
