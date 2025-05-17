@@ -7,6 +7,7 @@ import 'package:untold/ui/login/screen/login_screen.dart';
 import 'package:untold/ui/onboarding/screens/onboarding_screen.dart';
 import 'package:untold/ui/sign_up/screen/sign_up_screen.dart';
 
+import '../ui/Subscription/screens/subscription_screen.dart';
 import '../ui/profile/screen/profile_screen.dart';
 
 class AppRoutes {
@@ -22,6 +23,7 @@ class AppRoutes {
   static const String onboarding = '/onboarding';
   static const String profile = '/profile';
   static const String editProfile = '/edit-profile';
+  static const String subscription = '/subscription';
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -51,6 +53,9 @@ class AppRoutes {
 
       case editProfile:
         return MaterialPageRoute(builder: (_) => EditProfileScreen());
+
+      case subscription:
+        return MaterialPageRoute(builder: (_) => SubscriptionScreen());
 
       default:
         return MaterialPageRoute(
