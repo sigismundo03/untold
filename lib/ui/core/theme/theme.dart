@@ -47,7 +47,6 @@ class AppTheme {
         ),
       );
 
-  // Função auxiliar para criar MaterialColor a partir de uma cor
   static MaterialColor _createMaterialColor(Color color) {
     List strengths = <double>[.05];
     Map<int, Color> swatch = {};

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:untold/routing/app_routes.dart';
+import 'package:untold/ui/core/widgets/exports.dart';
 
-import '../../login/widgets/primary_button_widget.dart';
+
 
 class ForgotPasswordInstructionsScreen extends StatelessWidget {
   const ForgotPasswordInstructionsScreen({super.key});
@@ -53,7 +54,7 @@ class ForgotPasswordInstructionsScreen extends StatelessWidget {
                 ),
               ],
             ),
-            PrimaryButton(
+            PrimaryButtonWidget(
               onPressed: () {
                 Navigator.of(context)
                     .pushNamedAndRemoveUntil(AppRoutes.login, (route) => false);

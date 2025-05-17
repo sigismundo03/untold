@@ -4,11 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:untold/ui/onboarding/widgets/image_picker_dialog_widget%20.dart';
+import 'package:untold/ui/core/widgets/exports.dart';
 
-import '../../login/screen/login_screen.dart';
-import '../../login/widgets/primary_button_widget.dart';
-import '../../login/widgets/primary_text_field_widget.dart';
 import '../widgets/choose_image_card_widget.dart';
 
 class OnboardingScreen extends StatefulWidget {
@@ -27,6 +24,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     if (image != null) {
       _image = File(image.path);
       setState(() {});
+
+      /// remove e coloc mobx
     }
     Navigator.pop(context);
   }
@@ -100,7 +99,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               const SizedBox(height: 16),
               Column(
                 children: [
-                  PrimaryButton(
+                  PrimaryButtonWidget(
                     onPressed: () {
                       Navigator.pop(context);
                     },
@@ -110,7 +109,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     onPressed: () {
                       Navigator.pop(context);
                     },
-                    value: 'Back',
+                    text: 'Back',
                   ),
                 ],
               ),

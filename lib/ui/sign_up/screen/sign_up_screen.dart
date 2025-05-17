@@ -2,11 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:untold/routing/app_routes.dart';
-
-import '../../login/widgets/primary_button_widget.dart';
-import '../../login/widgets/primary_text_field_widget.dart';
-import '../../login/widgets/prompt_widget.dart';
-import '../../login/widgets/social_login_button_widget.dart';
+import 'package:untold/ui/core/widgets/exports.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -74,36 +70,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 ],
               ),
               const SizedBox(height: 8),
-              Row(
-                spacing: 16,
-                children: [
-                  Expanded(
-                    child: Divider(
-                      thickness: 1,
-                      color: Color.fromRGBO(244, 244, 244, 0.2),
-                      endIndent: 1,
-                      indent: 1,
-                      height: 1,
-                    ),
-                  ),
-                  Text(
-                    'Or Sign in With',
-                    style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                      color: Color.fromRGBO(85, 82, 82, 1),
-                    ),
-                  ),
-                  Expanded(
-                    child: Divider(
-                      thickness: 1,
-                      color: Color.fromRGBO(244, 244, 244, 0.2),
-                      endIndent: 1,
-                      indent: 1,
-                      height: 1,
-                    ),
-                  ),
-                ],
+              DividerNameWidget(
+                text: 'Or Sign up With',
               ),
               const SizedBox(height: 8),
               Observer(builder: (_) {
@@ -147,7 +115,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               }),
               const SizedBox(height: 16),
               Observer(builder: (_) {
-                return PrimaryButton(
+                return PrimaryButtonWidget(
                   onPressed: () {
                     Navigator.pushNamed(context, AppRoutes.onboarding);
                   },
