@@ -16,7 +16,7 @@ abstract class _SingUpViewModelBase with Store {
   _SingUpViewModelBase({required AuthRepository authRepository})
       : _authRepository = authRepository;
   @observable
-  StatusEnum _status = StatusEnum.loading;
+  StatusEnum _status = StatusEnum.init;
 
   @observable
   bool isObscure = true;

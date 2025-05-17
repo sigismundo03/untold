@@ -8,6 +8,7 @@ import 'package:untold/ui/sign_up/view_model/sign_up_view_model.dart';
 import '../../../data/services/api_client/api_client.dart';
 import '../../../data/services/api_client/dio_api_client.dart';
 import '../../login/view_model/login_view_model.dart';
+import '../../onboarding/view_model/onboarding_view_model.dart';
 
 final GetIt getIt = GetIt.instance;
 
@@ -38,6 +39,12 @@ void setupDependencies() {
 
   getIt.registerFactory<SingUpViewModel>(
     () => SingUpViewModel(
+      authRepository: getIt(),
+    ),
+  );
+
+  getIt.registerFactory<OnboardingViewModel>(
+    () => OnboardingViewModel(
       authRepository: getIt(),
     ),
   );

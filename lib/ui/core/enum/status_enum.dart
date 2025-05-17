@@ -1,4 +1,5 @@
 enum StatusEnum {
+  init,
   loading,
   success,
   error;

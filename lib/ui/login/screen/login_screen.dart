@@ -60,26 +60,28 @@ class _LoginScreenState extends State<LoginScreen> {
                   onChanged: _loginViewModel.setEmail,
                 );
               }),
-              Observer(builder: (_) {
-                return PrimaryTextFieldWidget(
-                  hintText: 'Password',
-                  obscureText: _loginViewModel.isObscure,
-                  suffixIcon: IconButton(
-                    onPressed: () {
-                      _loginViewModel.setObscure(!_loginViewModel.isObscure);
-                    },
-                    icon: Icon(
-                      _loginViewModel.isObscure
-                          ? Icons.visibility_off
-                          : Icons.visibility,
-                      color: Color.fromRGBO(108, 109, 122, 1),
-                      size: 20,
+              Observer(
+                builder: (_) {
+                  return PrimaryTextFieldWidget(
+                    hintText: 'Password',
+                    obscureText: _loginViewModel.isObscure,
+                    suffixIcon: IconButton(
+                      onPressed: () {
+                        _loginViewModel.setObscure(!_loginViewModel.isObscure);
+                      },
+                      icon: Icon(
+                        _loginViewModel.isObscure
+                            ? Icons.visibility_off
+                            : Icons.visibility,
+                        color: Color.fromRGBO(108, 109, 122, 1),
+                        size: 20,
+                      ),
                     ),
-                  ),
-                  controller: passwordController,
-                  onChanged: _loginViewModel.setPassword,
-                );
-              }),
+                    controller: passwordController,
+                    onChanged: _loginViewModel.setPassword,
+                  );
+                },
+              ),
               SecondaryButtonWidget(
                 text: 'Forgot password?',
                 crossAxisAlignment: CrossAxisAlignment.end,
@@ -90,17 +92,19 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               const SizedBox(height: 16),
               Observer(builder: (_) {
-                return _loginViewModel.isLoading
+                return _loginViewModel.status.isLoading
                     ? Center(
                         child: CircularProgressIndicator(),
                       )
                     : PrimaryButtonWidget(
-                        onPressed: () {
+                        onPressed: () async {
                           if (_loginViewModel.isFormValid) {
-                            _loginViewModel.login();
+                            await _loginViewModel.login();
                           }
 
-                          _loginViewModel.login();
+                          if (_loginViewModel.status.isSuccess) {
+                            Navigator.pushNamed(context, AppRoutes.profile);
+                          }
                         },
                         text: 'Login',
                       );

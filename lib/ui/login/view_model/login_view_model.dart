@@ -2,6 +2,8 @@ import 'package:mobx/mobx.dart';
 import 'package:untold/data/repositories/auth/auth_repository.dart';
 import 'package:untold/domain/models/user_model.dart';
 
+import '../../core/enum/status_enum.dart';
+
 part 'login_view_model.g.dart';
 
 class LoginViewModel = _LoginViewModelBase with _$LoginViewModel;
@@ -14,12 +16,16 @@ abstract class _LoginViewModelBase with Store {
       : _authRepository = authRepository;
 
   @observable
-  bool isLoading = false;
+  StatusEnum _status = StatusEnum.init;
+
   @observable
   bool isObscure = true;
 
   @observable
   String? error;
+
+  @computed
+  StatusEnum get status => _status;
 
   @computed
   bool get isFormValid =>
@@ -34,8 +40,8 @@ abstract class _LoginViewModelBase with Store {
   }
 
   @action
-  void setLoading(bool value) {
-    isLoading = value;
+  void setStatus(StatusEnum value) {
+    _status = value;
   }
 
   @action
@@ -55,29 +61,36 @@ abstract class _LoginViewModelBase with Store {
 
   @action
   Future<void> login() async {
-    isLoading = true;
+    setStatus(StatusEnum.loading);
+
     error = null;
     if (user.email == null || user.password == null) {
       error = 'Invalid email or password';
-      isLoading = false;
+      setStatus(StatusEnum.error);
       return;
     }
 
     final result =
         await _authRepository.signInWithEmail(user.email!, user.password!);
-    if (result == null) error = 'Invalid email or password';
+    if (result == null) {
+      error = 'Invalid email or password';
+      setStatus(StatusEnum.error);
+      return;
+    }
 
-    isLoading = false;
+    setStatus(StatusEnum.success);
   }
 
   @action
   Future<void> loginWithGoogle() async {
-    isLoading = true;
+    setStatus(StatusEnum.loading);
     error = null;
     final result = await _authRepository.signInWithGoogle();
-    if (result == null) error = 'Invalid email or password';
+    if (result == null) {
+      setStatus(StatusEnum.error);
+    }
 
-    isLoading = false;
+    setStatus(StatusEnum.success);
   }
 
   @action

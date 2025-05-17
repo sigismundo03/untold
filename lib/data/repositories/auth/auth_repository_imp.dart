@@ -32,7 +32,9 @@ class AuthRepositoryImp extends AuthRepository {
 
   @override
   Future<User?> registerWithEmail(
-      String email, String password, String username) async {
+      {required String email,
+      required String password,
+      required String username}) async {
     try {
       final credential = await _auth.createUserWithEmailAndPassword(
         email: email,

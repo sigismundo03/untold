@@ -17,19 +17,19 @@ mixin _$LoginViewModel on _LoginViewModelBase, Store {
               name: '_LoginViewModelBase.isFormValid'))
           .value;
 
-  late final _$isLoadingAtom =
-      Atom(name: '_LoginViewModelBase.isLoading', context: context);
+  late final _$_statusAtom =
+      Atom(name: '_LoginViewModelBase._status', context: context);
 
   @override
-  bool get isLoading {
-    _$isLoadingAtom.reportRead();
-    return super.isLoading;
+  StatusEnum get _status {
+    _$_statusAtom.reportRead();
+    return super._status;
   }
 
   @override
-  set isLoading(bool value) {
-    _$isLoadingAtom.reportWrite(value, super.isLoading, () {
-      super.isLoading = value;
+  set _status(StatusEnum value) {
+    _$_statusAtom.reportWrite(value, super._status, () {
+      super._status = value;
     });
   }
 
@@ -104,11 +104,11 @@ mixin _$LoginViewModel on _LoginViewModelBase, Store {
   }
 
   @override
-  void setLoading(bool value) {
+  void setStatus(StatusEnum value) {
     final _$actionInfo = _$_LoginViewModelBaseActionController.startAction(
-        name: '_LoginViewModelBase.setLoading');
+        name: '_LoginViewModelBase.setStatus');
     try {
-      return super.setLoading(value);
+      return super.setStatus(value);
     } finally {
       _$_LoginViewModelBaseActionController.endAction(_$actionInfo);
     }
@@ -150,7 +150,6 @@ mixin _$LoginViewModel on _LoginViewModelBase, Store {
   @override
   String toString() {
     return '''
-isLoading: ${isLoading},
 isObscure: ${isObscure},
 error: ${error},
 isFormValid: ${isFormValid}

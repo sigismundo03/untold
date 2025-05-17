@@ -128,7 +128,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       _singUpViewModel.setObscure(!_singUpViewModel.isObscure);
                     },
                     icon: Icon(
-                      Icons.visibility_off,
+                     _singUpViewModel.isObscure
+                            ? Icons.visibility_off
+                            : Icons.visibility,
                       color: Color.fromRGBO(108, 109, 122, 1),
                       size: 20,
                     ),
@@ -149,7 +151,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           !_singUpViewModel.isObscureConfirmPassWord);
                     },
                     icon: Icon(
-                      Icons.visibility_off,
+_singUpViewModel.isObscureConfirmPassWord
+                            ? Icons.visibility_off
+                            : Icons.visibility,
                       color: Color.fromRGBO(108, 109, 122, 1),
                       size: 20,
                     ),
@@ -166,7 +170,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   onPressed: () {
                     if (_singUpViewModel.isFormValid &&
                         _singUpViewModel.currentPasswordPassword) {
-                      Navigator.pushNamed(context, AppRoutes.onboarding);
+                      Navigator.pushNamed(
+                        context,
+                        AppRoutes.onboarding,
+                        arguments: _singUpViewModel.user,
+                      );
+                    } else {
+                      // ScaffoldMessenger.of(context).showSnackBar( );
                     }
                   },
                   text: 'Create Account',

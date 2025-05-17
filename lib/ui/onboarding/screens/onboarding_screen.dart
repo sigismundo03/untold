@@ -1,32 +1,35 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:untold/domain/models/user_model.dart';
 import 'package:untold/ui/core/widgets/exports.dart';
+import 'package:untold/ui/onboarding/view_model/onboarding_view_model.dart';
 
+import '../../core/di/injection.dart';
 import '../widgets/choose_image_card_widget.dart';
 
 class OnboardingScreen extends StatefulWidget {
-  const OnboardingScreen({super.key});
+  const OnboardingScreen({super.key, required this.user});
+  final UserModel user;
 
   @override
   State<OnboardingScreen> createState() => _OnboardingScreenState();
 }
 
 class _OnboardingScreenState extends State<OnboardingScreen> {
-  final ImagePicker _picker = ImagePicker();
-  File? _image;
+  final OnboardingViewModel _onboardingViewModel = getIt<OnboardingViewModel>();
+  TextEditingController nameController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _onboardingViewModel.setFullUser(widget.user);
+  }
 
   Future<void> _pickImage(ImageSource source) async {
-    final XFile? image = await _picker.pickImage(source: source);
-    if (image != null) {
-      _image = File(image.path);
-      setState(() {});
+    await _onboardingViewModel.pickImage(source);
 
-      /// remove e coloc mobx
-    }
     Navigator.pop(context);
   }
 
@@ -69,42 +72,54 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   ),
                 ],
               ),
-              Padding(
-                padding: const EdgeInsets.all(32),
-                child: ChooseImageCardWidget(
-                  image: _image,
-                  onTap: () {
-                    showModalBottomSheet(
-                      context: context,
-                      builder: (context) => ImagePickerDialogWidget(
-                        onCameraTap: () {
-                          _pickImage(ImageSource.camera);
-                        },
-                        onGalleryTap: () {
-                          _pickImage(ImageSource.gallery);
-                        },
-                      ),
-                    );
-                  },
-                ),
-              ),
+              Observer(builder: (context) {
+                return Padding(
+                  padding: const EdgeInsets.all(32),
+                  child: ChooseImageCardWidget(
+                    image: _onboardingViewModel.image,
+                    onTap: () {
+                      showModalBottomSheet(
+                        context: context,
+                        builder: (context) => ImagePickerDialogWidget(
+                          onCameraTap: () {
+                            _pickImage(ImageSource.camera);
+                          },
+                          onGalleryTap: () {
+                            _pickImage(ImageSource.gallery);
+                          },
+                        ),
+                      );
+                    },
+                  ),
+                );
+              }),
               const SizedBox(height: 16),
               Observer(builder: (_) {
                 return PrimaryTextFieldWidget(
                   hintText: 'Your name',
-                  controller: TextEditingController(),
-                  onChanged: (_) {},
+                  controller: nameController,
+                  onChanged: (value) {
+                    _onboardingViewModel.setName(value);
+                  },
                 );
               }),
               const SizedBox(height: 16),
               Column(
                 children: [
-                  PrimaryButtonWidget(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    text: 'Continue',
-                  ),
+                  Observer(builder: (context) {
+                    return _onboardingViewModel.status.isLoading
+                        ? Center(
+                            child: CircularProgressIndicator(),
+                          )
+                        : PrimaryButtonWidget(
+                            onPressed: () async {
+                              await _onboardingViewModel.register();
+                              if (_onboardingViewModel.status.isSuccess)
+                                Navigator.pop(context);
+                            },
+                            text: 'Continue',
+                          );
+                  }),
                   SecondaryButtonWidget(
                     onPressed: () {
                       Navigator.pop(context);
