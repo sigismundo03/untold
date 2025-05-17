@@ -4,11 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:untold/ui/onboarding/widgets/image_picker_dialog_widget.dart';
+import 'package:untold/ui/core/widgets/image_picker_dialog_widget.dart';
 
-import '../../login/screen/login_screen.dart';
-import '../../login/widgets/primary_button_widget.dart';
-import '../../login/widgets/primary_text_field_widget.dart';
+import '../../core/widgets/primary_button_widget.dart';
+import '../../core/widgets/primary_text_field_widget.dart';
+import '../../core/widgets/secondary_button_widget.dart';
 import '../widgets/choose_image_card_widget.dart';
 
 class OnboardingScreen extends StatefulWidget {
@@ -26,7 +26,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     final XFile? image = await _picker.pickImage(source: source);
     if (image != null) {
       _image = File(image.path);
-      setState(() {});/// remove e coloc mobx
+      setState(() {});
+
+      /// remove e coloc mobx
     }
     Navigator.pop(context);
   }
@@ -110,7 +112,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     onPressed: () {
                       Navigator.pop(context);
                     },
-                    value: 'Back',
+                    text: 'Back',
                   ),
                 ],
               ),

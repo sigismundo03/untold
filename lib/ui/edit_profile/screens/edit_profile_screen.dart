@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:image_picker/image_picker.dart';
 
-import '../../login/widgets/primary_button_widget.dart';
-import '../../login/widgets/primary_text_field_widget.dart';
-import '../../onboarding/widgets/image_picker_dialog_widget.dart';
-import '../../profile/widgets/avatar_widget.dart';
+import '../../core/widgets/primary_button_widget.dart';
+import '../../core/widgets/primary_text_field_widget.dart';
+import '../../core/widgets/image_picker_dialog_widget.dart';
+import '../../core/widgets/avatar_widget.dart';
 
 class EditProfileScreen extends StatefulWidget {
   const EditProfileScreen({super.key});

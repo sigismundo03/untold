@@ -3,10 +3,10 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:untold/routing/app_routes.dart';
 
-import '../../login/widgets/primary_button_widget.dart';
-import '../../login/widgets/primary_text_field_widget.dart';
-import '../../login/widgets/prompt_widget.dart';
-import '../../login/widgets/social_login_button_widget.dart';
+import '../../core/widgets/primary_button_widget.dart';
+import '../../core/widgets/primary_text_field_widget.dart';
+import '../../core/widgets/prompt_widget.dart';
+import '../../core/widgets/social_login_button_widget.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});

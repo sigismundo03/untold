@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
 import '../../../routing/app_routes.dart';
-import '../widgets/avatar_widget.dart';
+import '../../core/widgets/tertiary_button_widget.dart';
+import '../../core/widgets/warning_show_modal_bottom_sheet.dart';
+import '../../core/widgets/avatar_widget.dart';
 import '../widgets/historyItem_widget.dart';
 import '../widgets/option_Button_widget.dart';
 import '../widgets/subscription_widget.dart';
@@ -73,7 +75,26 @@ class _ProfileScreenState extends State<ProfileScreen> {
               OptionButtonWidget(
                 icon: 'assets/delete.svg',
                 title: "Delete my account",
-                onTap: () {},
+                onTap: () {
+                  showModalBottomSheet(
+                    context: context,
+                    builder: (context) {
+                      return WarningShowModalBottomSheet(
+                        subtitle:
+                            """This action is irreversible and all of your data will be permanently deleted. If you're having any issues with our app, we'd love to help you resolve them.""",
+                        title: 'Are you sure you want to delete your account? ',
+                        onPrimaryButtonTap: () {
+                          Navigator.pop(context);
+                        },
+                        onSecondaryButtonTap: () {
+                          Navigator.pop(context);
+                        },
+                        primaryButtonText: 'Terminate Plan',
+                        secondaryButtonText: 'Cancel',
+                      );
+                    },
+                  );
+                },
               ),
               const SizedBox(height: 30),
               const Text(
@@ -124,43 +145,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
               ),
             ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class TertiaryButtonWidget extends StatelessWidget {
-  const TertiaryButtonWidget({
-    super.key,
-    required this.borderSideColor,
-    this.textColor,
-    required this.text,
-    required this.onPressed,
-  });
-  final Color borderSideColor;
-  final Color? textColor;
-  final String text;
-  final void Function()? onPressed;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(right: 16.0),
-      child: OutlinedButton(
-        onPressed: onPressed,
-        style: OutlinedButton.styleFrom(
-          side: BorderSide(color: borderSideColor),
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        ),
-        child: Text(
-          text,
-          style: TextStyle(
-            color: textColor,
-            fontSize: 14,
-            fontWeight: FontWeight.w500,
           ),
         ),
       ),

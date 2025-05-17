@@ -3,12 +3,13 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:untold/routing/app_routes.dart';
 import 'package:untold/ui/core/di/injection.dart';
+import 'package:untold/ui/core/widgets/prompt_widget.dart';
 import 'package:untold/ui/login/view_model/login_view_model.dart';
-import 'package:untold/ui/login/widgets/prompt_widget.dart';
 
-import '../widgets/primary_button_widget.dart';
-import '../widgets/primary_text_field_widget.dart';
-import '../widgets/social_login_button_widget.dart';
+import '../../core/widgets/secondary_button_widget.dart';
+import '../../core/widgets/primary_button_widget.dart';
+import '../../core/widgets/primary_text_field_widget.dart';
+import '../../core/widgets/social_login_button_widget.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -85,7 +86,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 );
               }),
               SecondaryButtonWidget(
-                value: 'Forgot password?',
+                text: 'Forgot password?',
                 crossAxisAlignment: CrossAxisAlignment.end,
                 mainAxisAlignment: MainAxisAlignment.end,
                 onPressed: () {
@@ -167,39 +168,6 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
         ),
       ),
-    );
-  }
-}
-
-class SecondaryButtonWidget extends StatelessWidget {
-  const SecondaryButtonWidget({
-    super.key,
-    required this.value,
-    required this.onPressed,
-    this.crossAxisAlignment = CrossAxisAlignment.center,
-    this.mainAxisAlignment = MainAxisAlignment.center,
-  });
-  final String value;
-  final CrossAxisAlignment crossAxisAlignment;
-  final MainAxisAlignment mainAxisAlignment;
-  final void Function()? onPressed;
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      crossAxisAlignment: crossAxisAlignment,
-      mainAxisAlignment: mainAxisAlignment,
-      children: [
-        TextButton(
-          onPressed: onPressed,
-          child: Text(value,
-              style: TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.w700,
-                color: Color.fromRGBO(170, 115, 240, 1),
-              )),
-        ),
-      ],
     );
   }
 }

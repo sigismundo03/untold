@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 
-import '../../login/widgets/primary_button_widget.dart';
-import '../../login/widgets/primary_text_field_widget.dart';
+import '../../core/widgets/primary_button_widget.dart';
+import '../../core/widgets/primary_text_field_widget.dart';
 
 class ChangePasswordScreen extends StatefulWidget {
   const ChangePasswordScreen({super.key});
