@@ -6,7 +6,7 @@ import 'package:image_picker/image_picker.dart';
 
 import '../../login/widgets/primary_button_widget.dart';
 import '../../login/widgets/primary_text_field_widget.dart';
-import '../../onboarding/widgets/image_picker_dialog_widget .dart';
+import '../../onboarding/widgets/image_picker_dialog_widget.dart';
 import '../../profile/widgets/avatar_widget.dart';
 
 class EditProfileScreen extends StatefulWidget {
@@ -130,7 +130,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     const SizedBox(height: 16),
                     Observer(builder: (_) {
                       return Center(
-                        child: PrimaryButton(
+                        child: PrimaryButtonWidget(
                           onPressed: () {
                             Navigator.pop(context);
                           },

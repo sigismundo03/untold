@@ -53,7 +53,7 @@ class ForgotPasswordInstructionsScreen extends StatelessWidget {
                 ),
               ],
             ),
-            PrimaryButton(
+            PrimaryButtonWidget(
               onPressed: () {
                 Navigator.of(context)
                     .pushNamedAndRemoveUntil(AppRoutes.login, (route) => false);

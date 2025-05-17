@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-class PrimaryButton extends StatelessWidget {
+class PrimaryButtonWidget extends StatelessWidget {
   final String text;
   final VoidCallback onPressed;
 
-  const PrimaryButton({
+  const PrimaryButtonWidget({
     super.key,
     required this.text,
     required this.onPressed,

@@ -127,7 +127,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                     const SizedBox(height: 16),
                     Observer(builder: (_) {
                       return Center(
-                        child: PrimaryButton(
+                        child: PrimaryButtonWidget(
                           onPressed: () {
                             Navigator.pop(context);
                           },

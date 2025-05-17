@@ -98,7 +98,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ? Center(
                         child: CircularProgressIndicator(),
                       )
-                    : PrimaryButton(
+                    : PrimaryButtonWidget(
                         onPressed: () {
                           // if (_loginViewModel.isFormValid) {
                           //   _loginViewModel.login();

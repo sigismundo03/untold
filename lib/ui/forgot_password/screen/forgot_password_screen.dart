@@ -62,7 +62,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
             }),
             Column(
               children: [
-                PrimaryButton(
+                PrimaryButtonWidget(
                   onPressed: () {
                     Navigator.pushNamed(
                         context, AppRoutes.forgotPasswordInstructions);

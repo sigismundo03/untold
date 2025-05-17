@@ -147,7 +147,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               }),
               const SizedBox(height: 16),
               Observer(builder: (_) {
-                return PrimaryButton(
+                return PrimaryButtonWidget(
                   onPressed: () {
                     Navigator.pushNamed(context, AppRoutes.onboarding);
                   },

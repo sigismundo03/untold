@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:untold/ui/onboarding/widgets/image_picker_dialog_widget%20.dart';
+import 'package:untold/ui/onboarding/widgets/image_picker_dialog_widget.dart';
 
 import '../../login/screen/login_screen.dart';
 import '../../login/widgets/primary_button_widget.dart';
@@ -100,7 +100,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               const SizedBox(height: 16),
               Column(
                 children: [
-                  PrimaryButton(
+                  PrimaryButtonWidget(
                     onPressed: () {
                       Navigator.pop(context);
                     },
