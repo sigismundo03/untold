@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-import '../../login/widgets/primary_button_widget.dart';
+import '../../core/widgets/warning_show_modal_bottom_sheet.dart';
+import '../../core/widgets/primary_button_widget.dart';
 
 class SubscriptionScreen extends StatefulWidget {
   const SubscriptionScreen({super.key});
@@ -111,9 +112,27 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
               height: 1,
             ),
             const SizedBox(height: 16),
-            PrimaryButton(
+            PrimaryButtonWidget(
               onPressed: () {
-                Navigator.pop(context);
+                showModalBottomSheet(
+                  context: context,
+                  builder: (context) {
+                    return WarningShowModalBottomSheet(
+                      subtitle:
+                          """Please note that cancelling your plan will immediately revoke your access to all features. If you're experiencing any issues with our app, we'd love to help you resolve them.""",
+                      title:
+                          '"Are you sure you want to cancel your subscription?',
+                      onPrimaryButtonTap: () {
+                        Navigator.pop(context);
+                      },
+                      onSecondaryButtonTap: () {
+                        Navigator.pop(context);
+                      },
+                      primaryButtonText: 'Terminate Plan',
+                      secondaryButtonText: 'Cancel',
+                    );
+                  },
+                );
               },
               text: 'Terminate Plan',
             ),
