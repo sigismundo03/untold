@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:untold/ui/change_password/screens/change_password_scren.dart';
+import 'package:untold/ui/change_password/screens/change_password_screen.dart';
 import 'package:untold/ui/edit_profile/screens/edit_profile_screen.dart';
 import 'package:untold/ui/forgot_password/screen/forgot_password_instructions_screen.dart';
 import 'package:untold/ui/forgot_password/screen/forgot_password_screen.dart';
@@ -7,8 +7,9 @@ import 'package:untold/ui/login/screen/login_screen.dart';
 import 'package:untold/ui/onboarding/screens/onboarding_screen.dart';
 import 'package:untold/ui/sign_up/screen/sign_up_screen.dart';
 
-import '../ui/Subscription/screens/subscription_screen.dart';
+import '../domain/models/user_model.dart';
 import '../ui/profile/screen/profile_screen.dart';
+import '../ui/subscription/screens/subscription_screen.dart';
 
 class AppRoutes {
   static const String home = '/';
@@ -47,12 +48,26 @@ class AppRoutes {
       case splash:
         return MaterialPageRoute(builder: (_) => LoginScreen());
       case onboarding:
-        return MaterialPageRoute(builder: (_) => OnboardingScreen());
+        return MaterialPageRoute(
+          builder: (context) {
+            final args = settings.arguments as UserModel;
+            return OnboardingScreen(
+              user: args,
+            );
+          },
+        );
       case profile:
         return MaterialPageRoute(builder: (_) => ProfileScreen());
 
       case editProfile:
-        return MaterialPageRoute(builder: (_) => EditProfileScreen());
+        return MaterialPageRoute(
+          builder: (context) {
+            final args = settings.arguments as UserModel;
+            return EditProfileScreen(
+              user: args,
+            );
+          },
+        );
 
       case subscription:
         return MaterialPageRoute(builder: (_) => SubscriptionScreen());

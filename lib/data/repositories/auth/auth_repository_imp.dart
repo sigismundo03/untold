@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
@@ -32,7 +34,9 @@ class AuthRepositoryImp extends AuthRepository {
 
   @override
   Future<User?> registerWithEmail(
-      String email, String password, String username) async {
+      {required String email,
+      required String password,
+      required String username}) async {
     try {
       final credential = await _auth.createUserWithEmailAndPassword(
         email: email,
@@ -77,34 +81,39 @@ class AuthRepositoryImp extends AuthRepository {
           throw Exception('Registration failed: $e');
         }
       }
+      finishOnboarding();
       return user;
     } catch (e) {
       throw Exception('Google Sign-In failed: $e');
     }
   }
 
-  // // Finalizar Onboarding
-  // Future<void> finishOnboarding() async {
-  //   await _apiClient.patch('/users/updateMe', body: {
-  //     'data': {'finished_onboarding': true},
-  //   });
-  // }
+  // Finalizar Onboarding
+  @override
+  Future<void> finishOnboarding() async {
+    final result = await _apiClient.patch('/users/updateMe', body: {
+      'data': {'finished_onboarding': true},
+    });
+    log(result.toString());
+  }
 
-  // // Recuperar Dados do Usuário
-  // Future<Map<String, dynamic>> getUserData() async {
-  //   return await _apiClient.get('/users/me');
-  // }
+  @override
+  Future<bool> logout() async {
+    try {
+      await _auth.signOut();
+      await _googleSignIn.signOut();
+      return true;
+    } catch (e) {
+      return true;
+    }
+  }
 
-  // // Atualizar Dados do Usuário
-  // Future<void> updateUserData(String username) async {
-  //   await _apiClient.patch('/users/updateMe', body: {
-  //     'data': {'username': username},
-  //   });
-  // }
-
-  // // Remover Usuário
-  // Future<void> deleteUser(String userId) async {
-  //   await _apiClient.delete('/users/$userId');
-  //   await _auth.currentUser?.delete();
-  // }
+  @override
+  Future<void> sendPasswordResetEmail(String email) async {
+    try {
+      await _auth.sendPasswordResetEmail(email: email);
+    } catch (e) {
+      throw Exception('Password reset failed: $e');
+    }
+  }
 }

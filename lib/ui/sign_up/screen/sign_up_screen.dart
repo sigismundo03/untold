@@ -3,6 +3,9 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:untold/routing/app_routes.dart';
 import 'package:untold/ui/core/widgets/exports.dart';
+import 'package:untold/ui/sign_up/view_model/sign_up_view_model.dart';
+
+import '../../core/di/injection.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -12,8 +15,31 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
+  final SingUpViewModel _singUpViewModel = getIt<SingUpViewModel>();
+
   @override
   Widget build(BuildContext context) {
+    TextEditingController emailController = TextEditingController();
+    TextEditingController passwordController = TextEditingController();
+    TextEditingController confirmPasswordController = TextEditingController();
+    void showAppleLoginError(BuildContext context) {
+      showDialog(
+        context: context,
+        builder: (_) => AlertDialog(
+          title: const Text('Login com Apple indisponível'),
+          content: const Text(
+            'Este recurso não foi implementado porque o desenvolvedor não possui um dispositivo Apple (macOS/iOS).',
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text('OK'),
+            ),
+          ],
+        ),
+      );
+    }
+
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -62,10 +88,21 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   SocialLoginButtonWidget(
                     color: Color.fromRGBO(188, 76, 241, 0.2),
                     image: 'assets/google.svg',
+                    onPressed: () async {
+                      await _singUpViewModel.loginWithGoogle();
+                      if (_singUpViewModel.status.isSuccess) {
+                        if (mounted) {
+                          Navigator.pushNamed(context, AppRoutes.profile);
+                        }
+                      }
+                    },
                   ),
                   SocialLoginButtonWidget(
                     color: Color.fromRGBO(255, 255, 255, 0.33),
                     image: 'assets/apple.svg',
+                    onPressed: () {
+                      showAppleLoginError(context);
+                    },
                   ),
                 ],
               ),
@@ -77,47 +114,71 @@ class _SignUpScreenState extends State<SignUpScreen> {
               Observer(builder: (_) {
                 return PrimaryTextFieldWidget(
                   hintText: 'Email',
-                  controller: TextEditingController(),
-                  onChanged: (_) {},
+                  controller: emailController,
+                  onChanged: (value) {
+                    _singUpViewModel.setEmail(value);
+                  },
                 );
               }),
               Observer(builder: (_) {
                 return PrimaryTextFieldWidget(
                   hintText: 'Password',
-                  obscureText: false,
+                  obscureText: _singUpViewModel.isObscure,
                   suffixIcon: IconButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      _singUpViewModel.setObscure(!_singUpViewModel.isObscure);
+                    },
                     icon: Icon(
-                      Icons.visibility_off,
+                     _singUpViewModel.isObscure
+                            ? Icons.visibility_off
+                            : Icons.visibility,
                       color: Color.fromRGBO(108, 109, 122, 1),
                       size: 20,
                     ),
                   ),
-                  controller: TextEditingController(),
-                  onChanged: (_) {},
+                  controller: passwordController,
+                  onChanged: (value) {
+                    _singUpViewModel.setPassword(value);
+                  },
                 );
               }),
               Observer(builder: (_) {
                 return PrimaryTextFieldWidget(
                   hintText: 'Confirm your Password',
-                  obscureText: false,
+                  obscureText: _singUpViewModel.isObscureConfirmPassWord,
                   suffixIcon: IconButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      _singUpViewModel.setObscureConfirmPassWord(
+                          !_singUpViewModel.isObscureConfirmPassWord);
+                    },
                     icon: Icon(
-                      Icons.visibility_off,
+_singUpViewModel.isObscureConfirmPassWord
+                            ? Icons.visibility_off
+                            : Icons.visibility,
                       color: Color.fromRGBO(108, 109, 122, 1),
                       size: 20,
                     ),
                   ),
-                  controller: TextEditingController(),
-                  onChanged: (_) {},
+                  controller: confirmPasswordController,
+                  onChanged: (value) {
+                    _singUpViewModel.setConfirmPassword(value);
+                  },
                 );
               }),
               const SizedBox(height: 16),
               Observer(builder: (_) {
                 return PrimaryButtonWidget(
                   onPressed: () {
-                    Navigator.pushNamed(context, AppRoutes.onboarding);
+                    if (_singUpViewModel.isFormValid &&
+                        _singUpViewModel.currentPasswordPassword) {
+                      Navigator.pushNamed(
+                        context,
+                        AppRoutes.onboarding,
+                        arguments: _singUpViewModel.user,
+                      );
+                    } else {
+                      // ScaffoldMessenger.of(context).showSnackBar( );
+                    }
                   },
                   text: 'Create Account',
                 );

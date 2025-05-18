@@ -1,30 +1,34 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:untold/ui/core/widgets/exports.dart';
 
+import '../../../domain/models/user_model.dart';
+import '../../core/di/injection.dart';
+import '../view_model/edit_profile_view_model.dart';
+
 class EditProfileScreen extends StatefulWidget {
-  const EditProfileScreen({super.key});
+  const EditProfileScreen({super.key, required this.user});
+  final UserModel user;
 
   @override
   State<EditProfileScreen> createState() => _EditProfileScreenState();
 }
 
 class _EditProfileScreenState extends State<EditProfileScreen> {
-  final ImagePicker _picker = ImagePicker();
-  File? _image;
+  final EditProfileViewModel _viewModel = getIt.get<EditProfileViewModel>();
+  TextEditingController _nameCotroller = TextEditingController();
 
   Future<void> _pickImage(ImageSource source) async {
-    final XFile? image = await _picker.pickImage(source: source);
-    if (image != null) {
-      _image = File(image.path);
-      setState(() {});
+    await _viewModel.pickImage(source);
 
-      /// remove e coloc mobx
-    }
     Navigator.pop(context);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _nameCotroller.text = widget.user.name ?? 'Eva mendes';
   }
 
   @override
@@ -79,45 +83,49 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                             ),
                           ],
                         ),
-                        AvatarWidget(
-                          assetName: 'assets/avatar.png',
-                          text: Text(
-                            'Choose Image,',
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500,
-                              color: Color.fromRGBO(255, 255, 255, 1),
-                            ),
-                          ),
-                          image: _image,
-                          isEdit: true,
-                          onPressed: () {
-                            showModalBottomSheet(
-                              context: context,
-                              builder: (context) => ImagePickerDialogWidget(
-                                onCameraTap: () {
-                                  _pickImage(ImageSource.camera);
-                                },
-                                onGalleryTap: () {
-                                  _pickImage(ImageSource.gallery);
-                                },
-                              ),
-                            );
-                          },
-                          subtext: Text(
-                              'A square .jpg, .gif,\n or .png image\n 200x200 or larger',
+                        Observer(builder: (context) {
+                          return AvatarWidget(
+                            assetName: 'assets/avatar.png',
+                            text: Text(
+                              'Choose Image,',
                               style: TextStyle(
-                                fontSize: 10,
+                                fontSize: 14,
                                 fontWeight: FontWeight.w500,
-                              )),
-                        ),
+                                color: Color.fromRGBO(255, 255, 255, 1),
+                              ),
+                            ),
+                            image: _viewModel.image,
+                            isEdit: true,
+                            onPressed: () {
+                              showModalBottomSheet(
+                                context: context,
+                                builder: (context) => ImagePickerDialogWidget(
+                                  onCameraTap: () {
+                                    _pickImage(ImageSource.camera);
+                                  },
+                                  onGalleryTap: () {
+                                    _pickImage(ImageSource.gallery);
+                                  },
+                                ),
+                              );
+                            },
+                            subtext: Text(
+                                'A square .jpg, .gif,\n or .png image\n 200x200 or larger',
+                                style: TextStyle(
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.w500,
+                                )),
+                          );
+                        }),
                         const SizedBox(height: 16),
                         Observer(builder: (_) {
                           return PrimaryTextFieldWidget(
-                            hintText: 'Eva mendes',
+                            hintText: widget.user.name ?? 'Eva mendes',
                             obscureText: false,
-                            controller: TextEditingController(),
-                            onChanged: (_) {},
+                            controller: _nameCotroller,
+                            onChanged: (value) {
+                              _viewModel.setName(value);
+                            },
                           );
                         }),
                         const SizedBox(height: 16),
@@ -126,12 +134,19 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     const SizedBox(height: 16),
                     Observer(builder: (_) {
                       return Center(
-                        child: PrimaryButtonWidget(
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                          text: 'Update profile',
-                        ),
+                        child: _viewModel.status.isLoading
+                            ? CircularProgressIndicator()
+                            : PrimaryButtonWidget(
+                                onPressed: () async {
+                                  if (_viewModel.validName) {
+                                    await _viewModel.updatedProfile();
+                                    if (_viewModel.status.isSuccess) {
+                                      Navigator.pop(context);
+                                    }
+                                  }
+                                },
+                                text: 'Update profile',
+                              ),
                       );
                     }),
                     const SizedBox(height: 16),

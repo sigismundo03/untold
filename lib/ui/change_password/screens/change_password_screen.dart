@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:untold/ui/change_password/view_model/change_password_view_model.dart';
 
+import '../../core/di/injection.dart';
 import '../../core/widgets/primary_button_widget.dart';
 import '../../core/widgets/primary_text_field_widget.dart';
 
@@ -12,6 +14,12 @@ class ChangePasswordScreen extends StatefulWidget {
 }
 
 class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
+  final ChangePasswordViewModel _viewModel =
+      getIt.get<ChangePasswordViewModel>();
+  final TextEditingController _newPassword = TextEditingController();
+  final TextEditingController _confirmPassword = TextEditingController();
+  final TextEditingController _currentPassword = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -70,15 +78,23 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                             hintText: 'Current password',
                             obscureText: false,
                             suffixIcon: IconButton(
-                              onPressed: () {},
-                              icon: Icon(
-                                Icons.visibility_off,
-                                color: Color.fromRGBO(108, 109, 122, 1),
-                                size: 20,
-                              ),
+                              onPressed: () {
+                                _viewModel.setObscure(!_viewModel.isObscure);
+                              },
+                              icon: _viewModel.isObscure
+                                  ? Center(
+                                      child: CircularProgressIndicator(),
+                                    )
+                                  : Icon(
+                                      Icons.visibility_off,
+                                      color: Color.fromRGBO(108, 109, 122, 1),
+                                      size: 20,
+                                    ),
                             ),
-                            controller: TextEditingController(),
-                            onChanged: (_) {},
+                            controller: _currentPassword,
+                            onChanged: (value) {
+                              _viewModel.setPassword(value);
+                            },
                           );
                         }),
                         const SizedBox(height: 16),
@@ -95,15 +111,24 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                             hintText: 'New password',
                             obscureText: false,
                             suffixIcon: IconButton(
-                              onPressed: () {},
-                              icon: Icon(
-                                Icons.visibility_off,
-                                color: Color.fromRGBO(108, 109, 122, 1),
-                                size: 20,
-                              ),
+                              onPressed: () {
+                                _viewModel.setObscureConfirmPassWord(
+                                    !_viewModel.isObscureConfirmPassWord);
+                              },
+                              icon: _viewModel.isObscureConfirmPassWord
+                                  ? Center(
+                                      child: CircularProgressIndicator(),
+                                    )
+                                  : Icon(
+                                      Icons.visibility_off,
+                                      color: Color.fromRGBO(108, 109, 122, 1),
+                                      size: 20,
+                                    ),
                             ),
-                            controller: TextEditingController(),
-                            onChanged: (_) {},
+                            controller: _newPassword,
+                            onChanged: (value) {
+                              _viewModel.setNewPassword(value);
+                            },
                           );
                         }),
                         Observer(builder: (_) {
@@ -111,15 +136,24 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                             hintText: 'Confirm new password',
                             obscureText: false,
                             suffixIcon: IconButton(
-                              onPressed: () {},
-                              icon: Icon(
-                                Icons.visibility_off,
-                                color: Color.fromRGBO(108, 109, 122, 1),
-                                size: 20,
-                              ),
+                              onPressed: () {
+                                _viewModel.setObscureConfirmNewPassWord(
+                                    !_viewModel.isObscureConfirmNewPassWord);
+                              },
+                              icon: _viewModel.isObscureConfirmNewPassWord
+                                  ? Center(
+                                      child: CircularProgressIndicator(),
+                                    )
+                                  : Icon(
+                                      Icons.visibility_off,
+                                      color: Color.fromRGBO(108, 109, 122, 1),
+                                      size: 20,
+                                    ),
                             ),
-                            controller: TextEditingController(),
-                            onChanged: (_) {},
+                            controller: _confirmPassword,
+                            onChanged: (value) {
+                              _viewModel.setConfirmPassword(value);
+                            },
                           );
                         }),
                       ],
@@ -127,12 +161,19 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                     const SizedBox(height: 16),
                     Observer(builder: (_) {
                       return Center(
-                        child: PrimaryButtonWidget(
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                          text: 'Update Password',
-                        ),
+                        child: _viewModel.validPassword
+                            ? CircularProgressIndicator()
+                            : PrimaryButtonWidget(
+                                onPressed: () async {
+                                  if (_viewModel.validPassword) {
+                                    await _viewModel.changePassword();
+                                    if (_viewModel.status.isSuccess) {
+                                      Navigator.pop(context);
+                                    }
+                                  }
+                                },
+                                text: 'Update Password',
+                              ),
                       );
                     }),
                     const SizedBox(height: 16),
