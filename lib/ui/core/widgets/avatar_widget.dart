@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -30,13 +31,20 @@ class AvatarWidget extends StatelessWidget {
         Stack(
           alignment: Alignment.bottomRight,
           children: [
-            CircleAvatar(
-              radius: 57,
-              backgroundImage: image != null
-                  ? FileImage(image!)
-                  : AssetImage(
-                      assetName,
-                    ),
+            CachedNetworkImage(
+              imageUrl:
+                  assetName,
+              imageBuilder: (context, imageProvider) => Container(
+                width: 110.0,
+                height: 110.0,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  image:
+                      DecorationImage(image: imageProvider, fit: BoxFit.cover),
+                ),
+              ),
+              placeholder: (context, url) => CircularProgressIndicator(),
+              errorWidget: (context, url, error) => Icon(Icons.error),
             ),
             if (isEdit)
               Positioned(

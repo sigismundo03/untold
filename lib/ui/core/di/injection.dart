@@ -4,6 +4,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:untold/data/repositories/auth/auth_repository.dart';
 import 'package:untold/data/repositories/auth/auth_repository_imp.dart';
 import 'package:untold/data/repositories/profile_repository/profile_repository.dart';
+import 'package:untold/ui/profile/view_model/profile_view_model.dart';
 import 'package:untold/ui/sign_up/view_model/sign_up_view_model.dart';
 
 import '../../../data/repositories/profile_repository/profile_repository_imp.dart';
@@ -53,6 +54,12 @@ void setupDependencies() {
 
   getIt.registerFactory<OnboardingViewModel>(
     () => OnboardingViewModel(
+      authRepository: getIt(),
+    ),
+  );
+  getIt.registerFactory<ProfileViewModel>(
+    () => ProfileViewModel(
+      profileRepository: getIt(),
       authRepository: getIt(),
     ),
   );

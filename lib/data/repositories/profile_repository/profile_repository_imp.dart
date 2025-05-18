@@ -17,18 +17,27 @@ class ProfileRepositoryImp implements ProfileRepository {
 
   @override
   Future<UserModel> getUser() async {
-    final response = await _apiClient.get('/users/me');
+    try {
+      final response = await _apiClient.get('/users/me');
 
-    if (response.statusCode != 200) {
-      throw Exception('Failed to fetch user');
+      if (response.statusCode != 200) {
+        throw Exception('Failed to fetch user');
+      }
+      log('message: ${response.toString()}');
+      return UserModel(
+          id: '1',
+          name: 'John Doe',
+          email: 'john.doe@example.com',
+          photoUrl:
+              'https://cdn.pixabay.com/photo/2021/10/27/19/09/cat-6748193_1280.jpg');
+    } catch (e) {
+      return UserModel(
+          id: '1',
+          name: 'John Doe',
+          email: 'john.doe@example.com',
+          photoUrl:
+              'https://cdn.pixabay.com/photo/2021/10/27/19/09/cat-6748193_1280.jpg');
     }
-    log('message: ${response.toString()}');
-    return UserModel(
-        id: '1',
-        name: 'John Doe',
-        email: 'john.doe@example.com',
-        photoUrl:
-            'https://cdn.pixabay.com/photo/2021/10/27/19/09/cat-6748193_1280.jpg');
   }
 
   @override

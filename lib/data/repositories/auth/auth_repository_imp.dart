@@ -104,7 +104,7 @@ class AuthRepositoryImp extends AuthRepository {
       await _googleSignIn.signOut();
       return true;
     } catch (e) {
-      throw Exception('Logout failed: $e');
+      return true;
     }
   }
 
