@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
@@ -79,18 +81,32 @@ class AuthRepositoryImp extends AuthRepository {
           throw Exception('Registration failed: $e');
         }
       }
+      finishOnboarding();
       return user;
     } catch (e) {
       throw Exception('Google Sign-In failed: $e');
     }
   }
 
-  // // Finalizar Onboarding
-  // Future<void> finishOnboarding() async {
-  //   await _apiClient.patch('/users/updateMe', body: {
-  //     'data': {'finished_onboarding': true},
-  //   });
-  // }
+  // Finalizar Onboarding
+  @override
+  Future<void> finishOnboarding() async {
+    final result = await _apiClient.patch('/users/updateMe', body: {
+      'data': {'finished_onboarding': true},
+    });
+    log(result.toString());
+  }
+
+  @override
+  Future<bool> logout() async {
+    try {
+      await _auth.signOut();
+      await _googleSignIn.signOut();
+      return true;
+    } catch (e) {
+      throw Exception('Logout failed: $e');
+    }
+  }
 
   // // Recuperar Dados do Usuário
   // Future<Map<String, dynamic>> getUserData() async {

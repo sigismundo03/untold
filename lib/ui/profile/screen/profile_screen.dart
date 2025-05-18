@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:untold/ui/core/di/injection.dart';
 import 'package:untold/ui/core/widgets/exports.dart';
 
+import '../../../data/repositories/auth/auth_repository.dart';
+import '../../../data/repositories/profile_repository/profile_repository.dart';
 import '../../../routing/app_routes.dart';
 import '../widgets/history_item_widget.dart';
 import '../widgets/option_button_widget.dart.dart';
@@ -14,6 +17,14 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
+  @override
+  void initState() {
+    getIt<AuthRepository>().finishOnboarding();
+    getIt<ProfileRepository>().getUser();
+
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

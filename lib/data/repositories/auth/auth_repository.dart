@@ -9,4 +9,6 @@ abstract class AuthRepository {
     required String username,
   });
   Future<User?> signInWithGoogle();
+  Future<void> finishOnboarding();
+    Future<bool> logout();
 }

@@ -3,6 +3,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:untold/domain/models/user_model.dart';
+import 'package:untold/routing/app_routes.dart';
 import 'package:untold/ui/core/widgets/exports.dart';
 import 'package:untold/ui/onboarding/view_model/onboarding_view_model.dart';
 
@@ -114,8 +115,12 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                         : PrimaryButtonWidget(
                             onPressed: () async {
                               await _onboardingViewModel.register();
-                              if (_onboardingViewModel.status.isSuccess)
-                                Navigator.pop(context);
+                              if (_onboardingViewModel.status.isSuccess) {
+                                Navigator.pushNamedAndRemoveUntil(
+                                    context,
+                                    AppRoutes.profile,
+                                    (Route<dynamic> route) => false);
+                              }
                             },
                             text: 'Continue',
                           );
