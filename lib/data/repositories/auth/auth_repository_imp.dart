@@ -108,21 +108,12 @@ class AuthRepositoryImp extends AuthRepository {
     }
   }
 
-  // // Recuperar Dados do Usuário
-  // Future<Map<String, dynamic>> getUserData() async {
-  //   return await _apiClient.get('/users/me');
-  // }
-
-  // // Atualizar Dados do Usuário
-  // Future<void> updateUserData(String username) async {
-  //   await _apiClient.patch('/users/updateMe', body: {
-  //     'data': {'username': username},
-  //   });
-  // }
-
-  // // Remover Usuário
-  // Future<void> deleteUser(String userId) async {
-  //   await _apiClient.delete('/users/$userId');
-  //   await _auth.currentUser?.delete();
-  // }
+  @override
+  Future<void> sendPasswordResetEmail(String email) async {
+    try {
+      await _auth.sendPasswordResetEmail(email: email);
+    } catch (e) {
+      throw Exception('Password reset failed: $e');
+    }
+  }
 }

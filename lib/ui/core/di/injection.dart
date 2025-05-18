@@ -12,6 +12,7 @@ import '../../../data/services/api_client/api_client.dart';
 import '../../../data/services/api_client/dio_api_client.dart';
 import '../../change_password/view_model/change_password_view_model.dart';
 import '../../edit_profile/view_model/edit_profile_view_model.dart';
+import '../../forgot_password/view_model/forgot_password_view_model.dart';
 import '../../login/view_model/login_view_model.dart';
 import '../../onboarding/view_model/onboarding_view_model.dart';
 
@@ -74,6 +75,11 @@ void setupDependencies() {
   getIt.registerFactory<EditProfileViewModel>(
     () => EditProfileViewModel(
       profileRepository: getIt(),
+    ),
+  );
+  getIt.registerFactory<ForgotPasswordViewModel>(
+    () => ForgotPasswordViewModel(
+      authRepository: getIt(),
     ),
   );
 }

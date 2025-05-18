@@ -80,6 +80,14 @@ mixin _$ProfileViewModel on _ProfileViewModelBase, Store {
     return _$getUserAsyncAction.run(() => super.getUser());
   }
 
+  late final _$deleteUserAsyncAction =
+      AsyncAction('_ProfileViewModelBase.deleteUser', context: context);
+
+  @override
+  Future<void> deleteUser() {
+    return _$deleteUserAsyncAction.run(() => super.deleteUser());
+  }
+
   late final _$logoutAsyncAction =
       AsyncAction('_ProfileViewModelBase.logout', context: context);
 

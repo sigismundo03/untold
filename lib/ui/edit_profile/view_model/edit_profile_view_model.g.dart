@@ -22,6 +22,13 @@ mixin _$EditProfileViewModel on _EditProfileViewModelBase, Store {
   File? get image => (_$imageComputed ??= Computed<File?>(() => super.image,
           name: '_EditProfileViewModelBase.image'))
       .value;
+  Computed<bool>? _$validNameComputed;
+
+  @override
+  bool get validName =>
+      (_$validNameComputed ??= Computed<bool>(() => super.validName,
+              name: '_EditProfileViewModelBase.validName'))
+          .value;
 
   late final _$_statusAtom =
       Atom(name: '_EditProfileViewModelBase._status', context: context);
@@ -89,7 +96,8 @@ mixin _$EditProfileViewModel on _EditProfileViewModelBase, Store {
   String toString() {
     return '''
 status: ${status},
-image: ${image}
+image: ${image},
+validName: ${validName}
     ''';
   }
 }

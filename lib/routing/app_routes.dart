@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:untold/ui/change_password/screens/change_password_scren.dart';
+import 'package:untold/ui/change_password/screens/change_password_screen.dart';
 import 'package:untold/ui/edit_profile/screens/edit_profile_screen.dart';
 import 'package:untold/ui/forgot_password/screen/forgot_password_instructions_screen.dart';
 import 'package:untold/ui/forgot_password/screen/forgot_password_screen.dart';

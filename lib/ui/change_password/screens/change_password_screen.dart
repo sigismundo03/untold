@@ -16,9 +16,9 @@ class ChangePasswordScreen extends StatefulWidget {
 class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
   final ChangePasswordViewModel _viewModel =
       getIt.get<ChangePasswordViewModel>();
-  TextEditingController _newPassword = TextEditingController();
-  TextEditingController _confirmPassword = TextEditingController();
-  TextEditingController _currentPassword = TextEditingController();
+  final TextEditingController _newPassword = TextEditingController();
+  final TextEditingController _confirmPassword = TextEditingController();
+  final TextEditingController _currentPassword = TextEditingController();
 
   @override
   Widget build(BuildContext context) {

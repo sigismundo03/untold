@@ -91,8 +91,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     onPressed: () async {
                       await _singUpViewModel.loginWithGoogle();
                       if (_singUpViewModel.status.isSuccess) {
-                        if (mounted)
+                        if (mounted) {
                           Navigator.pushNamed(context, AppRoutes.profile);
+                        }
                       }
                     },
                   ),

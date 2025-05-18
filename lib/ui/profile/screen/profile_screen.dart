@@ -97,7 +97,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           title:
                               'Are you sure you want to delete your account? ',
                           onPrimaryButtonTap: () {
-                            Navigator.pop(context);
+                            _profileViewModel.deleteUser();
+                            Navigator.pushNamedAndRemoveUntil(
+                                context, AppRoutes.login, (route) => false);
                           },
                           onSecondaryButtonTap: () {
                             Navigator.pop(context);
@@ -178,6 +180,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
 }
 
 class LoadingPage extends StatelessWidget {
+  const LoadingPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Center(

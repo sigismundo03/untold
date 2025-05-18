@@ -4,6 +4,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:untold/ui/core/widgets/exports.dart';
 
 import '../../../routing/app_routes.dart';
+import '../../core/di/injection.dart';
+import '../view_model/forgot_password_view_model.dart';
 
 class ForgotPasswordScreen extends StatefulWidget {
   const ForgotPasswordScreen({super.key});
@@ -13,6 +15,10 @@ class ForgotPasswordScreen extends StatefulWidget {
 }
 
 class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
+  final ForgotPasswordViewModel _forgotPasswordViewModel =
+      getIt<ForgotPasswordViewModel>();
+  final TextEditingController emailController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,27 +60,35 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
             Observer(builder: (_) {
               return PrimaryTextFieldWidget(
                 hintText: 'Email',
-                controller: TextEditingController(),
-                onChanged: (_) {},
+                controller: emailController,
+                onChanged: (value) {
+                  _forgotPasswordViewModel.setEmail(value);
+                },
               );
             }),
-            Column(
-              children: [
-                PrimaryButtonWidget(
-                  onPressed: () {
-                    Navigator.pushNamed(
-                        context, AppRoutes.forgotPasswordInstructions);
-                  },
-                  text: 'Send reset instructions',
-                ),
-                SecondaryButtonWidget(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  text: 'Back',
-                ),
-              ],
-            ),
+            Observer(builder: (context) {
+              return Column(
+                children: [
+                  _forgotPasswordViewModel.status.isLoading
+                      ? const CircularProgressIndicator()
+                      : PrimaryButtonWidget(
+                          onPressed: () async {
+                            await _forgotPasswordViewModel
+                                .sendPasswordResetEmail();
+                            Navigator.pushReplacementNamed(
+                                context, AppRoutes.forgotPasswordInstructions);
+                          },
+                          text: 'Send reset instructions',
+                        ),
+                  SecondaryButtonWidget(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    text: 'Back',
+                  ),
+                ],
+              );
+            }),
           ],
         ),
       ),

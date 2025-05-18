@@ -43,6 +43,12 @@ abstract class _ProfileViewModelBase with Store {
   }
 
   @action
+  Future<void> deleteUser() async {
+    await _profileRepository.userDelete("useID");
+    await logout();
+  }
+
+  @action
   Future<void> logout() async {
     _statusButton = StatusEnum.loading;
     await _authRepository.logout();
