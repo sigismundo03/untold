@@ -7,9 +7,9 @@ import '../../core/enum/status_enum.dart';
 
 part 'profile_view_model.g.dart';
 
-class ProfileViewModel = _profileViewModelBase with _$profileViewModel;
+class ProfileViewModel = _ProfileViewModelBase with _$ProfileViewModel;
 
-abstract class _profileViewModelBase with Store {
+abstract class _ProfileViewModelBase with Store {
   @observable
   UserModel user = UserModel();
   final AuthRepository _authRepository;
@@ -20,7 +20,7 @@ abstract class _profileViewModelBase with Store {
   @observable
   StatusEnum _statusButton = StatusEnum.init;
 
-  _profileViewModelBase(
+  _ProfileViewModelBase(
       {required AuthRepository authRepository,
       required ProfileRepository profileRepository})
       : _authRepository = authRepository,

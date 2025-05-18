@@ -8,8 +8,8 @@ import 'package:untold/ui/onboarding/screens/onboarding_screen.dart';
 import 'package:untold/ui/sign_up/screen/sign_up_screen.dart';
 
 import '../domain/models/user_model.dart';
-import '../ui/subscription/screens/subscription_screen.dart';
 import '../ui/profile/screen/profile_screen.dart';
+import '../ui/subscription/screens/subscription_screen.dart';
 
 class AppRoutes {
   static const String home = '/';
@@ -60,7 +60,14 @@ class AppRoutes {
         return MaterialPageRoute(builder: (_) => ProfileScreen());
 
       case editProfile:
-        return MaterialPageRoute(builder: (_) => EditProfileScreen());
+        return MaterialPageRoute(
+          builder: (context) {
+            final args = settings.arguments as UserModel;
+            return EditProfileScreen(
+              user: args,
+            );
+          },
+        );
 
       case subscription:
         return MaterialPageRoute(builder: (_) => SubscriptionScreen());

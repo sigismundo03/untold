@@ -8,24 +8,40 @@ part of 'profile_view_model.dart';
 
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
-mixin _$profileViewModel on _profileViewModelBase, Store {
+mixin _$ProfileViewModel on _ProfileViewModelBase, Store {
   Computed<StatusEnum>? _$statusComputed;
 
   @override
   StatusEnum get status =>
       (_$statusComputed ??= Computed<StatusEnum>(() => super.status,
-              name: '_profileViewModelBase.status'))
+              name: '_ProfileViewModelBase.status'))
           .value;
   Computed<StatusEnum>? _$statusButtonComputed;
 
   @override
   StatusEnum get statusButton =>
       (_$statusButtonComputed ??= Computed<StatusEnum>(() => super.statusButton,
-              name: '_profileViewModelBase.statusButton'))
+              name: '_ProfileViewModelBase.statusButton'))
           .value;
 
+  late final _$userAtom =
+      Atom(name: '_ProfileViewModelBase.user', context: context);
+
+  @override
+  UserModel get user {
+    _$userAtom.reportRead();
+    return super.user;
+  }
+
+  @override
+  set user(UserModel value) {
+    _$userAtom.reportWrite(value, super.user, () {
+      super.user = value;
+    });
+  }
+
   late final _$_statusAtom =
-      Atom(name: '_profileViewModelBase._status', context: context);
+      Atom(name: '_ProfileViewModelBase._status', context: context);
 
   @override
   StatusEnum get _status {
@@ -40,8 +56,24 @@ mixin _$profileViewModel on _profileViewModelBase, Store {
     });
   }
 
+  late final _$_statusButtonAtom =
+      Atom(name: '_ProfileViewModelBase._statusButton', context: context);
+
+  @override
+  StatusEnum get _statusButton {
+    _$_statusButtonAtom.reportRead();
+    return super._statusButton;
+  }
+
+  @override
+  set _statusButton(StatusEnum value) {
+    _$_statusButtonAtom.reportWrite(value, super._statusButton, () {
+      super._statusButton = value;
+    });
+  }
+
   late final _$getUserAsyncAction =
-      AsyncAction('_profileViewModelBase.getUser', context: context);
+      AsyncAction('_ProfileViewModelBase.getUser', context: context);
 
   @override
   Future<void> getUser() {
@@ -49,7 +81,7 @@ mixin _$profileViewModel on _profileViewModelBase, Store {
   }
 
   late final _$logoutAsyncAction =
-      AsyncAction('_profileViewModelBase.logout', context: context);
+      AsyncAction('_ProfileViewModelBase.logout', context: context);
 
   @override
   Future<void> logout() {
@@ -59,6 +91,7 @@ mixin _$profileViewModel on _profileViewModelBase, Store {
   @override
   String toString() {
     return '''
+user: ${user},
 status: ${status},
 statusButton: ${statusButton}
     ''';

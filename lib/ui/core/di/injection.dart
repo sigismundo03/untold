@@ -10,6 +10,8 @@ import 'package:untold/ui/sign_up/view_model/sign_up_view_model.dart';
 import '../../../data/repositories/profile_repository/profile_repository_imp.dart';
 import '../../../data/services/api_client/api_client.dart';
 import '../../../data/services/api_client/dio_api_client.dart';
+import '../../change_password/view_model/change_password_view_model.dart';
+import '../../edit_profile/view_model/edit_profile_view_model.dart';
 import '../../login/view_model/login_view_model.dart';
 import '../../onboarding/view_model/onboarding_view_model.dart';
 
@@ -61,6 +63,17 @@ void setupDependencies() {
     () => ProfileViewModel(
       profileRepository: getIt(),
       authRepository: getIt(),
+    ),
+  );
+  getIt.registerFactory<ChangePasswordViewModel>(
+    () => ChangePasswordViewModel(
+      profileRepository: getIt(),
+    ),
+  );
+
+  getIt.registerFactory<EditProfileViewModel>(
+    () => EditProfileViewModel(
+      profileRepository: getIt(),
     ),
   );
 }
