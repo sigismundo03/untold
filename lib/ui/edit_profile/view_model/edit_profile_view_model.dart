@@ -4,7 +4,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:mobx/mobx.dart';
 import 'package:untold/data/repositories/profile_repository/profile_repository.dart';
 
-import '../../../domain/models/user_model.dart';
+import '../../../domain/model/user_model.dart';
 import '../../core/enum/status_enum.dart';
 
 part 'edit_profile_view_model.g.dart';

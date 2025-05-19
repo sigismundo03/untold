@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:untold/domain/model/movie_model.dart';
 import 'package:untold/ui/change_password/screens/change_password_screen.dart';
 import 'package:untold/ui/edit_profile/screens/edit_profile_screen.dart';
 import 'package:untold/ui/forgot_password/screen/forgot_password_instructions_screen.dart';
@@ -9,7 +10,7 @@ import 'package:untold/ui/onboarding/screens/onboarding_screen.dart';
 import 'package:untold/ui/sign_up/screen/sign_up_screen.dart';
 import 'package:untold/ui/video_app/screens/video_app_screen.dart';
 
-import '../domain/models/user_model.dart';
+import '../domain/model/user_model.dart';
 import '../ui/profile/screen/profile_screen.dart';
 import '../ui/subscription/screens/subscription_screen.dart';
 
@@ -76,7 +77,12 @@ class AppRoutes {
         return MaterialPageRoute(builder: (_) => SubscriptionScreen());
 
       case videoApp:
-        return MaterialPageRoute(builder: (_) => VideoAppScreen());
+        return MaterialPageRoute(builder: (context) {
+          final args = settings.arguments as MovieModel;
+          return VideoAppScreen(
+            movie: args,
+          );
+        });
 
       default:
         return MaterialPageRoute(

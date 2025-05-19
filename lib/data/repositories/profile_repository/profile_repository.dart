@@ -1,4 +1,4 @@
-import '../../../domain/models/user_model.dart';
+import '../../../domain/model/user_model.dart';
 
 abstract class ProfileRepository {
   Future<UserModel> getUser();

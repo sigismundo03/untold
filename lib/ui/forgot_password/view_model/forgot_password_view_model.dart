@@ -1,7 +1,7 @@
 import 'package:mobx/mobx.dart';
 
 import '../../../data/repositories/auth/auth_repository.dart';
-import '../../../domain/models/user_model.dart';
+import '../../../domain/model/user_model.dart';
 import '../../core/enum/status_enum.dart';
 
 part 'forgot_password_view_model.g.dart';

@@ -2,7 +2,7 @@ import 'dart:developer';
 
 import 'package:firebase_auth/firebase_auth.dart';
 
-import '../../../domain/models/user_model.dart';
+import '../../../domain/model/user_model.dart';
 import '../../services/api_client/api_client.dart';
 import 'profile_repository.dart';
 

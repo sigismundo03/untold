@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:untold/domain/model/movie_model.dart';
 import 'package:untold/ui/core/di/injection.dart';
 import 'package:video_player/video_player.dart';
 
 import '../view_model/video_app_view_model.dart';
 
 class VideoAppScreen extends StatefulWidget {
-  const VideoAppScreen({super.key});
+  const VideoAppScreen({super.key, required this.movie});
+  final MovieModel movie;
 
   @override
   State<VideoAppScreen> createState() => _VideoAppScreenState();
@@ -26,7 +28,8 @@ class _VideoAppScreenState extends State<VideoAppScreen> {
       DeviceOrientation.landscapeLeft,
     ]);
     _viewModel.downloadVideo(
-        'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4');
+      widget.movie.streamLink,
+    );
   }
 
   @override

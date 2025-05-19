@@ -3,7 +3,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:untold/ui/core/widgets/exports.dart';
 
-import '../../../domain/models/user_model.dart';
+import '../../../domain/model/user_model.dart';
 import '../../core/di/injection.dart';
 import '../view_model/edit_profile_view_model.dart';
 

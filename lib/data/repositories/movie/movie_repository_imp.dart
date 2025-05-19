@@ -3,6 +3,8 @@ import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:untold/data/services/api_client/api_client.dart';
 
+import '../../../domain/model/movie_model.dart';
+import '../../model/movie_response_model.dart';
 import 'movie_repository.dart';
 
 class RecoverMovieRepositoryImp implements RecoverMovieRepository {
@@ -45,7 +47,7 @@ class RecoverMovieRepositoryImp implements RecoverMovieRepository {
   }
 
   @override
-  Future<void> recoverComments() async {
+  Future<void> getComments() async {
     final result = await _firestore
         .collection('comments')
         .where('movie', isEqualTo: 'movieId')
@@ -57,19 +59,26 @@ class RecoverMovieRepositoryImp implements RecoverMovieRepository {
   }
 
   @override
-  Future<void> recoverLikes() async {
+  Future<void> getLikes() async {
     final result = await _apiClient.get('/likes?populate=*');
     log(result.toString());
   }
 
   @override
-  Future<void> recoverMovies() async {
-    final result = await _apiClient.get('/movies?populate=poster');
-    log(result.toString());
+  Future<List<MovieModel>> getMovies() async {
+    try {
+      final result = await _apiClient.get('/movies?populate=poster');
+      final data = MovieResponseModel.fromJson(result.data);
+
+      final movie =  data.data?.map((movie) => MovieModel.fromJson(movie)).toList();
+      return movie ?? [];
+    } catch (e) {
+      rethrow;
+    }
   }
 
   @override
-  Future<void> recoverSubtitles() async {
+  Future<void> getSubtitles() async {
     final result = await _apiClient
         .get('subtitles?populate=file&filters%5Bmovie_id%5D=MOVIE_ID');
     log(result.toString());

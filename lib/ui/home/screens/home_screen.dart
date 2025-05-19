@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_reaction_button/flutter_reaction_button.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:untold/data/repositories/movie/movie_repository.dart';
-import 'package:untold/ui/core/di/injection.dart';
+import 'package:untold/domain/model/movie_model.dart';
 import 'package:untold/ui/core/widgets/primary_button_widget.dart';
+import 'package:untold/ui/home/view_model/home_view_model.dart';
 
 import '../../../routing/app_routes.dart';
+import '../../core/di/injection.dart';
+import '../widgets/custom_shimmer_loading_widget.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -15,10 +18,11 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  final HomeViewModel _viewModel = getIt<HomeViewModel>();
+
   @override
   void initState() {
-    getIt<RecoverMovieRepository>().recoverMovies();
-
+    _viewModel.getMovies();
     super.initState();
   }
 
@@ -38,50 +42,61 @@ class _HomeScreenState extends State<HomeScreen> {
             ],
           ),
         ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Stack(
-              children: [
-                Align(
-                  alignment: Alignment.topCenter,
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 50),
-                    child: SvgPicture.asset(
-                      "assets/small_logo.svg",
-                      height: 32,
-                      width: 32,
+        child: Observer(builder: (context) {
+          return Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Stack(
+                children: [
+                  Align(
+                    alignment: Alignment.topCenter,
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 50),
+                      child: SvgPicture.asset(
+                        "assets/small_logo.svg",
+                        height: 32,
+                        width: 32,
+                      ),
                     ),
                   ),
-                ),
-                Align(
-                  alignment: Alignment.topRight,
-                  child: GestureDetector(
-                    onTap: () {
-                      Navigator.pushNamed(context, AppRoutes.profile);
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 46, right: 16),
-                      child: const CircleAvatar(
-                        radius: 20,
-                        backgroundImage: NetworkImage(
-                          "https://randomuser.me/api/portraits/women/44.jpg",
+                  Align(
+                    alignment: Alignment.topRight,
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.pushNamed(context, AppRoutes.profile);
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 46, right: 16),
+                        child: const CircleAvatar(
+                          radius: 20,
+                          backgroundImage: NetworkImage(
+                            "https://randomuser.me/api/portraits/women/44.jpg",
+                          ),
                         ),
                       ),
                     ),
                   ),
-                ),
-              ],
-            ),
-            Expanded(
-              child: ListView.builder(
-                  itemCount: 1,
-                  itemBuilder: (context, index) {
-                    return MovieCardWidget(height: height);
-                  }),
-            ),
-          ],
-        ),
+                ],
+              ),
+              _viewModel.status.isLoading
+                  ? Expanded(
+                      child: CustomShimmerLoadingWidget(
+                        height: height,
+                      ),
+                    )
+                  : Expanded(
+                      child: ListView.builder(
+                          itemCount: 1,
+                          itemBuilder: (context, index) {
+                            return MovieCardWidget(
+                              height: height,
+                              movie: _viewModel.movies[index],
+                            );
+                          }),
+                    ),
+            ],
+          );
+        }),
       ),
     );
   }
@@ -91,9 +106,11 @@ class MovieCardWidget extends StatelessWidget {
   const MovieCardWidget({
     super.key,
     required this.height,
+    required this.movie,
   });
 
   final double height;
+  final MovieModel movie;
 
   @override
   Widget build(BuildContext context) {
@@ -104,8 +121,10 @@ class MovieCardWidget extends StatelessWidget {
         width: double.infinity,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(22),
-          image: const DecorationImage(
-            image: AssetImage('assets/Barbie_filme.png'),
+          image: DecorationImage(
+            image: NetworkImage(
+              movie.thumbnail,
+            ),
             fit: BoxFit.cover,
           ),
         ),
@@ -123,12 +142,12 @@ class MovieCardWidget extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Musical',
+                      movie.genre,
                       style: TextStyle(color: Colors.white70, fontSize: 14),
                     ),
                     SizedBox(height: 8),
                     Text(
-                      'Barbie',
+                      movie.name,
                       style: TextStyle(
                           color: Colors.white,
                           fontSize: 28,
@@ -136,7 +155,7 @@ class MovieCardWidget extends StatelessWidget {
                     ),
                     SizedBox(height: 12),
                     Text(
-                      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore',
+                      movie.synopsis,
                       style: TextStyle(color: Colors.white60, fontSize: 14),
                     ),
                     SizedBox(height: 20),
@@ -165,7 +184,8 @@ class MovieCardWidget extends StatelessWidget {
                     Center(
                       child: PrimaryButtonWidget(
                         onPressed: () {
-                          // navega para o player
+                          Navigator.pushNamed(context, AppRoutes.videoApp,
+                              arguments: movie);
                         },
                         text: 'Watch',
                       ),

@@ -50,6 +50,7 @@ class AuthRepositoryImp extends AuthRepository {
           'password': password,
           'firebase_UID': user.uid,
         });
+        finishOnboarding();
       }
       return user;
     } catch (e) {
