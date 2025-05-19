@@ -3,6 +3,7 @@ import 'package:untold/ui/change_password/screens/change_password_screen.dart';
 import 'package:untold/ui/edit_profile/screens/edit_profile_screen.dart';
 import 'package:untold/ui/forgot_password/screen/forgot_password_instructions_screen.dart';
 import 'package:untold/ui/forgot_password/screen/forgot_password_screen.dart';
+import 'package:untold/ui/home/screens/home_screen.dart';
 import 'package:untold/ui/login/screen/login_screen.dart';
 import 'package:untold/ui/onboarding/screens/onboarding_screen.dart';
 import 'package:untold/ui/sign_up/screen/sign_up_screen.dart';
@@ -29,7 +30,7 @@ class AppRoutes {
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
       case home:
-        return MaterialPageRoute(builder: (_) => LoginScreen());
+        return MaterialPageRoute(builder: (_) => HomeScreen());
       case details:
         return MaterialPageRoute(builder: (_) => LoginScreen());
       case forgotPassword:
