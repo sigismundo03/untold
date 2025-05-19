@@ -103,7 +103,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           }
 
                           if (_loginViewModel.status.isSuccess) {
-                            Navigator.pushNamed(context, AppRoutes.profile);
+                            Navigator.pushNamed(context, AppRoutes.home);
                           }
                         },
                         text: 'Login',

@@ -7,18 +7,19 @@ import 'package:untold/ui/home/screens/home_screen.dart';
 import 'package:untold/ui/login/screen/login_screen.dart';
 import 'package:untold/ui/onboarding/screens/onboarding_screen.dart';
 import 'package:untold/ui/sign_up/screen/sign_up_screen.dart';
+import 'package:untold/ui/video_app/screens/video_app_screen.dart';
 
 import '../domain/models/user_model.dart';
 import '../ui/profile/screen/profile_screen.dart';
 import '../ui/subscription/screens/subscription_screen.dart';
 
 class AppRoutes {
-  static const String home = '/';
+  static const String home = '/home';
   static const String details = '/details';
   static const String forgotPassword = '/forgot-password';
   static const String forgotPasswordInstructions =
       '/forgot-password-instructions';
-  static const String login = '/login';
+  static const String login = '/';
   static const String register = '/register';
   static const String changePassword = '/change-password';
   static const String splash = '/splash';
@@ -26,6 +27,7 @@ class AppRoutes {
   static const String profile = '/profile';
   static const String editProfile = '/edit-profile';
   static const String subscription = '/subscription';
+  static const String videoApp = '/video-app';
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -72,6 +74,9 @@ class AppRoutes {
 
       case subscription:
         return MaterialPageRoute(builder: (_) => SubscriptionScreen());
+
+      case videoApp:
+        return MaterialPageRoute(builder: (_) => VideoAppScreen());
 
       default:
         return MaterialPageRoute(
