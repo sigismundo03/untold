@@ -45,9 +45,15 @@ class RecoverMovieRepositoryImp implements RecoverMovieRepository {
   }
 
   @override
-  Future<void> recoverComments() {
-    // TODO: implement recoverComments
-    throw UnimplementedError();
+  Future<void> recoverComments() async {
+    final result = await _firestore
+        .collection('comments')
+        .where('movie', isEqualTo: 'movieId')
+        .orderBy('date', descending: true)
+        .snapshots()
+        .map((snapshot) => snapshot.docs.map((doc) => doc.data()).toList());
+
+    log(result.toString());
   }
 
   @override
