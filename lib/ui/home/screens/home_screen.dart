@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_reaction_button/flutter_reaction_button.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:untold/data/repositories/movie/movie_repository.dart';
+import 'package:untold/ui/core/di/injection.dart';
 import 'package:untold/ui/core/widgets/primary_button_widget.dart';
+
+import '../../../routing/app_routes.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -11,6 +15,13 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  @override
+  void initState() {
+    getIt<RecoverMovieRepository>().recoverMovies();
+
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
@@ -45,12 +56,17 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 Align(
                   alignment: Alignment.topRight,
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 46, right: 16),
-                    child: const CircleAvatar(
-                      radius: 20,
-                      backgroundImage: NetworkImage(
-                        "https://randomuser.me/api/portraits/women/44.jpg",
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.pushNamed(context, AppRoutes.profile);
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 46, right: 16),
+                      child: const CircleAvatar(
+                        radius: 20,
+                        backgroundImage: NetworkImage(
+                          "https://randomuser.me/api/portraits/women/44.jpg",
+                        ),
                       ),
                     ),
                   ),

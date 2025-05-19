@@ -1,13 +1,18 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:untold/data/repositories/auth/auth_repository.dart';
 import 'package:untold/data/repositories/auth/auth_repository_imp.dart';
 import 'package:untold/data/repositories/profile_repository/profile_repository.dart';
+import 'package:untold/data/repositories/video_player/video_player_repository.dart';
 import 'package:untold/ui/profile/view_model/profile_view_model.dart';
 import 'package:untold/ui/sign_up/view_model/sign_up_view_model.dart';
 
+import '../../../data/repositories/movie/movie_repository.dart';
+import '../../../data/repositories/movie/movie_repository_imp.dart';
 import '../../../data/repositories/profile_repository/profile_repository_imp.dart';
+import '../../../data/repositories/video_player/video_player_repository_imp.dart';
 import '../../../data/services/api_client/api_client.dart';
 import '../../../data/services/api_client/dio_api_client.dart';
 import '../../change_password/view_model/change_password_view_model.dart';
@@ -15,6 +20,7 @@ import '../../edit_profile/view_model/edit_profile_view_model.dart';
 import '../../forgot_password/view_model/forgot_password_view_model.dart';
 import '../../login/view_model/login_view_model.dart';
 import '../../onboarding/view_model/onboarding_view_model.dart';
+import '../../video_app/view_model/video_app_view_model.dart';
 
 final GetIt getIt = GetIt.instance;
 final GoogleSignIn googleSignIn = GoogleSignIn();
@@ -37,6 +43,17 @@ void setupDependencies() {
 
   getIt.registerSingleton<ProfileRepository>(
     ProfileRepositoryImp(apiClient: getIt(), auth: auth),
+  );
+
+  getIt.registerSingleton<VideoPlayerRepository>(
+    VideoPlayerRepositoryImp(),
+  );
+
+  getIt.registerSingleton<RecoverMovieRepository>(
+    RecoverMovieRepositoryImp(
+      apiClient: getIt(),
+      firestore: FirebaseFirestore.instance,
+    ),
   );
 
   // ViewModels (Factory para instâncias por tela)
@@ -80,6 +97,12 @@ void setupDependencies() {
   getIt.registerFactory<ForgotPasswordViewModel>(
     () => ForgotPasswordViewModel(
       authRepository: getIt(),
+    ),
+  );
+
+  getIt.registerFactory<VideoAppViewModel>(
+    () => VideoAppViewModel(
+      repository: getIt(),
     ),
   );
 }
