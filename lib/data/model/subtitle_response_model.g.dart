@@ -9,10 +9,12 @@ part of 'subtitle_response_model.dart';
 SubtitleResponseModel _$SubtitleResponseModelFromJson(
         Map<String, dynamic> json) =>
     SubtitleResponseModel(
-      data: (json['data'] as List<dynamic>)
-          .map((e) => SubtitleDataModel.fromJson(e as Map<String, dynamic>))
+      data: (json['data'] as List<dynamic>?)
+          ?.map((e) => SubtitleDataModel.fromJson(e as Map<String, dynamic>))
           .toList(),
-      meta: MetaModel.fromJson(json['meta'] as Map<String, dynamic>),
+      meta: json['meta'] == null
+          ? null
+          : MetaModel.fromJson(json['meta'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$SubtitleResponseModelToJson(
@@ -24,9 +26,11 @@ Map<String, dynamic> _$SubtitleResponseModelToJson(
 
 SubtitleDataModel _$SubtitleDataModelFromJson(Map<String, dynamic> json) =>
     SubtitleDataModel(
-      id: (json['id'] as num).toInt(),
-      attributes: SubtitleAttributesModel.fromJson(
-          json['attributes'] as Map<String, dynamic>),
+      id: (json['id'] as num?)?.toInt(),
+      attributes: json['attributes'] == null
+          ? null
+          : SubtitleAttributesModel.fromJson(
+              json['attributes'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$SubtitleDataModelToJson(SubtitleDataModel instance) =>
@@ -41,10 +45,18 @@ SubtitleAttributesModel _$SubtitleAttributesModelFromJson(
       language: json['language'] as String,
       isDefault: json['default'] as bool?,
       urlLink: json['urlLink'] as String?,
-      createdAt: DateTime.parse(json['createdAt'] as String),
-      updatedAt: DateTime.parse(json['updatedAt'] as String),
-      publishedAt: DateTime.parse(json['publishedAt'] as String),
-      file: SubtitleFileModel.fromJson(json['file'] as Map<String, dynamic>),
+      createdAt: json['createdAt'] == null
+          ? null
+          : DateTime.parse(json['createdAt'] as String),
+      updatedAt: json['updatedAt'] == null
+          ? null
+          : DateTime.parse(json['updatedAt'] as String),
+      publishedAt: json['publishedAt'] == null
+          ? null
+          : DateTime.parse(json['publishedAt'] as String),
+      file: json['file'] == null
+          ? null
+          : SubtitleFileModel.fromJson(json['file'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$SubtitleAttributesModelToJson(
@@ -53,9 +65,9 @@ Map<String, dynamic> _$SubtitleAttributesModelToJson(
       'language': instance.language,
       'default': instance.isDefault,
       'urlLink': instance.urlLink,
-      'createdAt': instance.createdAt.toIso8601String(),
-      'updatedAt': instance.updatedAt.toIso8601String(),
-      'publishedAt': instance.publishedAt.toIso8601String(),
+      'createdAt': instance.createdAt?.toIso8601String(),
+      'updatedAt': instance.updatedAt?.toIso8601String(),
+      'publishedAt': instance.publishedAt?.toIso8601String(),
       'file': instance.file,
     };
 
@@ -73,9 +85,11 @@ Map<String, dynamic> _$SubtitleFileModelToJson(SubtitleFileModel instance) =>
 SubtitleFileDataModel _$SubtitleFileDataModelFromJson(
         Map<String, dynamic> json) =>
     SubtitleFileDataModel(
-      id: (json['id'] as num).toInt(),
-      attributes: SubtitleFileAttributesModel.fromJson(
-          json['attributes'] as Map<String, dynamic>),
+      id: (json['id'] as num?)?.toInt(),
+      attributes: json['attributes'] == null
+          ? null
+          : SubtitleFileAttributesModel.fromJson(
+              json['attributes'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$SubtitleFileDataModelToJson(
@@ -88,7 +102,7 @@ Map<String, dynamic> _$SubtitleFileDataModelToJson(
 SubtitleFileAttributesModel _$SubtitleFileAttributesModelFromJson(
         Map<String, dynamic> json) =>
     SubtitleFileAttributesModel(
-      name: json['name'] as String,
+      name: json['name'] as String?,
       ext: json['ext'] as String?,
       mime: json['mime'] as String?,
       size: (json['size'] as num?)?.toDouble(),
@@ -118,10 +132,10 @@ Map<String, dynamic> _$MetaModelToJson(MetaModel instance) => <String, dynamic>{
 
 PaginationModel _$PaginationModelFromJson(Map<String, dynamic> json) =>
     PaginationModel(
-      page: (json['page'] as num).toInt(),
-      pageSize: (json['pageSize'] as num).toInt(),
-      pageCount: (json['pageCount'] as num).toInt(),
-      total: (json['total'] as num).toInt(),
+      page: (json['page'] as num?)?.toInt(),
+      pageSize: (json['pageSize'] as num?)?.toInt(),
+      pageCount: (json['pageCount'] as num?)?.toInt(),
+      total: (json['total'] as num?)?.toInt(),
     );
 
 Map<String, dynamic> _$PaginationModelToJson(PaginationModel instance) =>

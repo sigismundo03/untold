@@ -51,7 +51,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: SingleChildScrollView(
-          child: Builder(builder: (context) {
+          child: Observer(builder: (context) {
             if (_profileViewModel.status.isLoading) return LoadingPage();
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,

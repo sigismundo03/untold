@@ -1,20 +1,26 @@
 import 'package:flutter/material.dart';
 
 class AudioSubtitleWidget extends StatelessWidget {
-  const AudioSubtitleWidget({super.key});
+  const AudioSubtitleWidget({
+    super.key,
+    required this.audios,
+    required this.subtitles,
+    required this.selectedAudio,
+    required this.selectedSubtitle,
+    required this.onSelectAudio,
+    required this.onSelectSubtitle,
+    this.onPressedClose,
+  });
+  final List<String> audios;
+  final List<String> subtitles;
+  final String selectedAudio;
+  final String selectedSubtitle;
+  final Function(String) onSelectAudio;
+  final Function(String) onSelectSubtitle;
+  final Function()? onPressedClose;
 
   @override
   Widget build(BuildContext context) {
-    final List<String> audios = ['English', 'Spanish', 'Portuguese'];
-    final List<String> subtitles = [
-      'Off',
-      'English (CC)',
-      'Spanish',
-      'Portuguese'
-    ];
-    String selectedAudio = 'English';
-    String selectedSubtitle = 'Off';
-
     return SafeArea(
       child: Padding(
         padding: const EdgeInsets.all(24),
@@ -24,13 +30,12 @@ class AudioSubtitleWidget extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 // Audio Column
-                _buildOptionColumn("Audio", audios, selectedAudio, (value) {}),
+                _buildOptionColumn(
+                    "Audio", audios, selectedAudio, onSelectAudio),
 
                 // Subtitle Column
-                _buildOptionColumn("Subtitle", subtitles, selectedSubtitle,
-                    (value) {
-                  selectedSubtitle = value;
-                }),
+                _buildOptionColumn(
+                    "Subtitle", subtitles, selectedSubtitle, onSelectSubtitle),
               ],
             ),
 
@@ -39,7 +44,7 @@ class AudioSubtitleWidget extends StatelessWidget {
               top: 0,
               right: 0,
               child: GestureDetector(
-                onTap: () => Navigator.of(context).pop(),
+                onTap: onPressedClose,
                 child: const Text(
                   "Close",
                   style: TextStyle(

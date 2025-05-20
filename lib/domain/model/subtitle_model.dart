@@ -1,15 +1,15 @@
 import '../../data/model/subtitle_response_model.dart';
 
 class SubtitleModel {
-  final String language;
-  final bool isDefault;
+  final String? language;
+  final bool? isDefault;
 
-  SubtitleModel({required this.language, required this.isDefault});
+  SubtitleModel({this.language, this.isDefault});
 
-  factory SubtitleModel.fromJson(SubtitleAttributesModel json) {
+  factory SubtitleModel.fromJson(SubtitleAttributesModel? json) {
     return SubtitleModel(
-      language: json.language,
-      isDefault: json.isDefault ?? false,
+      language: json?.language ?? '',
+      isDefault: json?.isDefault ?? false,
     );
   }
 }

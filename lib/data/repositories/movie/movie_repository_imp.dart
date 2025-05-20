@@ -81,13 +81,13 @@ class RecoverMovieRepositoryImp implements RecoverMovieRepository {
   }
 
   @override
-  Future<List<SubtitleModel>> getSubtitles(String movieId) async {
+  Future<List<SubtitleModel>> getSubtitles(int movieId) async {
     final result = await _apiClient
-        .get('subtitles?populate=file&filters%5Bmovie_id%5D=$movieId');
+        .get('/subtitles?populate=file&filters%5Bmovie_id%5D=$movieId');
     final data = SubtitleResponseModel.fromJson(result.data);
     final subtitle = data.data
-        .map((subtitle) => SubtitleModel.fromJson(subtitle.attributes))
+        ?.map((subtitle) => SubtitleModel.fromJson(subtitle.attributes))
         .toList();
-    return subtitle;
+    return subtitle ?? [];
   }
 }

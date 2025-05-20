@@ -104,6 +104,7 @@ void setupDependencies() {
   getIt.registerFactory<VideoAppViewModel>(
     () => VideoAppViewModel(
       repository: getIt(),
+      movieRepository: getIt(),
     ),
   );
   getIt.registerFactory<HomeViewModel>(

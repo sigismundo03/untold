@@ -8,5 +8,5 @@ abstract class RecoverMovieRepository {
   Future<void> saveLike();
   Future<void> saveComment();
   Future<void> dislike();
-  Future<List<SubtitleModel>> getSubtitles(String movieId);
+  Future<List<SubtitleModel>> getSubtitles(int movieId);
 }

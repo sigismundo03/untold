@@ -29,8 +29,9 @@ class _VideoAppScreenState extends State<VideoAppScreen> {
       DeviceOrientation.landscapeRight,
       DeviceOrientation.landscapeLeft,
     ]);
-    _viewModel.downloadVideo(
+    _viewModel.fetchData(
       widget.movie.streamLink,
+      widget.movie.id,
     );
   }
 
@@ -52,7 +53,21 @@ class _VideoAppScreenState extends State<VideoAppScreen> {
       backgroundColor: Colors.black,
       body: Observer(builder: (context) {
         if (_viewModel.openAudio) {
-          return AudioSubtitleWidget();
+          return AudioSubtitleWidget(
+            audios: _viewModel.audios,
+            subtitles: _viewModel.listSubtitles,
+            selectedSubtitle: _viewModel.selectedSubtitle,
+            onSelectAudio: (value) {
+              _viewModel.selectedAudio = value;
+            },
+            onSelectSubtitle: (value) {
+              _viewModel.selectedSubtitle = value;
+            },
+            selectedAudio: _viewModel.selectedAudio,
+            onPressedClose: () {
+              _viewModel.openAudio = false;
+            },
+          );
         }
         return GestureDetector(
           onTap: _viewModel.toggleControls,

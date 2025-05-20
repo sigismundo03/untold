@@ -4,8 +4,8 @@ part 'subtitle_response_model.g.dart';
 
 @JsonSerializable()
 class SubtitleResponseModel {
-  final List<SubtitleDataModel> data;
-  final MetaModel meta;
+  final List<SubtitleDataModel>? data;
+  final MetaModel? meta;
 
   SubtitleResponseModel({required this.data, required this.meta});
 
@@ -16,8 +16,8 @@ class SubtitleResponseModel {
 
 @JsonSerializable()
 class SubtitleDataModel {
-  final int id;
-  final SubtitleAttributesModel attributes;
+  final int? id;
+  final SubtitleAttributesModel? attributes;
 
   SubtitleDataModel({required this.id, required this.attributes});
 
@@ -32,10 +32,10 @@ class SubtitleAttributesModel {
   @JsonKey(name: 'default')
   final bool? isDefault;
   final String? urlLink;
-  final DateTime createdAt;
-  final DateTime updatedAt;
-  final DateTime publishedAt;
-  final SubtitleFileModel file;
+  final DateTime? createdAt;
+  final DateTime? updatedAt;
+  final DateTime? publishedAt;
+  final SubtitleFileModel? file;
 
   SubtitleAttributesModel({
     required this.language,
@@ -65,8 +65,8 @@ class SubtitleFileModel {
 
 @JsonSerializable()
 class SubtitleFileDataModel {
-  final int id;
-  final SubtitleFileAttributesModel attributes;
+  final int? id;
+  final SubtitleFileAttributesModel? attributes;
 
   SubtitleFileDataModel({required this.id, required this.attributes});
 
@@ -77,7 +77,7 @@ class SubtitleFileDataModel {
 
 @JsonSerializable()
 class SubtitleFileAttributesModel {
-  final String name;
+  final String? name;
   final String? ext;
   final String? mime;
   final double? size;
@@ -111,10 +111,10 @@ class MetaModel {
 
 @JsonSerializable()
 class PaginationModel {
-  final int page;
-  final int pageSize;
-  final int pageCount;
-  final int total;
+  final int? page;
+  final int? pageSize;
+  final int? pageCount;
+  final int? total;
 
   PaginationModel({
     required this.page,

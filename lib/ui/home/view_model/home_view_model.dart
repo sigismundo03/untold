@@ -13,6 +13,7 @@ class HomeViewModel = _HomeViewModelBase with _$HomeViewModel;
 abstract class _HomeViewModelBase with Store {
   @observable
   UserModel user = UserModel();
+
   @observable
   List<MovieModel> movies = [];
   @observable
