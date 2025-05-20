@@ -1,4 +1,5 @@
 import '../../../domain/model/movie_model.dart';
+import '../../../domain/model/subtitle_model.dart';
 
 abstract class RecoverMovieRepository {
   Future<List<MovieModel>> getMovies();
@@ -7,5 +8,5 @@ abstract class RecoverMovieRepository {
   Future<void> saveLike();
   Future<void> saveComment();
   Future<void> dislike();
-  Future<void> getSubtitles();
+  Future<List<SubtitleModel>> getSubtitles(String movieId);
 }

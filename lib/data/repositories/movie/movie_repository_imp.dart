@@ -4,7 +4,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:untold/data/services/api_client/api_client.dart';
 
 import '../../../domain/model/movie_model.dart';
+import '../../../domain/model/subtitle_model.dart';
 import '../../model/movie_response_model.dart';
+import '../../model/subtitle_response_model.dart';
 import 'movie_repository.dart';
 
 class RecoverMovieRepositoryImp implements RecoverMovieRepository {
@@ -70,7 +72,8 @@ class RecoverMovieRepositoryImp implements RecoverMovieRepository {
       final result = await _apiClient.get('/movies?populate=poster');
       final data = MovieResponseModel.fromJson(result.data);
 
-      final movie =  data.data?.map((movie) => MovieModel.fromJson(movie)).toList();
+      final movie =
+          data.data?.map((movie) => MovieModel.fromJson(movie)).toList();
       return movie ?? [];
     } catch (e) {
       rethrow;
@@ -78,9 +81,13 @@ class RecoverMovieRepositoryImp implements RecoverMovieRepository {
   }
 
   @override
-  Future<void> getSubtitles() async {
+  Future<List<SubtitleModel>> getSubtitles(String movieId) async {
     final result = await _apiClient
-        .get('subtitles?populate=file&filters%5Bmovie_id%5D=MOVIE_ID');
-    log(result.toString());
+        .get('subtitles?populate=file&filters%5Bmovie_id%5D=$movieId');
+    final data = SubtitleResponseModel.fromJson(result.data);
+    final subtitle = data.data
+        .map((subtitle) => SubtitleModel.fromJson(subtitle.attributes))
+        .toList();
+    return subtitle;
   }
 }
