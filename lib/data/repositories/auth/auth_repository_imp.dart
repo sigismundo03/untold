@@ -44,12 +44,17 @@ class AuthRepositoryImp extends AuthRepository {
       );
       final user = credential.user;
       if (user != null) {
-        await _apiClient.post('/auth/local/register', body: {
-          'username': username,
-          'email': email,
-          'password': password,
-          'firebase_UID': user.uid,
-        });
+        await _apiClient.post(
+          '/auth/local/register',
+          body: {
+            'username': username,
+            'email': email,
+            'password': password,
+            'firebase_UID': user.uid,
+          },
+          hasNoToken: true,
+        );
+        finishOnboarding();
       }
       return user;
     } catch (e) {
@@ -71,12 +76,16 @@ class AuthRepositoryImp extends AuthRepository {
       final user = userCredential.user;
       if (user != null) {
         try {
-          await _apiClient.post('/auth/local/register', body: {
-            'username': user.displayName ?? 'Google User',
-            'email': user.email,
-            'password': 'google_${user.uid}',
-            'firebase_UID': user.uid,
-          });
+          await _apiClient.post(
+            '/auth/local/register',
+            body: {
+              'username': user.displayName ?? 'Google User',
+              'email': user.email,
+              'password': 'google_${user.uid}',
+              'firebase_UID': user.uid,
+            },
+            hasNoToken: true,
+          );
         } catch (e) {
           throw Exception('Registration failed: $e');
         }

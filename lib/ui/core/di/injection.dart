@@ -6,8 +6,10 @@ import 'package:untold/data/repositories/auth/auth_repository.dart';
 import 'package:untold/data/repositories/auth/auth_repository_imp.dart';
 import 'package:untold/data/repositories/profile_repository/profile_repository.dart';
 import 'package:untold/data/repositories/video_player/video_player_repository.dart';
+import 'package:untold/ui/home/view_model/home_view_model.dart';
 import 'package:untold/ui/profile/view_model/profile_view_model.dart';
 import 'package:untold/ui/sign_up/view_model/sign_up_view_model.dart';
+import 'package:untold/ui/video_app/view_model/comment_view_model.dart';
 
 import '../../../data/repositories/movie/movie_repository.dart';
 import '../../../data/repositories/movie/movie_repository_imp.dart';
@@ -56,10 +58,8 @@ void setupDependencies() {
     ),
   );
 
-  // ViewModels (Factory para instâncias por tela)
-  // getIt.registerFactory<AuthViewModel>(
-  //   () => AuthViewModel(getIt<AuthService>()),
-  // );
+  // ViewModels
+
   getIt.registerFactory<LoginViewModel>(
     () => LoginViewModel(
       authRepository: getIt(),
@@ -103,6 +103,19 @@ void setupDependencies() {
   getIt.registerFactory<VideoAppViewModel>(
     () => VideoAppViewModel(
       repository: getIt(),
+      movieRepository: getIt(),
+    ),
+  );
+  getIt.registerFactory<HomeViewModel>(
+    () => HomeViewModel(
+      movieRepository: getIt(),
+    ),
+  );
+
+  getIt.registerFactory<CommentViewViewModel>(
+    () => CommentViewViewModel(
+      repository: getIt(),
+      profileRepository: getIt(),
     ),
   );
 }

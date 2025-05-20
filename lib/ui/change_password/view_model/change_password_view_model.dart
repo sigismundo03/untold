@@ -1,7 +1,7 @@
 import 'package:mobx/mobx.dart';
 import 'package:untold/data/repositories/profile_repository/profile_repository.dart';
 
-import '../../../domain/models/user_model.dart';
+import '../../../domain/model/user_model.dart';
 import '../../core/enum/status_enum.dart';
 
 part 'change_password_view_model.g.dart';
@@ -19,13 +19,13 @@ abstract class _ChangePasswordViewModelBase with Store {
   String _newPassWord = '';
 
   @observable
-  bool isObscure = true;
+  bool isObscure = false;
 
   @observable
-  bool isObscureConfirmPassWord = true;
+  bool isObscureConfirmPassWord = false;
 
   @observable
-  bool isObscureConfirmNewPassWord = true;
+  bool isObscureConfirmNewPassWord = false;
 
   @observable
   StatusEnum _status = StatusEnum.init;
@@ -44,7 +44,6 @@ abstract class _ChangePasswordViewModelBase with Store {
   void setObscure(bool value) {
     isObscure = value;
   }
-
 
   @action
   void setObscureConfirmPassWord(bool value) {

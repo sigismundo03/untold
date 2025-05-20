@@ -81,15 +81,13 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                               onPressed: () {
                                 _viewModel.setObscure(!_viewModel.isObscure);
                               },
-                              icon: _viewModel.isObscure
-                                  ? Center(
-                                      child: CircularProgressIndicator(),
-                                    )
-                                  : Icon(
-                                      Icons.visibility_off,
-                                      color: Color.fromRGBO(108, 109, 122, 1),
-                                      size: 20,
-                                    ),
+                              icon: Icon(
+                                _viewModel.isObscure
+                                    ? Icons.visibility
+                                    : Icons.visibility_off,
+                                color: Color.fromRGBO(108, 109, 122, 1),
+                                size: 20,
+                              ),
                             ),
                             controller: _currentPassword,
                             onChanged: (value) {
@@ -115,15 +113,13 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                                 _viewModel.setObscureConfirmPassWord(
                                     !_viewModel.isObscureConfirmPassWord);
                               },
-                              icon: _viewModel.isObscureConfirmPassWord
-                                  ? Center(
-                                      child: CircularProgressIndicator(),
-                                    )
-                                  : Icon(
-                                      Icons.visibility_off,
-                                      color: Color.fromRGBO(108, 109, 122, 1),
-                                      size: 20,
-                                    ),
+                              icon: Icon(
+                                _viewModel.isObscureConfirmPassWord
+                                    ? Icons.visibility
+                                    : Icons.visibility_off,
+                                color: Color.fromRGBO(108, 109, 122, 1),
+                                size: 20,
+                              ),
                             ),
                             controller: _newPassword,
                             onChanged: (value) {
@@ -140,15 +136,13 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                                 _viewModel.setObscureConfirmNewPassWord(
                                     !_viewModel.isObscureConfirmNewPassWord);
                               },
-                              icon: _viewModel.isObscureConfirmNewPassWord
-                                  ? Center(
-                                      child: CircularProgressIndicator(),
-                                    )
-                                  : Icon(
-                                      Icons.visibility_off,
-                                      color: Color.fromRGBO(108, 109, 122, 1),
-                                      size: 20,
-                                    ),
+                              icon: Icon(
+                                _viewModel.isObscureConfirmNewPassWord
+                                    ? Icons.visibility
+                                    : Icons.visibility_off,
+                                color: Color.fromRGBO(108, 109, 122, 1),
+                                size: 20,
+                              ),
                             ),
                             controller: _confirmPassword,
                             onChanged: (value) {

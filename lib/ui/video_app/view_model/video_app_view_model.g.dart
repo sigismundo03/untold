@@ -29,6 +29,54 @@ mixin _$VideoAppViewModel on _VideoAppViewModelBase, Store {
     });
   }
 
+  late final _$subtitlesAtom =
+      Atom(name: '_VideoAppViewModelBase.subtitles', context: context);
+
+  @override
+  List<SubtitleModel> get subtitles {
+    _$subtitlesAtom.reportRead();
+    return super.subtitles;
+  }
+
+  @override
+  set subtitles(List<SubtitleModel> value) {
+    _$subtitlesAtom.reportWrite(value, super.subtitles, () {
+      super.subtitles = value;
+    });
+  }
+
+  late final _$selectedAudioAtom =
+      Atom(name: '_VideoAppViewModelBase.selectedAudio', context: context);
+
+  @override
+  String get selectedAudio {
+    _$selectedAudioAtom.reportRead();
+    return super.selectedAudio;
+  }
+
+  @override
+  set selectedAudio(String value) {
+    _$selectedAudioAtom.reportWrite(value, super.selectedAudio, () {
+      super.selectedAudio = value;
+    });
+  }
+
+  late final _$selectedSubtitleAtom =
+      Atom(name: '_VideoAppViewModelBase.selectedSubtitle', context: context);
+
+  @override
+  String get selectedSubtitle {
+    _$selectedSubtitleAtom.reportRead();
+    return super.selectedSubtitle;
+  }
+
+  @override
+  set selectedSubtitle(String value) {
+    _$selectedSubtitleAtom.reportWrite(value, super.selectedSubtitle, () {
+      super.selectedSubtitle = value;
+    });
+  }
+
   late final _$isPlayingAtom =
       Atom(name: '_VideoAppViewModelBase.isPlaying', context: context);
 
@@ -42,6 +90,38 @@ mixin _$VideoAppViewModel on _VideoAppViewModelBase, Store {
   set isPlaying(bool value) {
     _$isPlayingAtom.reportWrite(value, super.isPlaying, () {
       super.isPlaying = value;
+    });
+  }
+
+  late final _$openCommentAtom =
+      Atom(name: '_VideoAppViewModelBase.openComment', context: context);
+
+  @override
+  bool get openComment {
+    _$openCommentAtom.reportRead();
+    return super.openComment;
+  }
+
+  @override
+  set openComment(bool value) {
+    _$openCommentAtom.reportWrite(value, super.openComment, () {
+      super.openComment = value;
+    });
+  }
+
+  late final _$openAudioAtom =
+      Atom(name: '_VideoAppViewModelBase.openAudio', context: context);
+
+  @override
+  bool get openAudio {
+    _$openAudioAtom.reportRead();
+    return super.openAudio;
+  }
+
+  @override
+  set openAudio(bool value) {
+    _$openAudioAtom.reportWrite(value, super.openAudio, () {
+      super.openAudio = value;
     });
   }
 
@@ -99,6 +179,14 @@ mixin _$VideoAppViewModel on _VideoAppViewModelBase, Store {
   @override
   Future<void> downloadVideo(String url) {
     return _$downloadVideoAsyncAction.run(() => super.downloadVideo(url));
+  }
+
+  late final _$getSubtitlesAsyncAction =
+      AsyncAction('_VideoAppViewModelBase.getSubtitles', context: context);
+
+  @override
+  Future<void> getSubtitles(int moveId) {
+    return _$getSubtitlesAsyncAction.run(() => super.getSubtitles(moveId));
   }
 
   late final _$_VideoAppViewModelBaseActionController =
@@ -173,7 +261,12 @@ mixin _$VideoAppViewModel on _VideoAppViewModelBase, Store {
   @override
   String toString() {
     return '''
+subtitles: ${subtitles},
+selectedAudio: ${selectedAudio},
+selectedSubtitle: ${selectedSubtitle},
 isPlaying: ${isPlaying},
+openComment: ${openComment},
+openAudio: ${openAudio},
 status: ${status},
 position: ${position}
     ''';

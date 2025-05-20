@@ -1,6 +1,6 @@
 import 'package:mobx/mobx.dart';
 import 'package:untold/data/repositories/auth/auth_repository.dart';
-import 'package:untold/domain/models/user_model.dart';
+import 'package:untold/domain/model/user_model.dart';
 
 import '../../core/enum/status_enum.dart';
 

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:untold/domain/models/user_model.dart';
+import 'package:untold/domain/model/user_model.dart';
 import 'package:untold/routing/app_routes.dart';
 import 'package:untold/ui/core/widgets/exports.dart';
 import 'package:untold/ui/onboarding/view_model/onboarding_view_model.dart';
@@ -118,7 +118,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                               if (_onboardingViewModel.status.isSuccess) {
                                 Navigator.pushNamedAndRemoveUntil(
                                     context,
-                                    AppRoutes.profile,
+                                    AppRoutes.home,
                                     (Route<dynamic> route) => false);
                               }
                             },

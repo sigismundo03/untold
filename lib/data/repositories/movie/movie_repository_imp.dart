@@ -2,7 +2,13 @@ import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:untold/data/services/api_client/api_client.dart';
+import 'package:untold/domain/model/comment_model.dart';
+import 'package:untold/domain/model/user_model.dart';
 
+import '../../../domain/model/movie_model.dart';
+import '../../../domain/model/subtitle_model.dart';
+import '../../model/movie_response_model.dart';
+import '../../model/subtitle_response_model.dart';
 import 'movie_repository.dart';
 
 class RecoverMovieRepositoryImp implements RecoverMovieRepository {
@@ -15,13 +21,17 @@ class RecoverMovieRepositoryImp implements RecoverMovieRepository {
         _firestore = firestore;
 
   @override
-  Future<void> saveComment() async {
+  Future<void> saveComment({
+    required int movieId,
+    required String commentText,
+    required UserModel user,
+  }) async {
     final commentData = {
-      'id': 'uuid',
-      'comment': 'commentText',
+      'id': user.firebaseUID,
+      'comment': commentText,
       'date': DateTime.now().toUtc().toIso8601String(),
-      'user': 'user',
-      'movie': ' movieId',
+      'user': user.toJson(),
+      'movie': movieId,
     };
 
     await _firestore.collection('comments').doc('uuid').set(commentData);
@@ -45,33 +55,45 @@ class RecoverMovieRepositoryImp implements RecoverMovieRepository {
   }
 
   @override
-  Future<void> recoverComments() async {
-    final result = await _firestore
+  Stream<List<CommentModel>> getComments(int movieId) {
+    return _firestore
         .collection('comments')
-        .where('movie', isEqualTo: 'movieId')
+        .where('movie', isEqualTo: movieId)
         .orderBy('date', descending: true)
         .snapshots()
-        .map((snapshot) => snapshot.docs.map((doc) => doc.data()).toList());
-
-    log(result.toString());
+        .map((snapshot) => snapshot.docs
+            .map((doc) => CommentModel.fromJson(doc.data()))
+            .toList());
   }
 
   @override
-  Future<void> recoverLikes() async {
+  Future<void> getLikes() async {
     final result = await _apiClient.get('/likes?populate=*');
     log(result.toString());
   }
 
   @override
-  Future<void> recoverMovies() async {
-    final result = await _apiClient.get('/movies?populate=poster');
-    log(result.toString());
+  Future<List<MovieModel>> getMovies() async {
+    try {
+      final result = await _apiClient.get('/movies?populate=poster');
+      final data = MovieResponseModel.fromJson(result.data);
+
+      final movie =
+          data.data?.map((movie) => MovieModel.fromJson(movie)).toList();
+      return movie ?? [];
+    } catch (e) {
+      rethrow;
+    }
   }
 
   @override
-  Future<void> recoverSubtitles() async {
+  Future<List<SubtitleModel>> getSubtitles(int movieId) async {
     final result = await _apiClient
-        .get('subtitles?populate=file&filters%5Bmovie_id%5D=MOVIE_ID');
-    log(result.toString());
+        .get('/subtitles?populate=file&filters%5Bmovie_id%5D=$movieId');
+    final data = SubtitleResponseModel.fromJson(result.data);
+    final subtitle = data.data
+        ?.map((subtitle) => SubtitleModel.fromJson(subtitle.attributes))
+        .toList();
+    return subtitle ?? [];
   }
 }

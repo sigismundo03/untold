@@ -1,8 +1,10 @@
 import 'package:mobx/mobx.dart';
+import 'package:untold/data/repositories/movie/movie_repository.dart';
 import 'package:untold/ui/core/enum/status_enum.dart';
 import 'package:video_player/video_player.dart';
 
 import '../../../data/repositories/video_player/video_player_repository.dart';
+import '../../../domain/model/subtitle_model.dart';
 
 part 'video_app_view_model.g.dart';
 
@@ -10,11 +12,23 @@ class VideoAppViewModel = _VideoAppViewModelBase with _$VideoAppViewModel;
 
 abstract class _VideoAppViewModelBase with Store {
   final VideoPlayerRepository _repository;
+  final RecoverMovieRepository _movieRepository;
 
   @observable
   late VideoPlayerController _controller;
   @observable
+  List<SubtitleModel> subtitles = [];
+  @observable
+  String selectedAudio = '';
+  @observable
+  String selectedSubtitle = '';
+
+  @observable
   bool isPlaying = false;
+  @observable
+  bool openComment = false;
+  @observable
+  bool openAudio = false;
 
   @observable
   StatusEnum status = StatusEnum.loading;
@@ -25,12 +39,19 @@ abstract class _VideoAppViewModelBase with Store {
   @observable
   Duration position = Duration(seconds: 0);
 
-  _VideoAppViewModelBase({required VideoPlayerRepository repository})
-      : _repository = repository;
+  _VideoAppViewModelBase(
+      {required VideoPlayerRepository repository,
+      required RecoverMovieRepository movieRepository})
+      : _repository = repository,
+        _movieRepository = movieRepository;
 
   @action
   void toggleControls() {
-    _showControls = !_showControls;
+    if (openComment) {
+      _showControls = true;
+    } else {
+      _showControls = !_showControls;
+    }
   }
 
   @action
@@ -46,6 +67,10 @@ abstract class _VideoAppViewModelBase with Store {
   }
 
   VideoPlayerController get controller => _controller;
+  List<String> get audios =>
+      subtitles.map((value) => value.language ?? '').toList();
+  List<String> get listSubtitles =>
+      subtitles.map((value) => value.language ?? '').toList();
 
   @action
   void playing() {
@@ -75,5 +100,19 @@ abstract class _VideoAppViewModelBase with Store {
     _controller.addListener(() {
       position = _controller.value.position;
     });
+  }
+
+  @action
+  Future<void> getSubtitles(int moveId) async {
+    subtitles = await _movieRepository.getSubtitles(moveId);
+    selectedAudio = subtitles.first.language ?? '';
+    selectedSubtitle = subtitles.first.language ?? '';
+  }
+
+  Future<void> fetchData(String url, int moveId) async {
+    await Future.wait([
+      downloadVideo(url),
+      getSubtitles(moveId),
+    ]);
   }
 }
