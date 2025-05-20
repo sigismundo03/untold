@@ -1,8 +1,7 @@
-import 'dart:developer';
-
 import 'package:firebase_auth/firebase_auth.dart';
 
 import '../../../domain/model/user_model.dart';
+import '../../model/user_response_model.dart';
 import '../../services/api_client/api_client.dart';
 import 'profile_repository.dart';
 
@@ -23,20 +22,11 @@ class ProfileRepositoryImp implements ProfileRepository {
       if (response.statusCode != 200) {
         throw Exception('Failed to fetch user');
       }
-      log('message: ${response.toString()}');
-      return UserModel(
-          id: '1',
-          name: 'John Doe',
-          email: 'john.doe@example.com',
-          photoUrl:
-              'https://cdn.pixabay.com/photo/2021/10/27/19/09/cat-6748193_1280.jpg');
+      final data = UserResponseModel.fromJson(response.data);
+
+      return UserModel.fromJson(data);
     } catch (e) {
-      return UserModel(
-          id: '1',
-          name: 'John Doe',
-          email: 'john.doe@example.com',
-          photoUrl:
-              'https://cdn.pixabay.com/photo/2021/10/27/19/09/cat-6748193_1280.jpg');
+      throw Exception('User not authenticated');
     }
   }
 
