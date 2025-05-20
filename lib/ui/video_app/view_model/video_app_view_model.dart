@@ -15,6 +15,10 @@ abstract class _VideoAppViewModelBase with Store {
   late VideoPlayerController _controller;
   @observable
   bool isPlaying = false;
+  @observable
+  bool openComment = false;
+  @observable
+  bool openAudio = false;
 
   @observable
   StatusEnum status = StatusEnum.loading;

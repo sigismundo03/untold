@@ -11,16 +11,18 @@ import 'package:untold/ui/sign_up/screen/sign_up_screen.dart';
 import 'package:untold/ui/video_app/screens/video_app_screen.dart';
 
 import '../domain/model/user_model.dart';
+import '../ui/check_auth/check_auth_screen.dart';
 import '../ui/profile/screen/profile_screen.dart';
 import '../ui/subscription/screens/subscription_screen.dart';
 
 class AppRoutes {
+  static const String initial = '/';
   static const String home = '/home';
   static const String details = '/details';
   static const String forgotPassword = '/forgot-password';
   static const String forgotPasswordInstructions =
       '/forgot-password-instructions';
-  static const String login = '/';
+  static const String login = '/login';
   static const String register = '/register';
   static const String changePassword = '/change-password';
   static const String splash = '/splash';
@@ -32,6 +34,8 @@ class AppRoutes {
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
+      case initial:
+        return MaterialPageRoute(builder: (_) => CheckAuthScreen());
       case home:
         return MaterialPageRoute(builder: (_) => HomeScreen());
       case details:

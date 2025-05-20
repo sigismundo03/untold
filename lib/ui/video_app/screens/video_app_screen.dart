@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:untold/domain/model/movie_model.dart';
 import 'package:untold/ui/core/di/injection.dart';
 import 'package:video_player/video_player.dart';
 
 import '../view_model/video_app_view_model.dart';
+import '../widgets/audio_subtitle_widget.dart';
+import '../widgets/comment_widget.dart';
 
 class VideoAppScreen extends StatefulWidget {
   const VideoAppScreen({super.key, required this.movie});
@@ -22,7 +25,6 @@ class _VideoAppScreenState extends State<VideoAppScreen> {
   void initState() {
     super.initState();
 
-    // Força a orientação horizontal ao abrir
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.landscapeRight,
       DeviceOrientation.landscapeLeft,
@@ -36,7 +38,6 @@ class _VideoAppScreenState extends State<VideoAppScreen> {
   void dispose() {
     _viewModel.controller.dispose();
 
-    // Volta para orientação normal ao sair
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
@@ -50,6 +51,9 @@ class _VideoAppScreenState extends State<VideoAppScreen> {
     return Scaffold(
       backgroundColor: Colors.black,
       body: Observer(builder: (context) {
+        if (_viewModel.openAudio) {
+          return AudioSubtitleWidget();
+        }
         return GestureDetector(
           onTap: _viewModel.toggleControls,
           child: _viewModel.status.isSuccess
@@ -63,18 +67,31 @@ class _VideoAppScreenState extends State<VideoAppScreen> {
                         ),
                       ),
                       _viewModel.showControls
-                          ? VideoOverlayWidget(
-                              controller: _viewModel.controller,
-                              position: _viewModel.position,
-                              increase15Seconds: _viewModel.increase15Seconds,
-                              decrease15Seconds: _viewModel.decrease15Seconds,
-                              isPlaying: _viewModel.isPlaying,
-                              play: () {
-                                _viewModel.isPlaying
-                                    ? _viewModel.pause()
-                                    : _viewModel.playing();
-                              },
-                            )
+                          ? Observer(builder: (context) {
+                              return VideoOverlayWidget(
+                                title: widget.movie.name,
+                                controller: _viewModel.controller,
+                                position: _viewModel.position,
+                                increase15Seconds: _viewModel.increase15Seconds,
+                                decrease15Seconds: _viewModel.decrease15Seconds,
+                                isPlaying: _viewModel.isPlaying,
+                                openComment: _viewModel.openComment,
+                                onPressedClose: () {
+                                  _viewModel.openComment = false;
+                                },
+                                onTapComment: () {
+                                  _viewModel.openComment = true;
+                                },
+                                onTapCaption: () {
+                                  _viewModel.openAudio = true;
+                                },
+                                play: () {
+                                  _viewModel.isPlaying
+                                      ? _viewModel.pause()
+                                      : _viewModel.playing();
+                                },
+                              );
+                            })
                           : const SizedBox.shrink(),
                     ],
                   );
@@ -95,6 +112,11 @@ class VideoOverlayWidget extends StatelessWidget {
     this.decrease15Seconds,
     required this.play,
     required this.isPlaying,
+    required this.title,
+    required this.openComment,
+    required this.onPressedClose,
+    required this.onTapComment,
+    required this.onTapCaption,
   });
   final VideoPlayerController controller;
   final Duration position;
@@ -102,6 +124,11 @@ class VideoOverlayWidget extends StatelessWidget {
   final Function()? decrease15Seconds;
   final Function()? play;
   final bool isPlaying;
+  final String title;
+  final bool openComment;
+  final Function()? onPressedClose;
+  final Function()? onTapComment;
+  final Function()? onTapCaption;
 
   @override
   Widget build(BuildContext context) {
@@ -118,80 +145,153 @@ class VideoOverlayWidget extends StatelessWidget {
 
     return Positioned.fill(
       child: Container(
-        color: Colors.black38,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            // Top Bar
-            Padding(
-              padding: const EdgeInsets.all(12.0),
-              child: Row(
-                children: [
-                  const Icon(Icons.arrow_back, color: Colors.white),
-                  const SizedBox(width: 8),
-                  const Text("Barbie",
-                      style: TextStyle(color: Colors.white, fontSize: 18)),
-                  const Spacer(),
-                  const Icon(Icons.subtitles, color: Colors.white),
-                  const SizedBox(width: 16),
-                  const Icon(Icons.comment, color: Colors.white),
-                ],
-              ),
-            ),
-
-            // Middle controls
-            Row(
-              spacing: 15,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                IconButton(
-                  icon: const Icon(Icons.replay_10,
-                      size: 36, color: Colors.white),
-                  onPressed: decrease15Seconds,
-                ),
-                Observer(builder: (context) {
-                  return IconButton(
-                    icon: Icon(
-                      isPlaying ? Icons.pause_circle : Icons.play_circle,
-                      size: 64,
-                      color: Colors.white,
-                    ),
-                    onPressed: play,
-                  );
-                }),
-                IconButton(
-                  icon: const Icon(Icons.forward_10,
-                      size: 36, color: Colors.white),
-                  onPressed: increase15Seconds,
-                ),
-              ],
-            ),
-
-            // Progress and duration
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: VideoProgressIndicator(
-                      controller,
-                      allowScrubbing: true,
-                      colors: VideoProgressColors(
-                        playedColor: Colors.purpleAccent,
-                        backgroundColor: Colors.white30,
+        color: const Color.fromARGB(96, 10, 10, 10),
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
+            children: [
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    // Top Bar
+                    Padding(
+                      padding: const EdgeInsets.all(12.0),
+                      child: Row(
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.pop(context);
+                            },
+                            child: const Icon(Icons.arrow_back_ios,
+                                color: Color.fromRGBO(170, 115, 240, 1)),
+                          ),
+                          const SizedBox(width: 8),
+                          SizedBox(
+                            height: 40,
+                            width: 120,
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: Text(
+                                    title,
+                                    style: TextStyle(
+                                        color: Colors.white, fontSize: 18),
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          const Spacer(),
+                          GestureDetector(
+                            onTap: onTapCaption,
+                            child: Row(
+                              spacing: 8,
+                              children: [
+                                SvgPicture.asset(
+                                  'assets/caption.svg',
+                                  colorFilter: ColorFilter.mode(
+                                      Colors.white, BlendMode.srcIn),
+                                ),
+                                Text('subtitles / audio'),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(width: 16),
+                          GestureDetector(
+                            onTap: onTapComment,
+                            child: Row(
+                              spacing: 8,
+                              children: [
+                                SvgPicture.asset(
+                                  'assets/uil_comment.svg',
+                                  colorFilter: ColorFilter.mode(
+                                      Colors.white, BlendMode.srcIn),
+                                ),
+                                Text('Comments 324'),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(width: 16),
+                        ],
                       ),
                     ),
-                  ),
-                  const SizedBox(width: 8),
-                  Text(
-                    '${formatDuration(position)} ',
-                    style: const TextStyle(color: Colors.white),
-                  ),
-                  const Icon(Icons.subtitles, color: Colors.white),
-                ],
+
+                    // Middle controls
+                    Row(
+                      spacing: 15,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        IconButton(
+                          icon: SvgPicture.asset(
+                            'assets/iconoir_backward-15-seconds.svg',
+                            colorFilter:
+                                ColorFilter.mode(Colors.white, BlendMode.srcIn),
+                          ),
+                          onPressed: decrease15Seconds,
+                        ),
+                        Observer(builder: (context) {
+                          return IconButton(
+                            icon: Icon(
+                              isPlaying
+                                  ? Icons.pause_circle
+                                  : Icons.play_circle,
+                              size: 64,
+                              color: Colors.white,
+                            ),
+                            onPressed: play,
+                          );
+                        }),
+                        IconButton(
+                          icon: SvgPicture.asset(
+                            'assets/iconoir_forward-15-seconds.svg',
+                            colorFilter:
+                                ColorFilter.mode(Colors.white, BlendMode.srcIn),
+                          ),
+                          onPressed: increase15Seconds,
+                        ),
+                        const SizedBox(width: 8),
+                      ],
+                    ),
+
+                    // Progress and duration
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 12, vertical: 10),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: VideoProgressIndicator(
+                              controller,
+                              allowScrubbing: true,
+                              colors: VideoProgressColors(
+                                playedColor: Colors.purpleAccent,
+                                backgroundColor: Colors.white30,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(width: 8),
+                          Text(
+                            '${formatDuration(position)} ',
+                            style: const TextStyle(color: Colors.white),
+                          ),
+                          SvgPicture.asset('assets/fluent_full-screen.svg',
+                              color: Colors.white),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
-          ],
+              if (openComment)
+                CommentWidget(
+                  onPressedClose: onPressedClose,
+                  height: MediaQuery.of(context).size.height,
+                  width: MediaQuery.of(context).size.width * 0.35,
+                ),
+            ],
+          ),
         ),
       ),
     );

@@ -45,6 +45,38 @@ mixin _$VideoAppViewModel on _VideoAppViewModelBase, Store {
     });
   }
 
+  late final _$openCommentAtom =
+      Atom(name: '_VideoAppViewModelBase.openComment', context: context);
+
+  @override
+  bool get openComment {
+    _$openCommentAtom.reportRead();
+    return super.openComment;
+  }
+
+  @override
+  set openComment(bool value) {
+    _$openCommentAtom.reportWrite(value, super.openComment, () {
+      super.openComment = value;
+    });
+  }
+
+  late final _$openAudioAtom =
+      Atom(name: '_VideoAppViewModelBase.openAudio', context: context);
+
+  @override
+  bool get openAudio {
+    _$openAudioAtom.reportRead();
+    return super.openAudio;
+  }
+
+  @override
+  set openAudio(bool value) {
+    _$openAudioAtom.reportWrite(value, super.openAudio, () {
+      super.openAudio = value;
+    });
+  }
+
   late final _$statusAtom =
       Atom(name: '_VideoAppViewModelBase.status', context: context);
 
@@ -174,6 +206,8 @@ mixin _$VideoAppViewModel on _VideoAppViewModelBase, Store {
   String toString() {
     return '''
 isPlaying: ${isPlaying},
+openComment: ${openComment},
+openAudio: ${openAudio},
 status: ${status},
 position: ${position}
     ''';
