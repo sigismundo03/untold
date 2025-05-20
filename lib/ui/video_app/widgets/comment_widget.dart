@@ -109,11 +109,13 @@ class CommentItem extends StatelessWidget {
               Text(comment, style: const TextStyle(color: Colors.white)),
               if (hasReplies)
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Expanded(
                       child: SecondaryButtonWidget(
                         text: '▼ View $replyCount replies',
                         onPressed: () {},
+                        fontSize: 12,
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                       ),

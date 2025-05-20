@@ -21,7 +21,7 @@ class UserModel {
       name: user.username ?? '',
       email: user.email ?? '',
       photoUrl: user.profilePicture ??
-          'https://cdn.pixabay.com/photo/2021/11/01/21/36/cartoon-cat-6761858_960_720.png',
+          'https://cdn.pixabay.com/photo/2016/11/29/13/14/attractive-1869761_960_720.jpg',
     );
   }
 

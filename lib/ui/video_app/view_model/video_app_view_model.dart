@@ -47,7 +47,11 @@ abstract class _VideoAppViewModelBase with Store {
 
   @action
   void toggleControls() {
-    if (!openComment) _showControls = !_showControls;
+    if (openComment) {
+      _showControls = true;
+    } else {
+      _showControls = !_showControls;
+    }
   }
 
   @action

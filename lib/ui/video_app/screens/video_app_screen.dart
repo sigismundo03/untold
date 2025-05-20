@@ -303,7 +303,7 @@ class VideoOverlayWidget extends StatelessWidget {
                 CommentWidget(
                   onPressedClose: onPressedClose,
                   height: MediaQuery.of(context).size.height,
-                  width: MediaQuery.of(context).size.width * 0.35,
+                  width: MediaQuery.of(context).size.width * 0.34,
                 ),
             ],
           ),

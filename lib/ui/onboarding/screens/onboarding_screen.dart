@@ -118,7 +118,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                               if (_onboardingViewModel.status.isSuccess) {
                                 Navigator.pushNamedAndRemoveUntil(
                                     context,
-                                    AppRoutes.profile,
+                                    AppRoutes.home,
                                     (Route<dynamic> route) => false);
                               }
                             },

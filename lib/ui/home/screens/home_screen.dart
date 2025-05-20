@@ -70,7 +70,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         child: const CircleAvatar(
                           radius: 20,
                           backgroundImage: NetworkImage(
-                            "https://randomuser.me/api/portraits/women/44.jpg",
+                            "https://cdn.pixabay.com/photo/2016/11/29/13/14/attractive-1869761_960_720.jpg",
                           ),
                         ),
                       ),

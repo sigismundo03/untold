@@ -85,7 +85,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         ),
                         Observer(builder: (context) {
                           return AvatarWidget(
-                            assetName: 'assets/avatar.png',
+                            assetName: widget.user.photoUrl ?? '',
                             text: Text(
                               'Choose Image,',
                               style: TextStyle(

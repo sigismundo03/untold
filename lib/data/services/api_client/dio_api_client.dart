@@ -23,7 +23,7 @@ class DioApiClient implements ApiClient {
     _dio.interceptors.add(InterceptorsWrapper(
       onRequest: (options, handler) async {
         final token = await FirebaseAuth.instance.currentUser?.getIdToken();
-        if (token != null) {
+        if (options.extra['skipAuth'] != true && token != null) {
           options.headers['Authorization'] = 'Bearer $token';
         }
 
@@ -46,9 +46,13 @@ class DioApiClient implements ApiClient {
   Future<Response> get(
     String path, {
     Map<String, String>? headers,
+    bool hasNoToken = false,
   }) async {
     try {
-      final response = await _dio.get(path, options: Options(headers: headers));
+      final response = await _dio.get(
+        path,
+        options: Options(headers: headers, extra: {'skipAuth': hasNoToken}),
+      );
       return response;
     } catch (e) {
       throw Exception('GET $path failed: $e');
@@ -60,10 +64,12 @@ class DioApiClient implements ApiClient {
     String path, {
     Map<String, dynamic>? body,
     Map<String, String>? headers,
+    bool hasNoToken = false,
   }) async {
     try {
-      final Response response =
-          await _dio.post(path, data: body, options: Options(headers: headers));
+      final Response response = await _dio.post(path,
+          data: body,
+          options: Options(headers: headers, extra: {'skipAuth': hasNoToken}));
       return response;
     } catch (e) {
       log(e.toString());
@@ -76,10 +82,12 @@ class DioApiClient implements ApiClient {
     String path, {
     Map<String, dynamic>? body,
     Map<String, String>? headers,
+    bool hasNoToken = false,
   }) async {
     try {
       final response = await _dio.patch(path,
-          data: body, options: Options(headers: headers));
+          data: body,
+          options: Options(headers: headers, extra: {'skipAuth': hasNoToken}));
       return response;
     } catch (e) {
       log(e.toString());
@@ -91,9 +99,11 @@ class DioApiClient implements ApiClient {
   Future<void> delete(
     String path, {
     Map<String, String>? headers,
+    bool hasNoToken = false,
   }) async {
     try {
-      await _dio.delete(path, options: Options(headers: headers));
+      await _dio.delete(path,
+          options: Options(headers: headers, extra: {'skipAuth': hasNoToken}));
     } catch (e) {
       log(e.toString());
       throw Exception('DELETE $path failed: $e');
