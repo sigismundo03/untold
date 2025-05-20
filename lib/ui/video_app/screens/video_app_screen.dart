@@ -211,6 +211,7 @@ class VideoOverlayWidget extends StatelessWidget {
                           GestureDetector(
                             onTap: onTapCaption,
                             child: Row(
+                              spacing: 8,
                               children: [
                                 SvgPicture.asset(
                                   'assets/caption.svg',
@@ -225,6 +226,7 @@ class VideoOverlayWidget extends StatelessWidget {
                           GestureDetector(
                             onTap: onTapComment,
                             child: Row(
+                              spacing: 8,
                               children: [
                                 SvgPicture.asset(
                                   'assets/uil_comment.svg',

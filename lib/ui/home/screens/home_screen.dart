@@ -88,6 +88,30 @@ class _HomeScreenState extends State<HomeScreen> {
                       child: ListView.builder(
                           itemCount: 1,
                           itemBuilder: (context, index) {
+                            if (index == 0) {
+                              return Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 18),
+                                    child: Text(
+                                      'Now Showing',
+                                      style: TextStyle(
+                                        color: Color.fromRGBO(255, 255, 255, 1),
+                                        fontSize: 21,
+                                        fontWeight: FontWeight.w700,
+                                      ),
+                                    ),
+                                  ),
+                                  MovieCardWidget(
+                                    height: height,
+                                    movie: _viewModel.movies[index],
+                                  ),
+                                ],
+                              );
+                            }
+
                             return MovieCardWidget(
                               height: height,
                               movie: _viewModel.movies[index],
