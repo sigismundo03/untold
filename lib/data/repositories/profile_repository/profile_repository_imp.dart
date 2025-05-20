@@ -24,7 +24,7 @@ class ProfileRepositoryImp implements ProfileRepository {
       }
       final data = UserResponseModel.fromJson(response.data);
 
-      return UserModel.fromJson(data);
+      return UserModel.fromJsonUserResponse(data);
     } catch (e) {
       throw Exception('User not authenticated');
     }

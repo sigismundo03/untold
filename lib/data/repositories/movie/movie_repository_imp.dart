@@ -2,6 +2,8 @@ import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:untold/data/services/api_client/api_client.dart';
+import 'package:untold/domain/model/comment_model.dart';
+import 'package:untold/domain/model/user_model.dart';
 
 import '../../../domain/model/movie_model.dart';
 import '../../../domain/model/subtitle_model.dart';
@@ -19,13 +21,17 @@ class RecoverMovieRepositoryImp implements RecoverMovieRepository {
         _firestore = firestore;
 
   @override
-  Future<void> saveComment() async {
+  Future<void> saveComment({
+    required int movieId,
+    required String commentText,
+    required UserModel user,
+  }) async {
     final commentData = {
-      'id': 'uuid',
-      'comment': 'commentText',
+      'id': user.firebaseUID,
+      'comment': commentText,
       'date': DateTime.now().toUtc().toIso8601String(),
-      'user': 'user',
-      'movie': ' movieId',
+      'user': user.toJson(),
+      'movie': movieId,
     };
 
     await _firestore.collection('comments').doc('uuid').set(commentData);
@@ -49,15 +55,15 @@ class RecoverMovieRepositoryImp implements RecoverMovieRepository {
   }
 
   @override
-  Future<void> getComments() async {
-    final result = await _firestore
+  Stream<List<CommentModel>> getComments(int movieId) {
+    return _firestore
         .collection('comments')
-        .where('movie', isEqualTo: 'movieId')
+        .where('movie', isEqualTo: movieId)
         .orderBy('date', descending: true)
         .snapshots()
-        .map((snapshot) => snapshot.docs.map((doc) => doc.data()).toList());
-
-    log(result.toString());
+        .map((snapshot) => snapshot.docs
+            .map((doc) => CommentModel.fromJson(doc.data()))
+            .toList());
   }
 
   @override

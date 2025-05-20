@@ -50,6 +50,7 @@ class _VideoAppScreenState extends State<VideoAppScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       backgroundColor: Colors.black,
       body: Observer(builder: (context) {
         if (_viewModel.openAudio) {
@@ -69,49 +70,55 @@ class _VideoAppScreenState extends State<VideoAppScreen> {
             },
           );
         }
-        return GestureDetector(
-          onTap: _viewModel.toggleControls,
-          child: _viewModel.status.isSuccess
-              ? Observer(builder: (context) {
-                  return Stack(
-                    children: [
-                      Center(
-                        child: AspectRatio(
-                          aspectRatio: _viewModel.controller.value.aspectRatio,
-                          child: VideoPlayer(_viewModel.controller),
+        return SafeArea(
+          child: GestureDetector(
+            onTap: _viewModel.toggleControls,
+            child: _viewModel.status.isSuccess
+                ? Observer(builder: (context) {
+                    return Stack(
+                      children: [
+                        Center(
+                          child: AspectRatio(
+                            aspectRatio:
+                                _viewModel.controller.value.aspectRatio,
+                            child: VideoPlayer(_viewModel.controller),
+                          ),
                         ),
-                      ),
-                      _viewModel.showControls
-                          ? Observer(builder: (context) {
-                              return VideoOverlayWidget(
-                                title: widget.movie.name,
-                                controller: _viewModel.controller,
-                                position: _viewModel.position,
-                                increase15Seconds: _viewModel.increase15Seconds,
-                                decrease15Seconds: _viewModel.decrease15Seconds,
-                                isPlaying: _viewModel.isPlaying,
-                                openComment: _viewModel.openComment,
-                                onPressedClose: () {
-                                  _viewModel.openComment = false;
-                                },
-                                onTapComment: () {
-                                  _viewModel.openComment = true;
-                                },
-                                onTapCaption: () {
-                                  _viewModel.openAudio = true;
-                                },
-                                play: () {
-                                  _viewModel.isPlaying
-                                      ? _viewModel.pause()
-                                      : _viewModel.playing();
-                                },
-                              );
-                            })
-                          : const SizedBox.shrink(),
-                    ],
-                  );
-                })
-              : const Center(child: CircularProgressIndicator()),
+                        _viewModel.showControls
+                            ? Observer(builder: (context) {
+                                return VideoOverlayWidget(
+                                  title: widget.movie.name,
+                                  controller: _viewModel.controller,
+                                  position: _viewModel.position,
+                                  increase15Seconds:
+                                      _viewModel.increase15Seconds,
+                                  decrease15Seconds:
+                                      _viewModel.decrease15Seconds,
+                                  isPlaying: _viewModel.isPlaying,
+                                  openComment: _viewModel.openComment,
+                                  moveId: widget.movie.id,
+                                  onPressedClose: () {
+                                    _viewModel.openComment = false;
+                                  },
+                                  onTapComment: () {
+                                    _viewModel.openComment = true;
+                                  },
+                                  onTapCaption: () {
+                                    _viewModel.openAudio = true;
+                                  },
+                                  play: () {
+                                    _viewModel.isPlaying
+                                        ? _viewModel.pause()
+                                        : _viewModel.playing();
+                                  },
+                                );
+                              })
+                            : const SizedBox.shrink(),
+                      ],
+                    );
+                  })
+                : const Center(child: CircularProgressIndicator()),
+          ),
         );
       }),
     );
@@ -132,6 +139,7 @@ class VideoOverlayWidget extends StatelessWidget {
     required this.onPressedClose,
     required this.onTapComment,
     required this.onTapCaption,
+    required this.moveId,
   });
   final VideoPlayerController controller;
   final Duration position;
@@ -144,6 +152,7 @@ class VideoOverlayWidget extends StatelessWidget {
   final Function()? onPressedClose;
   final Function()? onTapComment;
   final Function()? onTapCaption;
+  final int moveId;
 
   @override
   Widget build(BuildContext context) {
@@ -202,7 +211,6 @@ class VideoOverlayWidget extends StatelessWidget {
                           GestureDetector(
                             onTap: onTapCaption,
                             child: Row(
-                              spacing: 8,
                               children: [
                                 SvgPicture.asset(
                                   'assets/caption.svg',
@@ -217,7 +225,6 @@ class VideoOverlayWidget extends StatelessWidget {
                           GestureDetector(
                             onTap: onTapComment,
                             child: Row(
-                              spacing: 8,
                               children: [
                                 SvgPicture.asset(
                                   'assets/uil_comment.svg',
@@ -304,6 +311,7 @@ class VideoOverlayWidget extends StatelessWidget {
                   onPressedClose: onPressedClose,
                   height: MediaQuery.of(context).size.height,
                   width: MediaQuery.of(context).size.width * 0.34,
+                  moveId: moveId,
                 ),
             ],
           ),

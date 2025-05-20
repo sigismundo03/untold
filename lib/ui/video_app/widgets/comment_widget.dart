@@ -1,18 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:untold/domain/model/comment_model.dart';
+import 'package:untold/ui/core/di/injection.dart';
 import 'package:untold/ui/core/widgets/exports.dart';
+import 'package:untold/ui/video_app/view_model/comment_view_model.dart';
 
 class CommentWidget extends StatelessWidget {
-  const CommentWidget(
-      {super.key,
-      required this.height,
-      required this.width,
-      this.onPressedClose});
+  const CommentWidget({
+    super.key,
+    required this.height,
+    required this.width,
+    this.onPressedClose,
+    required this.moveId,
+  });
   final double height;
   final double width;
   final Function()? onPressedClose;
+  final int moveId;
 
   @override
   Widget build(BuildContext context) {
+    final CommentViewViewModel _viewModel = getIt<CommentViewViewModel>();
+    TextEditingController _commentController = TextEditingController();
     return Container(
       height: height,
       width: width,
@@ -38,18 +46,35 @@ class CommentWidget extends StatelessWidget {
           const SizedBox(height: 16),
 
           Expanded(
-            child: ListView.builder(
-                shrinkWrap: true,
-                itemCount: 4,
-                itemBuilder: (context, index) {
-                  return CommentItem(
-                    profileImage: CircleAvatar(child: Text("E")),
-                    name: "Eva Mendes",
-                    timeAgo: "2 weeks ago",
-                    comment:
-                        "Lorem ipsum dolor sit amet. Nulla mollis gravida faucibus sollicitudin ut tincidunt.",
-                    hasReplies: true,
-                    replyCount: 12,
+            child: StreamBuilder<List<CommentModel>>(
+                stream: _viewModel.getComments(moveId),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+
+                  if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                    return const Center(
+                        child: Text('Nenhum comentário ainda.'));
+                  }
+
+                  // final comments = snapshot.data!;
+
+                  return Expanded(
+                    child: ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: 4,
+                        itemBuilder: (context, index) {
+                          return CommentItemWidget(
+                            profileImage: CircleAvatar(child: Text("E")),
+                            name: "Eva Mendes",
+                            timeAgo: "2 weeks ago",
+                            comment:
+                                "Lorem ipsum dolor sit amet. Nulla mollis gravida faucibus sollicitudin ut tincidunt.",
+                            hasReplies: true,
+                            replyCount: 12,
+                          );
+                        }),
                   );
                 }),
           ),
@@ -61,7 +86,7 @@ class CommentWidget extends StatelessWidget {
               SizedBox(width: 10),
               Expanded(
                 child: PrimaryTextFieldWidget(
-                  controller: TextEditingController(),
+                  controller: _commentController,
                   hintText: 'Add a reply...',
                 ),
               ),
@@ -73,7 +98,7 @@ class CommentWidget extends StatelessWidget {
   }
 }
 
-class CommentItem extends StatelessWidget {
+class CommentItemWidget extends StatelessWidget {
   final Widget profileImage;
   final String name;
   final String timeAgo;
@@ -81,7 +106,7 @@ class CommentItem extends StatelessWidget {
   final bool hasReplies;
   final int replyCount;
 
-  const CommentItem({
+  const CommentItemWidget({
     super.key,
     required this.profileImage,
     required this.name,

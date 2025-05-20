@@ -6,6 +6,7 @@ class UserModel {
   final String? email;
   final String? photoUrl;
   final String? password;
+  final String? firebaseUID;
 
   UserModel({
     this.id,
@@ -13,17 +14,43 @@ class UserModel {
     this.email,
     this.photoUrl,
     this.password,
+    this.firebaseUID,
+    
   });
 
-  factory UserModel.fromJson(UserResponseModel user) {
+  factory UserModel.fromJsonUserResponse(UserResponseModel user) {
     return UserModel(
       id: user.id ?? 0,
       name: user.username ?? '',
       email: user.email ?? '',
       photoUrl: user.profilePicture ??
           'https://cdn.pixabay.com/photo/2016/11/29/13/14/attractive-1869761_960_720.jpg',
+      firebaseUID: user.firebaseUID ?? '',
+    
+
     );
   }
+  factory UserModel.fromJson(Map<String, dynamic> json) {
+    return UserModel(
+      id: json['id'] ?? '',
+      name: json['name'] ?? '',
+      email: json['email'] ?? '',
+      photoUrl: json['photoUrl'] ??
+          'https://cdn.pixabay.com/photo/2016/11/29/13/14/attractive-1869761_960_720.jpg',
+      firebaseUID: json['firebaseUID'] ?? '',
+      
+      
+    );
+  }
+
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'name': name,
+        'email': email,
+        'photoUrl': photoUrl,
+        'firebaseUID': firebaseUID,
+        
+      };
 
   UserModel copyWith({
     int? id,
