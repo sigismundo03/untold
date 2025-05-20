@@ -35,7 +35,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios,
               color: Color.fromRGBO(170, 115, 240, 1)),
-          onPressed: () {},
+          onPressed: () {
+            Navigator.pop(context);
+          },
         ),
         actions: [
           TertiaryButtonWidget(
@@ -43,7 +45,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
             text: 'Edit Profile',
             textColor: Color.fromRGBO(170, 115, 240, 1),
             onPressed: () {
-              Navigator.pushNamed(context, AppRoutes.editProfile);
+              Navigator.pushNamed(
+                context,
+                AppRoutes.editProfile,
+                arguments: _profileViewModel.user,
+              );
             },
           ),
         ],
@@ -80,7 +86,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   icon: 'assets/lock.svg',
                   title: "Change Password",
                   onTap: () {
-                    Navigator.pushNamed(context, AppRoutes.changePassword);
+                    Navigator.pushNamed(
+                      context,
+                      AppRoutes.changePassword,
+                    );
                   },
                 ),
                 const SizedBox(height: 10),
@@ -104,7 +113,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           onSecondaryButtonTap: () {
                             Navigator.pop(context);
                           },
-                          primaryButtonText: 'Terminate Plan',
+                          primaryButtonText: 'Delete account',
                           secondaryButtonText: 'Cancel',
                         );
                       },
