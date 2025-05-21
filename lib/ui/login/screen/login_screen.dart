@@ -6,6 +6,8 @@ import 'package:untold/ui/core/di/injection.dart';
 import 'package:untold/ui/core/widgets/exports.dart';
 import 'package:untold/ui/login/view_model/login_view_model.dart';
 
+import '../../sign_up/screen/sign_up_screen.dart';
+
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
@@ -17,6 +19,25 @@ class _LoginScreenState extends State<LoginScreen> {
   final LoginViewModel _loginViewModel = getIt<LoginViewModel>();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  void showAppleLoginError(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (_) => AlertDialogWidget(
+        title: 'Login com Apple indisponível',
+        subtitle:
+            'Este recurso não foi implementado porque o desenvolvedor não possui um dispositivo Apple (macOS/iOS).',
+      ),
+    );
+  }
+
+  void showErrorLogin(BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (_) => AlertDialogWidget(
+              title: 'Erro ao fazer login',
+              subtitle: 'Verifique suas credenciais e tente novamente.',
+            ));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -104,6 +125,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
                           if (_loginViewModel.status.isSuccess) {
                             Navigator.pushNamed(context, AppRoutes.home);
+                          } else {
+                            showErrorLogin(context);
                           }
                         },
                         text: 'Login',
@@ -121,13 +144,19 @@ class _LoginScreenState extends State<LoginScreen> {
                   SocialLoginButtonWidget(
                     color: Color.fromRGBO(188, 76, 241, 0.2),
                     image: 'assets/google.svg',
-                    onPressed: () {
-                      _loginViewModel.loginWithGoogle();
+                    onPressed: () async {
+                      await _loginViewModel.loginWithGoogle();
+                      if (_loginViewModel.status.isSuccess) {
+                        Navigator.pushNamed(context, AppRoutes.home);
+                      }
                     },
                   ),
                   SocialLoginButtonWidget(
                     color: Color.fromRGBO(255, 255, 255, 0.33),
                     image: 'assets/apple.svg',
+                    onPressed: () {
+                      showAppleLoginError(context);
+                    },
                   ),
                 ],
               ),

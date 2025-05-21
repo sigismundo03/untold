@@ -25,19 +25,21 @@ class _SignUpScreenState extends State<SignUpScreen> {
     void showAppleLoginError(BuildContext context) {
       showDialog(
         context: context,
-        builder: (_) => AlertDialog(
-          title: const Text('Login com Apple indisponível'),
-          content: const Text(
-            'Este recurso não foi implementado porque o desenvolvedor não possui um dispositivo Apple (macOS/iOS).',
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(),
-              child: const Text('OK'),
-            ),
-          ],
+        builder: (_) => AlertDialogWidget(
+          title: 'Login com Apple indisponível',
+          subtitle:
+              'Este recurso não foi implementado porque o desenvolvedor não possui um dispositivo Apple (macOS/iOS).',
         ),
       );
+    }
+
+    void showErrorSignUp(BuildContext context) {
+      showDialog(
+          context: context,
+          builder: (_) => AlertDialogWidget(
+                title: 'Erro ao fazer cadastro',
+                subtitle: 'Verifique os campos e tente novamente.',
+              ));
     }
 
     return Scaffold(
@@ -92,7 +94,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       await _singUpViewModel.loginWithGoogle();
                       if (_singUpViewModel.status.isSuccess) {
                         if (mounted) {
-                          Navigator.pushNamed(context, AppRoutes.profile);
+                          Navigator.pushNamed(context, AppRoutes.home);
                         }
                       }
                     },
@@ -129,9 +131,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       _singUpViewModel.setObscure(!_singUpViewModel.isObscure);
                     },
                     icon: Icon(
-                     _singUpViewModel.isObscure
-                            ? Icons.visibility_off
-                            : Icons.visibility,
+                      _singUpViewModel.isObscure
+                          ? Icons.visibility_off
+                          : Icons.visibility,
                       color: Color.fromRGBO(108, 109, 122, 1),
                       size: 20,
                     ),
@@ -152,9 +154,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           !_singUpViewModel.isObscureConfirmPassWord);
                     },
                     icon: Icon(
-_singUpViewModel.isObscureConfirmPassWord
-                            ? Icons.visibility_off
-                            : Icons.visibility,
+                      _singUpViewModel.isObscureConfirmPassWord
+                          ? Icons.visibility_off
+                          : Icons.visibility,
                       color: Color.fromRGBO(108, 109, 122, 1),
                       size: 20,
                     ),
@@ -177,7 +179,7 @@ _singUpViewModel.isObscureConfirmPassWord
                         arguments: _singUpViewModel.user,
                       );
                     } else {
-                      // ScaffoldMessenger.of(context).showSnackBar( );
+                      showErrorSignUp(context);
                     }
                   },
                   text: 'Create Account',
@@ -188,6 +190,32 @@ _singUpViewModel.isObscureConfirmPassWord
           ),
         ),
       ),
+    );
+  }
+}
+
+class AlertDialogWidget extends StatelessWidget {
+  const AlertDialogWidget({
+    super.key,
+    required this.title,
+    required this.subtitle,
+  });
+  final String title;
+  final String subtitle;
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: Text(title),
+      content: Text(
+        subtitle,
+      ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.of(context).pop(),
+          child: const Text('OK'),
+        ),
+      ],
     );
   }
 }

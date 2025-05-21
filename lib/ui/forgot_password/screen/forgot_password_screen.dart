@@ -5,6 +5,7 @@ import 'package:untold/ui/core/widgets/exports.dart';
 
 import '../../../routing/app_routes.dart';
 import '../../core/di/injection.dart';
+import '../../sign_up/screen/sign_up_screen.dart';
 import '../view_model/forgot_password_view_model.dart';
 
 class ForgotPasswordScreen extends StatefulWidget {
@@ -18,6 +19,15 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   final ForgotPasswordViewModel _forgotPasswordViewModel =
       getIt<ForgotPasswordViewModel>();
   final TextEditingController emailController = TextEditingController();
+
+  void showError(BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (_) => AlertDialogWidget(
+              title: 'Erro ',
+              subtitle: 'Verifique os campos e tente novamente.',
+            ));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -73,10 +83,16 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                       ? const CircularProgressIndicator()
                       : PrimaryButtonWidget(
                           onPressed: () async {
-                            await _forgotPasswordViewModel
-                                .sendPasswordResetEmail();
-                            Navigator.pushReplacementNamed(
-                                context, AppRoutes.forgotPasswordInstructions);
+                            if (_forgotPasswordViewModel.user.email != null &&
+                                _forgotPasswordViewModel
+                                    .user.email!.isNotEmpty) {
+                              await _forgotPasswordViewModel
+                                  .sendPasswordResetEmail();
+                              Navigator.pushReplacementNamed(context,
+                                  AppRoutes.forgotPasswordInstructions);
+                            }else{
+                              showError(context);
+                            }
                           },
                           text: 'Send reset instructions',
                         ),

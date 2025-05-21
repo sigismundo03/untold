@@ -113,9 +113,6 @@ flutter:
 flutter_native_splash:
   color: "#131418"
   image: assets/logo.png
-  android: true
-  ios: true
-  web: false
 
 flutter_icons:
   color: "#131418"

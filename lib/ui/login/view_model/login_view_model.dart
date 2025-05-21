@@ -69,13 +69,16 @@ abstract class _LoginViewModelBase with Store {
       setStatus(StatusEnum.error);
       return;
     }
-
-    final result =
-        await _authRepository.signInWithEmail(user.email!, user.password!);
-    if (result == null) {
-      error = 'Invalid email or password';
+    try {
+      final result =
+          await _authRepository.signInWithEmail(user.email!, user.password!);
+      if (result == null) {
+        error = 'Invalid email or password';
+        setStatus(StatusEnum.error);
+        return;
+      }
+    } catch (e) {
       setStatus(StatusEnum.error);
-      return;
     }
 
     setStatus(StatusEnum.success);

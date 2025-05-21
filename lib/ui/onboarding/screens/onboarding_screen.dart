@@ -8,6 +8,7 @@ import 'package:untold/ui/core/widgets/exports.dart';
 import 'package:untold/ui/onboarding/view_model/onboarding_view_model.dart';
 
 import '../../core/di/injection.dart';
+import '../../sign_up/screen/sign_up_screen.dart';
 import '../widgets/choose_image_card_widget.dart';
 
 class OnboardingScreen extends StatefulWidget {
@@ -32,6 +33,15 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     await _onboardingViewModel.pickImage(source);
 
     Navigator.pop(context);
+  }
+
+  void showErrorSignUp(BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (_) => AlertDialogWidget(
+              title: 'Erro ao fazer cadastro',
+              subtitle: 'Verifique os campos e tente novamente.',
+            ));
   }
 
   @override
@@ -120,6 +130,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                                     context,
                                     AppRoutes.home,
                                     (Route<dynamic> route) => false);
+                              } else {
+                                showErrorSignUp(context);
                               }
                             },
                             text: 'Continue',
