@@ -4,8 +4,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:untold/ui/core/widgets/exports.dart';
 
 import '../../../routing/app_routes.dart';
+import '../../../utils/dialog_helper.dart';
 import '../../core/di/injection.dart';
-import '../../sign_up/screen/sign_up_screen.dart';
 import '../view_model/forgot_password_view_model.dart';
 
 class ForgotPasswordScreen extends StatefulWidget {
@@ -19,15 +19,6 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   final ForgotPasswordViewModel _forgotPasswordViewModel =
       getIt<ForgotPasswordViewModel>();
   final TextEditingController emailController = TextEditingController();
-
-  void showError(BuildContext context) {
-    showDialog(
-        context: context,
-        builder: (_) => AlertDialogWidget(
-              title: 'Erro ',
-              subtitle: 'Verifique os campos e tente novamente.',
-            ));
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -90,8 +81,8 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                                   .sendPasswordResetEmail();
                               Navigator.pushReplacementNamed(context,
                                   AppRoutes.forgotPasswordInstructions);
-                            }else{
-                              showError(context);
+                            } else {
+                              DialogHelper.showError(context);
                             }
                           },
                           text: 'Send reset instructions',

@@ -4,8 +4,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:untold/ui/core/widgets/exports.dart';
 
 import '../../../domain/model/user_model.dart';
+import '../../../utils/dialog_helper.dart';
 import '../../core/di/injection.dart';
-import '../../sign_up/screen/sign_up_screen.dart';
 import '../view_model/edit_profile_view_model.dart';
 
 class EditProfileScreen extends StatefulWidget {
@@ -24,15 +24,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     await _viewModel.pickImage(source);
 
     Navigator.pop(context);
-  }
-
-  void showError(BuildContext context) {
-    showDialog(
-        context: context,
-        builder: (_) => AlertDialogWidget(
-              title: 'Erro ',
-              subtitle: 'Verifique os campos e tente novamente.',
-            ));
   }
 
   @override
@@ -153,10 +144,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                     if (_viewModel.status.isSuccess) {
                                       Navigator.pop(context);
                                     } else {
-                                      showError(context);
+                                      DialogHelper.showError(context);
                                     }
                                   } else {
-                                    showError(context);
+                                   DialogHelper.showError(context);
                                   }
                                 },
                                 text: 'Update profile',

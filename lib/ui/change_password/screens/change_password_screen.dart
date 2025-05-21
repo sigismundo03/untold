@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:untold/ui/change_password/view_model/change_password_view_model.dart';
 
+import '../../../utils/dialog_helper.dart';
 import '../../core/di/injection.dart';
 import '../../core/widgets/primary_button_widget.dart';
 import '../../core/widgets/primary_text_field_widget.dart';
-import '../../sign_up/screen/sign_up_screen.dart';
 
 class ChangePasswordScreen extends StatefulWidget {
   const ChangePasswordScreen({super.key});
@@ -20,15 +20,6 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
   final TextEditingController _newPassword = TextEditingController();
   final TextEditingController _confirmPassword = TextEditingController();
   final TextEditingController _currentPassword = TextEditingController();
-
-  void showError(BuildContext context) {
-    showDialog(
-        context: context,
-        builder: (_) => AlertDialogWidget(
-              title: 'Erro ',
-              subtitle: 'Verifique os campos e tente novamente.',
-            ));
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -174,10 +165,10 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                                     if (_viewModel.status.isSuccess) {
                                       Navigator.pop(context);
                                     } else {
-                                      showError(context);
+                                      DialogHelper.showError(context);
                                     }
                                   } else {
-                                    showError(context);
+                                    DialogHelper.showError(context);
                                   }
                                 },
                                 text: 'Update Password',

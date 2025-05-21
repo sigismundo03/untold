@@ -5,6 +5,7 @@ import 'package:untold/routing/app_routes.dart';
 import 'package:untold/ui/core/widgets/exports.dart';
 import 'package:untold/ui/sign_up/view_model/sign_up_view_model.dart';
 
+import '../../../utils/dialog_helper.dart';
 import '../../core/di/injection.dart';
 
 class SignUpScreen extends StatefulWidget {
@@ -22,25 +23,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
     TextEditingController emailController = TextEditingController();
     TextEditingController passwordController = TextEditingController();
     TextEditingController confirmPasswordController = TextEditingController();
-    void showAppleLoginError(BuildContext context) {
-      showDialog(
-        context: context,
-        builder: (_) => AlertDialogWidget(
-          title: 'Login com Apple indisponível',
-          subtitle:
-              'Este recurso não foi implementado porque o desenvolvedor não possui um dispositivo Apple (macOS/iOS).',
-        ),
-      );
-    }
-
-    void showErrorSignUp(BuildContext context) {
-      showDialog(
-          context: context,
-          builder: (_) => AlertDialogWidget(
-                title: 'Erro ao fazer cadastro',
-                subtitle: 'Verifique os campos e tente novamente.',
-              ));
-    }
 
     return Scaffold(
       body: Padding(
@@ -103,7 +85,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     color: Color.fromRGBO(255, 255, 255, 0.33),
                     image: 'assets/apple.svg',
                     onPressed: () {
-                      showAppleLoginError(context);
+                      (context);
                     },
                   ),
                 ],
@@ -179,7 +161,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         arguments: _singUpViewModel.user,
                       );
                     } else {
-                      showErrorSignUp(context);
+                      DialogHelper.showError(context);
                     }
                   },
                   text: 'Create Account',
@@ -190,32 +172,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
           ),
         ),
       ),
-    );
-  }
-}
-
-class AlertDialogWidget extends StatelessWidget {
-  const AlertDialogWidget({
-    super.key,
-    required this.title,
-    required this.subtitle,
-  });
-  final String title;
-  final String subtitle;
-
-  @override
-  Widget build(BuildContext context) {
-    return AlertDialog(
-      title: Text(title),
-      content: Text(
-        subtitle,
-      ),
-      actions: [
-        TextButton(
-          onPressed: () => Navigator.of(context).pop(),
-          child: const Text('OK'),
-        ),
-      ],
     );
   }
 }
