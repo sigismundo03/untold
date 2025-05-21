@@ -142,7 +142,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                   if (_viewModel.validName) {
                                     await _viewModel.updatedProfile();
                                     if (_viewModel.status.isSuccess) {
-                                      Navigator.pop(context);
+                                      Navigator.pop(context, true);
                                     } else {
                                       DialogHelper.showError(context);
                                     }

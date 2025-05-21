@@ -19,13 +19,13 @@ abstract class _ChangePasswordViewModelBase with Store {
   String _newPassWord = '';
 
   @observable
-  bool isObscure = false;
+  bool isObscure = true;
 
   @observable
-  bool isObscureConfirmPassWord = false;
+  bool isObscureConfirmPassWord = true;
 
   @observable
-  bool isObscureConfirmNewPassWord = false;
+  bool isObscureConfirmNewPassWord = true;
 
   @observable
   StatusEnum _status = StatusEnum.init;

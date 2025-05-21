@@ -33,7 +33,7 @@ class ProfileRepositoryImp implements ProfileRepository {
   @override
   Future<void> editProfile(String name) async {
     await _apiClient.patch('/users/updateMe', body: {
-      'data': {'name': name},
+      'data': {'username': name},
     });
   }
 

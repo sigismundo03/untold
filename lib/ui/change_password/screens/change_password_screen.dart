@@ -77,15 +77,15 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                         Observer(builder: (_) {
                           return PrimaryTextFieldWidget(
                             hintText: 'Current password',
-                            obscureText: false,
+                            obscureText: _viewModel.isObscure,
                             suffixIcon: IconButton(
                               onPressed: () {
                                 _viewModel.setObscure(!_viewModel.isObscure);
                               },
                               icon: Icon(
                                 _viewModel.isObscure
-                                    ? Icons.visibility
-                                    : Icons.visibility_off,
+                                    ? Icons.visibility_off
+                                    : Icons.visibility,
                                 color: Color.fromRGBO(108, 109, 122, 1),
                                 size: 20,
                               ),
@@ -108,7 +108,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                         Observer(builder: (_) {
                           return PrimaryTextFieldWidget(
                             hintText: 'New password',
-                            obscureText: false,
+                            obscureText: _viewModel.isObscureConfirmPassWord,
                             suffixIcon: IconButton(
                               onPressed: () {
                                 _viewModel.setObscureConfirmPassWord(
@@ -116,8 +116,8 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                               },
                               icon: Icon(
                                 _viewModel.isObscureConfirmPassWord
-                                    ? Icons.visibility
-                                    : Icons.visibility_off,
+                                    ? Icons.visibility_off
+                                    : Icons.visibility,
                                 color: Color.fromRGBO(108, 109, 122, 1),
                                 size: 20,
                               ),
@@ -131,7 +131,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                         Observer(builder: (_) {
                           return PrimaryTextFieldWidget(
                             hintText: 'Confirm new password',
-                            obscureText: false,
+                            obscureText: _viewModel.isObscureConfirmNewPassWord,
                             suffixIcon: IconButton(
                               onPressed: () {
                                 _viewModel.setObscureConfirmNewPassWord(
@@ -139,8 +139,8 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                               },
                               icon: Icon(
                                 _viewModel.isObscureConfirmNewPassWord
-                                    ? Icons.visibility
-                                    : Icons.visibility_off,
+                                    ? Icons.visibility_off
+                                    : Icons.visibility,
                                 color: Color.fromRGBO(108, 109, 122, 1),
                                 size: 20,
                               ),
@@ -156,7 +156,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                     const SizedBox(height: 16),
                     Observer(builder: (_) {
                       return Center(
-                        child: _viewModel.validPassword
+                        child: _viewModel.status.isLoading
                             ? CircularProgressIndicator()
                             : PrimaryButtonWidget(
                                 onPressed: () async {
