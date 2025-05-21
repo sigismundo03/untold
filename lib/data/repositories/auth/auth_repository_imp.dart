@@ -97,7 +97,6 @@ class AuthRepositoryImp extends AuthRepository {
     }
   }
 
-  // Finalizar Onboarding
   @override
   Future<void> finishOnboarding() async {
     final result = await _apiClient.patch('/users/updateMe', body: {
@@ -113,7 +112,7 @@ class AuthRepositoryImp extends AuthRepository {
       await _googleSignIn.signOut();
       return true;
     } catch (e) {
-      return true;
+      return false;
     }
   }
 
