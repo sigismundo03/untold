@@ -25,6 +25,22 @@ mixin _$CommentViewModel on _CommentViewModelBase, Store {
     });
   }
 
+  late final _$userAtom =
+      Atom(name: '_CommentViewModelBase.user', context: context);
+
+  @override
+  UserModel get user {
+    _$userAtom.reportRead();
+    return super.user;
+  }
+
+  @override
+  set user(UserModel value) {
+    _$userAtom.reportWrite(value, super.user, () {
+      super.user = value;
+    });
+  }
+
   late final _$getUserAsyncAction =
       AsyncAction('_CommentViewModelBase.getUser', context: context);
 
@@ -36,7 +52,8 @@ mixin _$CommentViewModel on _CommentViewModelBase, Store {
   @override
   String toString() {
     return '''
-comment: ${comment}
+comment: ${comment},
+user: ${user}
     ''';
   }
 }

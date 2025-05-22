@@ -80,7 +80,8 @@ abstract class _ChangePasswordViewModelBase with Store {
   Future<void> changePassword() async {
     setStatus(StatusEnum.loading);
     try {
-      await _profileRepository.changePassword(user.password!);
+      await _profileRepository.changePassword(
+          password: _passWord, newPassword: user.password!);
 
       setStatus(StatusEnum.success);
     } catch (e) {

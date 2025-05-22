@@ -6,6 +6,7 @@ import 'package:mocktail/mocktail.dart';
 import 'package:untold/data/repositories/auth/auth_repository.dart';
 import 'package:untold/data/repositories/auth/auth_repository_imp.dart';
 import 'package:untold/data/services/api_client/api_client.dart' show ApiClient;
+import 'package:untold/data/services/shared_prefs_helper/shared_preference_helper.dart';
 
 // Mock classes
 class MockFirebaseAuth extends Mock implements FirebaseAuth {}
@@ -23,13 +24,16 @@ class MockGoogleSignInAccount extends Mock implements GoogleSignInAccount {}
 class MockGoogleSignInAuthentication extends Mock
     implements GoogleSignInAuthentication {}
 
-class ResponseMock extends Mock implements Response {}
+class MockResponse extends Mock implements Response {}
 
-class AuthCredentialMock extends Mock implements AuthCredential {}
+class MockAuthCredential extends Mock implements AuthCredential {}
 
 class FakeUserCredential extends Fake implements UserCredential {}
 
 class FakeAuthCredential extends Fake implements AuthCredential {}
+
+class MockSharedPreferenceHelper extends Mock
+    implements SharedPreferenceHelper {}
 
 void main() {
   AuthRepositoryImpTest.runTests();
@@ -45,6 +49,7 @@ class AuthRepositoryImpTest {
   late MockUser mockUser;
   late MockGoogleSignInAccount mockGoogleSignInAccount;
   late MockGoogleSignInAuthentication mockGoogleSignInAuthentication;
+  late MockSharedPreferenceHelper mockSharedPreferences;
 
   // Constants for test data
   static const String email = 'test@example.com';
@@ -62,12 +67,14 @@ class AuthRepositoryImpTest {
     mockUser = MockUser();
     mockGoogleSignInAccount = MockGoogleSignInAccount();
     mockGoogleSignInAuthentication = MockGoogleSignInAuthentication();
+    mockSharedPreferences = MockSharedPreferenceHelper();
 
     // Initialize repository
     authRepository = AuthRepositoryImp(
       auth: mockFirebaseAuth,
       apiClient: mockApiClient,
       googleSignIn: mockGoogleSignIn,
+      sharedPreferenceHelper: mockSharedPreferences,
     );
 
     // Register fallback values for non-primitive types
@@ -141,11 +148,11 @@ class AuthRepositoryImpTest {
               '/auth/local/register',
               body: any(named: 'body'),
               hasNoToken: true,
-            )).thenAnswer((_) async => ResponseMock());
+            )).thenAnswer((_) async => MockResponse());
         when(() => mockApiClient.patch(
               '/users/updateMe',
               body: any(named: 'body'),
-            )).thenAnswer((_) async => ResponseMock());
+            )).thenAnswer((_) async => MockResponse());
 
         // Act
         final result = await authRepository.registerWithEmail(
@@ -197,8 +204,6 @@ class AuthRepositoryImpTest {
       });
 
       test('signInWithGoogle succeeds with valid Google account', () async {
-
-
         // Arrange
 
         when(() => mockGoogleSignIn.signIn())
@@ -220,11 +225,11 @@ class AuthRepositoryImpTest {
               '/auth/local/register',
               body: any(named: 'body'),
               hasNoToken: true,
-            )).thenAnswer((_) async => ResponseMock());
+            )).thenAnswer((_) async => MockResponse());
         when(() => mockApiClient.patch(
               '/users/updateMe',
               body: any(named: 'body'),
-            )).thenAnswer((_) async => ResponseMock());
+            )).thenAnswer((_) async => MockResponse());
 
         // Act
         final result = await authRepository.signInWithGoogle();
@@ -268,7 +273,7 @@ class AuthRepositoryImpTest {
         when(() => mockApiClient.patch(
               '/users/updateMe',
               body: any(named: 'body'),
-            )).thenAnswer((_) async => ResponseMock());
+            )).thenAnswer((_) async => MockResponse());
 
         // Act
         await authRepository.finishOnboarding();
