@@ -84,6 +84,9 @@ class _CommentsScreenState extends State<CommentsScreen> {
                   }
 
                   final comments = snapshot.data!;
+                  comments.sort(
+                    (a, b) => b.date!.compareTo(a.date!),
+                  );
 
                   return ListView.builder(
                       shrinkWrap: true,
@@ -91,9 +94,17 @@ class _CommentsScreenState extends State<CommentsScreen> {
                       itemBuilder: (context, index) {
                         final comment = comments[index];
                         return CommentItemWidget(
-                          profileImage: CircleAvatar(child: Text("E")),
+                          profileImage: CircleAvatar(
+                              radius: 12,
+                              child: comment.user?.photoUrl != null
+                                  ? CacheImageWidget(
+                                      assetName: comment.user!.photoUrl!,
+                                      height: 37,
+                                      width: 37,
+                                    )
+                                  : Text("E")),
                           name: comment.user?.name ?? "Eva Mendes",
-                          timeAgo: "2 weeks ago",
+                          timeAgo:comment.timeAgoFromString(comment.date),
                           comment: comment.comment ??
                               "Lorem ipsum dolor sit amet. Nulla mollis gravida faucibus sollicitudin ut tincidunt.",
                           hasReplies: true,
@@ -105,8 +116,18 @@ class _CommentsScreenState extends State<CommentsScreen> {
           Observer(builder: (context) {
             return Row(
               children: [
-                CircleAvatar(
-                    radius: 16, backgroundColor: Colors.grey, child: Text("E")),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: CircleAvatar(
+                      radius: 16,
+                      child: _viewModel.user.photoUrl != null
+                          ? CacheImageWidget(
+                              assetName: _viewModel.user.photoUrl!,
+                              height: 37,
+                              width: 37,
+                            )
+                          : Text("E")),
+                ),
                 SizedBox(width: 10),
                 Expanded(
                   child: PrimaryTextFieldWidget(

@@ -14,7 +14,8 @@ abstract class _CommentViewModelBase with Store {
   final ProfileRepository _profileRepository;
   @observable
   String comment = '';
-  late UserModel user;
+  @observable
+  UserModel user = UserModel();
 
   _CommentViewModelBase(
       {required RecoverMovieRepository repository,
@@ -24,7 +25,7 @@ abstract class _CommentViewModelBase with Store {
 
   Stream<List<CommentModel>> getComments(int moveId) =>
       _repository.getComments(moveId);
-
+  @action
   Future<void> getUser() async {
     user = await _profileRepository.getUser();
   }

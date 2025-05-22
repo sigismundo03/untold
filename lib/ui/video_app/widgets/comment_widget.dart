@@ -58,16 +58,26 @@ class CommentWidget extends StatelessWidget {
                   }
 
                   final comments = snapshot.data!;
-
+                  comments.sort(
+                    (a, b) => b.date!.compareTo(a.date!),
+                  );
                   return ListView.builder(
                       shrinkWrap: true,
                       itemCount: comments.length,
                       itemBuilder: (context, index) {
                         final comment = comments[index];
                         return CommentItemWidget(
-                          profileImage: CircleAvatar(child: Text("E")),
+                          profileImage: CircleAvatar(
+                              radius: 12,
+                              child: comment.user?.photoUrl != null
+                                  ? CacheImageWidget(
+                                      assetName: comment.user!.photoUrl!,
+                                      height: 37,
+                                      width: 37,
+                                    )
+                                  : Text("E")),
                           name: comment.user?.name ?? "Eva Mendes",
-                          timeAgo: "2 weeks ago",
+                          timeAgo: comment.timeAgoFromString(comment.date),
                           comment: comment.comment ??
                               "Lorem ipsum dolor sit amet. Nulla mollis gravida faucibus sollicitudin ut tincidunt.",
                           hasReplies: true,
@@ -126,9 +136,22 @@ class CommentItemWidget extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('$name • $timeAgo',
-                  style: const TextStyle(
-                      color: Colors.white70, fontWeight: FontWeight.bold)),
+              Text(
+                '$name ',
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w700,
+                  fontSize: 14,
+                ),
+              ),
+              Text(
+                ' $timeAgo',
+                style: const TextStyle(
+                  color: Color(0xffC4C4C4),
+                  fontWeight: FontWeight.w500,
+                  fontSize: 10,
+                ),
+              ),
               const SizedBox(height: 4),
               Text(comment, style: const TextStyle(color: Colors.white)),
               if (hasReplies)

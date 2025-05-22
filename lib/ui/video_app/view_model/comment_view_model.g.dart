@@ -25,6 +25,14 @@ mixin _$CommentViewModel on _CommentViewModelBase, Store {
     });
   }
 
+  late final _$getUserAsyncAction =
+      AsyncAction('_CommentViewModelBase.getUser', context: context);
+
+  @override
+  Future<void> getUser() {
+    return _$getUserAsyncAction.run(() => super.getUser());
+  }
+
   @override
   String toString() {
     return '''
