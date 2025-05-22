@@ -99,6 +99,7 @@ class AuthRepositoryImpTest {
       reset(mockUser);
       reset(mockGoogleSignInAccount);
       reset(mockGoogleSignInAuthentication);
+      reset(mockSharedPreferences);
     });
 
     group('AuthRepositoryImp', () {
@@ -108,6 +109,9 @@ class AuthRepositoryImpTest {
               email: email,
               password: password,
             )).thenAnswer((_) async => mockUserCredential);
+        when(() => mockSharedPreferences.setString(any(), any()))
+            .thenAnswer((_) async => true);
+
         when(() => mockUserCredential.user).thenReturn(mockUser);
         when(() => mockUser.uid).thenReturn(uid);
 
@@ -142,6 +146,8 @@ class AuthRepositoryImpTest {
               email: email,
               password: password,
             )).thenAnswer((_) async => mockUserCredential);
+        when(() => mockSharedPreferences.setString(any(), any()))
+            .thenAnswer((_) async => true);
         when(() => mockUserCredential.user).thenReturn(mockUser);
         when(() => mockUser.uid).thenReturn(uid);
         when(() => mockApiClient.post(
