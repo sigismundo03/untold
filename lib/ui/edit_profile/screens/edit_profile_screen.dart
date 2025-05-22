@@ -18,7 +18,7 @@ class EditProfileScreen extends StatefulWidget {
 
 class _EditProfileScreenState extends State<EditProfileScreen> {
   final EditProfileViewModel _viewModel = getIt.get<EditProfileViewModel>();
-  TextEditingController _nameCotroller = TextEditingController();
+  final TextEditingController _nameController = TextEditingController();
 
   Future<void> _pickImage(ImageSource source) async {
     await _viewModel.pickImage(source);
@@ -29,7 +29,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   @override
   void initState() {
     super.initState();
-    _nameCotroller.text = widget.user.name ?? 'Eva mendes';
+     _nameController.text = widget.user.name ?? 'Eva mendes';
   }
 
   @override
@@ -123,7 +123,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           return PrimaryTextFieldWidget(
                             hintText: widget.user.name ?? 'Eva mendes',
                             obscureText: false,
-                            controller: _nameCotroller,
+                            controller: _nameController,
                             onChanged: (value) {
                               _viewModel.setName(value);
                             },
