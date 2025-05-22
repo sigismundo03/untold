@@ -112,8 +112,8 @@ void setupDependencies() {
     ),
   );
 
-  getIt.registerFactory<CommentViewViewModel>(
-    () => CommentViewViewModel(
+  getIt.registerFactory<CommentViewModel>(
+    () => CommentViewModel(
       repository: getIt(),
       profileRepository: getIt(),
     ),

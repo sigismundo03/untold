@@ -6,6 +6,9 @@ import 'package:untold/domain/model/movie_model.dart';
 import 'package:untold/ui/core/di/injection.dart';
 import 'package:video_player/video_player.dart';
 
+import '../../../domain/model/comment_model.dart';
+import '../../../routing/app_routes.dart';
+import '../view_model/comment_view_model.dart';
 import '../view_model/video_app_view_model.dart';
 import '../widgets/audio_subtitle_widget.dart';
 import '../widgets/comment_widget.dart';
@@ -20,7 +23,8 @@ class VideoAppScreen extends StatefulWidget {
 
 class _VideoAppScreenState extends State<VideoAppScreen> {
   final VideoAppViewModel _viewModel = getIt<VideoAppViewModel>();
-
+  final CommentViewModel _commentViewModel = getIt<CommentViewModel>();
+  late final Stream<List<CommentModel>> _commentsStream;
   @override
   void initState() {
     super.initState();
@@ -33,6 +37,7 @@ class _VideoAppScreenState extends State<VideoAppScreen> {
       widget.movie.streamLink,
       widget.movie.id,
     );
+    _commentsStream = _commentViewModel.getComments(widget.movie.id);
   }
 
   @override
@@ -74,49 +79,58 @@ class _VideoAppScreenState extends State<VideoAppScreen> {
           child: GestureDetector(
             onTap: _viewModel.toggleControls,
             child: _viewModel.status.isSuccess
-                ? Observer(builder: (context) {
-                    return Stack(
-                      children: [
-                        Center(
-                          child: AspectRatio(
-                            aspectRatio:
-                                _viewModel.controller.value.aspectRatio,
-                            child: VideoPlayer(_viewModel.controller),
-                          ),
+                ? Stack(
+                    children: [
+                      Center(
+                        child: AspectRatio(
+                          aspectRatio: _viewModel.controller.value.aspectRatio,
+                          child: VideoPlayer(_viewModel.controller),
                         ),
-                        _viewModel.showControls
-                            ? Observer(builder: (context) {
-                                return VideoOverlayWidget(
-                                  title: widget.movie.name,
-                                  controller: _viewModel.controller,
-                                  position: _viewModel.position,
-                                  increase15Seconds:
-                                      _viewModel.increase15Seconds,
-                                  decrease15Seconds:
-                                      _viewModel.decrease15Seconds,
-                                  isPlaying: _viewModel.isPlaying,
-                                  openComment: _viewModel.openComment,
-                                  moveId: widget.movie.id,
-                                  onPressedClose: () {
-                                    _viewModel.openComment = false;
-                                  },
-                                  onTapComment: () {
-                                    _viewModel.openComment = true;
-                                  },
-                                  onTapCaption: () {
-                                    _viewModel.openAudio = true;
-                                  },
-                                  play: () {
-                                    _viewModel.isPlaying
-                                        ? _viewModel.pause()
-                                        : _viewModel.playing();
-                                  },
+                      ),
+                      _viewModel.showControls
+                          ? VideoOverlayWidget(
+                              title: widget.movie.name,
+                              controller: _viewModel.controller,
+                              position: _viewModel.position,
+                              increase15Seconds: _viewModel.increase15Seconds,
+                              decrease15Seconds: _viewModel.decrease15Seconds,
+                              isPlaying: _viewModel.isPlaying,
+                              openComment: _viewModel.openComment,
+                              moveId: widget.movie.id,
+                              commentsStream: _commentsStream,
+                              onPressedClose: () {
+                                _viewModel.openComment = false;
+                              },
+                              onTapComment: () {
+                                _viewModel.openComment = true;
+                              },
+                              onTapCaption: () {
+                                _viewModel.openAudio = true;
+                              },
+                              play: () {
+                                _viewModel.isPlaying
+                                    ? _viewModel.pause()
+                                    : _viewModel.playing();
+                              },
+                              onTapTextField: () async {
+                                FocusScope.of(context).unfocus();
+                                SystemChrome.setPreferredOrientations([
+                                  DeviceOrientation.portraitUp,
+                                  DeviceOrientation.portraitDown,
+                                ]);
+                                _viewModel.pause();
+                                await Navigator.pushNamed(
+                                  context,
+                                  AppRoutes.comments,
+                                  arguments: widget.movie.id,
                                 );
+
+                                FocusScope.of(context).unfocus();
+                                _viewModel.playing();
                               })
-                            : const SizedBox.shrink(),
-                      ],
-                    );
-                  })
+                          : const SizedBox.shrink(),
+                    ],
+                  )
                 : const Center(child: CircularProgressIndicator()),
           ),
         );
@@ -140,6 +154,8 @@ class VideoOverlayWidget extends StatelessWidget {
     required this.onTapComment,
     required this.onTapCaption,
     required this.moveId,
+    required this.commentsStream,
+    this.onTapTextField,
   });
   final VideoPlayerController controller;
   final Duration position;
@@ -153,6 +169,8 @@ class VideoOverlayWidget extends StatelessWidget {
   final Function()? onTapComment;
   final Function()? onTapCaption;
   final int moveId;
+  final Stream<List<CommentModel>> commentsStream;
+  final void Function()? onTapTextField;
 
   @override
   Widget build(BuildContext context) {
@@ -178,7 +196,6 @@ class VideoOverlayWidget extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    // Top Bar
                     Padding(
                       padding: const EdgeInsets.all(12.0),
                       child: Row(
@@ -255,18 +272,14 @@ class VideoOverlayWidget extends StatelessWidget {
                           ),
                           onPressed: decrease15Seconds,
                         ),
-                        Observer(builder: (context) {
-                          return IconButton(
-                            icon: Icon(
-                              isPlaying
-                                  ? Icons.pause_circle
-                                  : Icons.play_circle,
-                              size: 64,
-                              color: Colors.white,
-                            ),
-                            onPressed: play,
-                          );
-                        }),
+                        IconButton(
+                          icon: Icon(
+                            isPlaying ? Icons.pause_circle : Icons.play_circle,
+                            size: 64,
+                            color: Colors.white,
+                          ),
+                          onPressed: play,
+                        ),
                         IconButton(
                           icon: SvgPicture.asset(
                             'assets/iconoir_forward-15-seconds.svg',
@@ -310,10 +323,12 @@ class VideoOverlayWidget extends StatelessWidget {
               ),
               if (openComment)
                 CommentWidget(
+                  commentsStream: commentsStream,
                   onPressedClose: onPressedClose,
                   height: MediaQuery.of(context).size.height,
                   width: MediaQuery.of(context).size.width * 0.34,
                   moveId: moveId,
+                  onTapTextField: onTapTextField,
                 ),
             ],
           ),
