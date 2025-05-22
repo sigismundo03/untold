@@ -1,0 +1,133 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:get_it/get_it.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:untold/data/repositories/auth/auth_repository.dart';
+import 'package:untold/data/repositories/auth/auth_repository_imp.dart';
+import 'package:untold/data/repositories/profile_repository/profile_repository.dart';
+import 'package:untold/data/repositories/video_player/video_player_repository.dart';
+import 'package:untold/data/services/shared_prefs_helper/shared_preference_helper.dart';
+import 'package:untold/ui/home/view_model/home_view_model.dart';
+import 'package:untold/ui/profile/view_model/profile_view_model.dart';
+import 'package:untold/ui/sign_up/view_model/sign_up_view_model.dart';
+import 'package:untold/ui/video_app/view_model/comment_view_model.dart';
+
+import '../../../data/repositories/movie/movie_repository.dart';
+import '../../../data/repositories/movie/movie_repository_imp.dart';
+import '../../../data/repositories/profile_repository/profile_repository_imp.dart';
+import '../../../data/repositories/video_player/video_player_repository_imp.dart';
+import '../../../data/services/api_client/api_client.dart';
+import '../../../data/services/api_client/dio_api_client.dart';
+import '../../change_password/view_model/change_password_view_model.dart';
+import '../../edit_profile/view_model/edit_profile_view_model.dart';
+import '../../forgot_password/view_model/forgot_password_view_model.dart';
+import '../../login/view_model/login_view_model.dart';
+import '../../onboarding/view_model/onboarding_view_model.dart';
+import '../../video_app/view_model/video_app_view_model.dart';
+
+final GetIt getIt = GetIt.instance;
+final GoogleSignIn googleSignIn = GoogleSignIn();
+final FirebaseAuth auth = FirebaseAuth.instance;
+
+Future<void> setupDependencies() async {
+  final shared = await SharedPreferences.getInstance();
+
+  // Services
+  getIt.registerSingleton<ApiClient>(
+    DioApiClient(baseUrl: 'https://untold-strapi.api.prod.loomi.com.br/api'),
+  );
+  getIt.registerSingleton<SharedPreferenceHelper>(
+    SharedPreferenceHelper(
+      prefs: shared,
+    ),
+  );
+
+  // Repositories
+  getIt.registerSingleton<AuthRepository>(
+    AuthRepositoryImp(
+      apiClient: getIt(),
+      auth: auth,
+      googleSignIn: googleSignIn,
+      sharedPreferenceHelper: getIt(),
+    ),
+  );
+
+  getIt.registerSingleton<ProfileRepository>(
+    ProfileRepositoryImp(apiClient: getIt(), auth: auth,
+    sharedPreferenceHelper: getIt(),
+    ),
+  );
+
+  getIt.registerSingleton<VideoPlayerRepository>(
+    VideoPlayerRepositoryImp(),
+  );
+
+  getIt.registerSingleton<RecoverMovieRepository>(
+    RecoverMovieRepositoryImp(
+      apiClient: getIt(),
+      firestore: FirebaseFirestore.instance,
+    ),
+  );
+
+  // ViewModels
+
+  getIt.registerFactory<LoginViewModel>(
+    () => LoginViewModel(
+      authRepository: getIt(),
+    ),
+  );
+
+  getIt.registerFactory<SingUpViewModel>(
+    () => SingUpViewModel(
+      authRepository: getIt(),
+    ),
+  );
+
+  getIt.registerFactory<OnboardingViewModel>(
+    () => OnboardingViewModel(
+      authRepository: getIt(),
+    ),
+  );
+  getIt.registerFactory<ProfileViewModel>(
+    () => ProfileViewModel(
+      profileRepository: getIt(),
+      authRepository: getIt(),
+    ),
+  );
+  getIt.registerFactory<ChangePasswordViewModel>(
+    () => ChangePasswordViewModel(
+      profileRepository: getIt(),
+    ),
+  );
+
+  getIt.registerFactory<EditProfileViewModel>(
+    () => EditProfileViewModel(
+      profileRepository: getIt(),
+    ),
+  );
+  getIt.registerFactory<ForgotPasswordViewModel>(
+    () => ForgotPasswordViewModel(
+      authRepository: getIt(),
+    ),
+  );
+
+  getIt.registerFactory<VideoAppViewModel>(
+    () => VideoAppViewModel(
+      repository: getIt(),
+      movieRepository: getIt(),
+    ),
+  );
+  getIt.registerFactory<HomeViewModel>(
+    () => HomeViewModel(
+      movieRepository: getIt(),
+    ),
+  );
+
+  getIt.registerFactory<CommentViewModel>(
+    () => CommentViewModel(
+      repository: getIt(),
+      profileRepository: getIt(),
+    ),
+  );
+}
