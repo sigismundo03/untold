@@ -6,7 +6,7 @@
 
 ```bash
 git clone https://github.com/sigismundo03/untold.git
-cd untold-movie-app
+cd untold
 flutter pub get
 flutter run
 
