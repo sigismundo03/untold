@@ -47,10 +47,14 @@ dependencies:
   image_picker: ^1.1.2
   cached_network_image: ^3.4.1
   flutter_reaction_button: ^3.0.0+3
-  cloud_firestore: ^5.6.7
+  cloud_firestore: ^5.6.8
   video_player: ^2.9.5
   json_annotation: ^4.9.0
   shimmer: ^3.0.0
+  flutter_native_splash: ^2.4.4
+  flutter_launcher_icons: ^0.13.1
+  uuid: ^4.5.1
+  share_plus: ^11.0.0
 
 dev_dependencies:
   flutter_test:
@@ -65,6 +69,7 @@ dev_dependencies:
   build_runner: ^2.4.15
   mobx_codegen: ^2.7.0
   json_serializable: ^6.9.0
+  mocktail: ^1.0.4
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -107,3 +112,17 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package
+
+flutter_native_splash:
+  color: "#131418"
+  image: assets/logo.png
+  android: true
+  ios: true
+  android_gravity: center
+  ios_content_mode: center
+
+flutter_icons:
+  color: "#131418"
+  android: true
+  ios: true
+  image_path: "assets/logo.png"

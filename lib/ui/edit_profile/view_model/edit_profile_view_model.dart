@@ -31,7 +31,7 @@ abstract class _EditProfileViewModelBase with Store {
   File? get image => _image;
 
   @computed
-  bool get validName => user.name!.trim().isNotEmpty && _image != null;
+  bool get validName => user.name!.trim().isNotEmpty;
 
   @action
   Future<void> updatedProfile() async {

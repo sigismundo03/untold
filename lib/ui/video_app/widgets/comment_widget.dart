@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:untold/domain/model/comment_model.dart';
-import 'package:untold/ui/core/di/injection.dart';
 import 'package:untold/ui/core/widgets/exports.dart';
-import 'package:untold/ui/video_app/view_model/comment_view_model.dart';
 
 class CommentWidget extends StatelessWidget {
   const CommentWidget({
@@ -11,16 +9,17 @@ class CommentWidget extends StatelessWidget {
     required this.width,
     this.onPressedClose,
     required this.moveId,
+    required this.commentsStream,
+    this.onTapTextField,
   });
   final double height;
   final double width;
   final Function()? onPressedClose;
   final int moveId;
-
+  final Stream<List<CommentModel>> commentsStream;
+  final void Function()? onTapTextField;
   @override
   Widget build(BuildContext context) {
-    final CommentViewViewModel _viewModel = getIt<CommentViewViewModel>();
-    TextEditingController _commentController = TextEditingController();
     return Container(
       height: height,
       width: width,
@@ -47,7 +46,7 @@ class CommentWidget extends StatelessWidget {
 
           Expanded(
             child: StreamBuilder<List<CommentModel>>(
-                stream: _viewModel.getComments(moveId),
+                stream: commentsStream,
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const Center(child: CircularProgressIndicator());
@@ -58,24 +57,33 @@ class CommentWidget extends StatelessWidget {
                         child: Text('Nenhum comentário ainda.'));
                   }
 
-                  // final comments = snapshot.data!;
-
-                  return Expanded(
-                    child: ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: 4,
-                        itemBuilder: (context, index) {
-                          return CommentItemWidget(
-                            profileImage: CircleAvatar(child: Text("E")),
-                            name: "Eva Mendes",
-                            timeAgo: "2 weeks ago",
-                            comment:
-                                "Lorem ipsum dolor sit amet. Nulla mollis gravida faucibus sollicitudin ut tincidunt.",
-                            hasReplies: true,
-                            replyCount: 12,
-                          );
-                        }),
+                  final comments = snapshot.data!;
+                  comments.sort(
+                    (a, b) => b.date!.compareTo(a.date!),
                   );
+                  return ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: comments.length,
+                      itemBuilder: (context, index) {
+                        final comment = comments[index];
+                        return CommentItemWidget(
+                          profileImage: CircleAvatar(
+                              radius: 12,
+                              child: comment.user?.photoUrl != null
+                                  ? CacheImageWidget(
+                                      assetName: comment.user!.photoUrl!,
+                                      height: 37,
+                                      width: 37,
+                                    )
+                                  : Text("E")),
+                          name: comment.user?.name ?? "Eva Mendes",
+                          timeAgo: comment.timeAgoFromString(comment.date),
+                          comment: comment.comment ??
+                              "Lorem ipsum dolor sit amet. Nulla mollis gravida faucibus sollicitudin ut tincidunt.",
+                          hasReplies: true,
+                          replyCount: 12,
+                        );
+                      });
                 }),
           ),
 
@@ -86,8 +94,9 @@ class CommentWidget extends StatelessWidget {
               SizedBox(width: 10),
               Expanded(
                 child: PrimaryTextFieldWidget(
-                  controller: _commentController,
+                  controller: TextEditingController(),
                   hintText: 'Add a reply...',
+                  onTap: onTapTextField,
                 ),
               ),
             ],
@@ -127,23 +136,34 @@ class CommentItemWidget extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('$name • $timeAgo',
-                  style: const TextStyle(
-                      color: Colors.white70, fontWeight: FontWeight.bold)),
+              Text(
+                '$name ',
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w700,
+                  fontSize: 14,
+                ),
+              ),
+              Text(
+                ' $timeAgo',
+                style: const TextStyle(
+                  color: Color(0xffC4C4C4),
+                  fontWeight: FontWeight.w500,
+                  fontSize: 10,
+                ),
+              ),
               const SizedBox(height: 4),
               Text(comment, style: const TextStyle(color: Colors.white)),
               if (hasReplies)
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Expanded(
-                      child: SecondaryButtonWidget(
-                        text: '▼ View $replyCount replies',
-                        onPressed: () {},
-                        fontSize: 12,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                      ),
+                    SecondaryButtonWidget(
+                      text: '▼ View $replyCount replies',
+                      onPressed: () {},
+                      fontSize: 12,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                     ),
                     const Text(
                       'REPLY',

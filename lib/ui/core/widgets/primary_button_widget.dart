@@ -12,27 +12,38 @@ class PrimaryButtonWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return OutlinedButton(
-      onPressed: onPressed,
-      style: OutlinedButton.styleFrom(
-        fixedSize: const Size(240, 42),
-        backgroundColor: const Color.fromRGBO(188, 76, 241, 0.2),
-        side: const BorderSide(
-          color: Color.fromRGBO(241, 204, 76, 0.2),
-          width: 0.92,
-        ),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(7.33),
-        ),
-        shadowColor: Color.fromRGBO(170, 115, 240, 1),
-        elevation: 0,
+    return Container(
+      decoration: BoxDecoration(
+        boxShadow: [
+          BoxShadow(
+            color: Colors.yellow.withOpacity(0.2),
+            blurRadius: 12,
+            spreadRadius: 1,
+          ),
+        ],
+        borderRadius: BorderRadius.circular(12),
       ),
-      child: Text(
-        text,
-        style: const TextStyle(
-          color: Color.fromRGBO(170, 115, 240, 1),
-          fontWeight: FontWeight.bold,
-          fontSize: 16,
+      child: OutlinedButton(
+        onPressed: onPressed,
+        style: OutlinedButton.styleFrom(
+          minimumSize: const Size(240, 48),
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+          backgroundColor: const Color(0xFF361A42),
+          side: const BorderSide(
+            color: Color(0xFFB784FF),
+            width: 1.5,
+          ),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+        ),
+        child: Text(
+          text,
+          style: const TextStyle(
+            color: Color(0xFFB784FF),
+            fontWeight: FontWeight.bold,
+            fontSize: 16,
+          ),
         ),
       ),
     );

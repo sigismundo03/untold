@@ -44,12 +44,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
             borderSideColor: Color.fromRGBO(188, 76, 241, 0.2),
             text: 'Edit Profile',
             textColor: Color.fromRGBO(170, 115, 240, 1),
-            onPressed: () {
-              Navigator.pushNamed(
+            onPressed: () async {
+              final result = await Navigator.pushNamed(
                 context,
                 AppRoutes.editProfile,
                 arguments: _profileViewModel.user,
               );
+
+              if (result != null) {
+                _profileViewModel.getUser();
+              }
             },
           ),
         ],

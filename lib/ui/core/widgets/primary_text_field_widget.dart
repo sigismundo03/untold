@@ -8,6 +8,8 @@ class PrimaryTextFieldWidget extends StatelessWidget {
   final Widget? suffixIcon;
   final Widget? prefixIcon;
   final bool obscureText;
+  final void Function()? onTap;
+
 
   const PrimaryTextFieldWidget({
     super.key,
@@ -18,6 +20,7 @@ class PrimaryTextFieldWidget extends StatelessWidget {
     this.suffixIcon,
     this.prefixIcon,
     this.obscureText = false,
+    this.onTap,
   });
 
   @override
@@ -35,6 +38,7 @@ class PrimaryTextFieldWidget extends StatelessWidget {
         ],
       ),
       child: TextField(
+        onTap: onTap,
         obscureText: obscureText,
         controller: controller,
         keyboardType: keyboardType,

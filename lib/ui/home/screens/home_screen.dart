@@ -6,6 +6,7 @@ import 'package:untold/domain/model/movie_model.dart';
 import 'package:untold/ui/core/widgets/primary_button_widget.dart';
 import 'package:untold/ui/home/view_model/home_view_model.dart';
 
+import '../../../data/services/share/share_service.dart';
 import '../../../routing/app_routes.dart';
 import '../../core/di/injection.dart';
 import '../widgets/custom_shimmer_loading_widget.dart';
@@ -237,10 +238,19 @@ class MovieCardWidget extends StatelessWidget {
                             SizedBox(width: 8),
                             Column(
                               children: [
-                                SvgPicture.asset(
-                                  'assets/share.svg',
-                                  height: 20,
-                                  width: 20,
+                                GestureDetector(
+                                  onTap: () {
+                                    ShareService.sharePosterUrl(
+                                      description: movie.synopsis,
+                                      posterUrl: movie.thumbnail,
+                                      title: movie.name,
+                                    );
+                                  },
+                                  child: SvgPicture.asset(
+                                    'assets/share.svg',
+                                    height: 20,
+                                    width: 20,
+                                  ),
                                 ),
                                 Text(
                                   'Gift to someone?',

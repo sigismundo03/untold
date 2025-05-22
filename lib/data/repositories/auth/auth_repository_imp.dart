@@ -3,21 +3,26 @@ import 'dart:developer';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
+import '../../../ui/core/enum/preference_keys_enum.dart';
 import '../../services/api_client/api_client.dart';
+import '../../services/shared_prefs_helper/shared_preference_helper.dart';
 import 'auth_repository.dart';
 
 class AuthRepositoryImp extends AuthRepository {
   final FirebaseAuth _auth;
   final ApiClient _apiClient;
   final GoogleSignIn _googleSignIn;
+  final SharedPreferenceHelper _sharedPreferenceHelper;
 
   AuthRepositoryImp(
       {required FirebaseAuth auth,
       required ApiClient apiClient,
-      required GoogleSignIn googleSignIn})
+      required GoogleSignIn googleSignIn,
+      required SharedPreferenceHelper sharedPreferenceHelper})
       : _auth = auth,
         _apiClient = apiClient,
-        _googleSignIn = googleSignIn;
+        _googleSignIn = googleSignIn,
+        _sharedPreferenceHelper = sharedPreferenceHelper;
 
   @override
   Future<User?> signInWithEmail(String email, String password) async {
@@ -26,6 +31,15 @@ class AuthRepositoryImp extends AuthRepository {
         email: email,
         password: password,
       );
+      _sharedPreferenceHelper.setString(
+        PreferenceKeysEnum.userEmail.name,
+        email,
+      );
+      _sharedPreferenceHelper.setString(
+        PreferenceKeysEnum.userPassword.name,
+        password,
+      );
+
       return credential.user;
     } catch (e) {
       throw Exception('Login failed: $e');
@@ -53,6 +67,14 @@ class AuthRepositoryImp extends AuthRepository {
             'firebase_UID': user.uid,
           },
           hasNoToken: true,
+        );
+        _sharedPreferenceHelper.setString(
+          PreferenceKeysEnum.userEmail.name,
+          email,
+        );
+        _sharedPreferenceHelper.setString(
+          PreferenceKeysEnum.userPassword.name,
+          password,
         );
         finishOnboarding();
       }
@@ -97,7 +119,6 @@ class AuthRepositoryImp extends AuthRepository {
     }
   }
 
-  // Finalizar Onboarding
   @override
   Future<void> finishOnboarding() async {
     final result = await _apiClient.patch('/users/updateMe', body: {
@@ -113,7 +134,7 @@ class AuthRepositoryImp extends AuthRepository {
       await _googleSignIn.signOut();
       return true;
     } catch (e) {
-      return true;
+      return false;
     }
   }
 

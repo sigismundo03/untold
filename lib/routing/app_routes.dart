@@ -8,6 +8,7 @@ import 'package:untold/ui/home/screens/home_screen.dart';
 import 'package:untold/ui/login/screen/login_screen.dart';
 import 'package:untold/ui/onboarding/screens/onboarding_screen.dart';
 import 'package:untold/ui/sign_up/screen/sign_up_screen.dart';
+import 'package:untold/ui/video_app/screens/comments_screen.dart';
 import 'package:untold/ui/video_app/screens/video_app_screen.dart';
 
 import '../domain/model/user_model.dart';
@@ -31,6 +32,7 @@ class AppRoutes {
   static const String editProfile = '/edit-profile';
   static const String subscription = '/subscription';
   static const String videoApp = '/video-app';
+  static const String comments = '/comments';
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -85,6 +87,13 @@ class AppRoutes {
           final args = settings.arguments as MovieModel;
           return VideoAppScreen(
             movie: args,
+          );
+        });
+      case comments:
+        return MaterialPageRoute(builder: (context) {
+          final args = settings.arguments as int;
+          return CommentsScreen(
+            moveId: args,
           );
         });
 

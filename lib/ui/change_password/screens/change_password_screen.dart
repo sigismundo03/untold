@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:untold/ui/change_password/view_model/change_password_view_model.dart';
 
+import '../../../utils/dialog_helper.dart';
 import '../../core/di/injection.dart';
 import '../../core/widgets/primary_button_widget.dart';
 import '../../core/widgets/primary_text_field_widget.dart';
@@ -76,15 +77,15 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                         Observer(builder: (_) {
                           return PrimaryTextFieldWidget(
                             hintText: 'Current password',
-                            obscureText: false,
+                            obscureText: _viewModel.isObscure,
                             suffixIcon: IconButton(
                               onPressed: () {
                                 _viewModel.setObscure(!_viewModel.isObscure);
                               },
                               icon: Icon(
                                 _viewModel.isObscure
-                                    ? Icons.visibility
-                                    : Icons.visibility_off,
+                                    ? Icons.visibility_off
+                                    : Icons.visibility,
                                 color: Color.fromRGBO(108, 109, 122, 1),
                                 size: 20,
                               ),
@@ -107,7 +108,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                         Observer(builder: (_) {
                           return PrimaryTextFieldWidget(
                             hintText: 'New password',
-                            obscureText: false,
+                            obscureText: _viewModel.isObscureConfirmPassWord,
                             suffixIcon: IconButton(
                               onPressed: () {
                                 _viewModel.setObscureConfirmPassWord(
@@ -115,8 +116,8 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                               },
                               icon: Icon(
                                 _viewModel.isObscureConfirmPassWord
-                                    ? Icons.visibility
-                                    : Icons.visibility_off,
+                                    ? Icons.visibility_off
+                                    : Icons.visibility,
                                 color: Color.fromRGBO(108, 109, 122, 1),
                                 size: 20,
                               ),
@@ -130,7 +131,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                         Observer(builder: (_) {
                           return PrimaryTextFieldWidget(
                             hintText: 'Confirm new password',
-                            obscureText: false,
+                            obscureText: _viewModel.isObscureConfirmNewPassWord,
                             suffixIcon: IconButton(
                               onPressed: () {
                                 _viewModel.setObscureConfirmNewPassWord(
@@ -138,8 +139,8 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                               },
                               icon: Icon(
                                 _viewModel.isObscureConfirmNewPassWord
-                                    ? Icons.visibility
-                                    : Icons.visibility_off,
+                                    ? Icons.visibility_off
+                                    : Icons.visibility,
                                 color: Color.fromRGBO(108, 109, 122, 1),
                                 size: 20,
                               ),
@@ -155,7 +156,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                     const SizedBox(height: 16),
                     Observer(builder: (_) {
                       return Center(
-                        child: _viewModel.validPassword
+                        child: _viewModel.status.isLoading
                             ? CircularProgressIndicator()
                             : PrimaryButtonWidget(
                                 onPressed: () async {
@@ -163,7 +164,11 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                                     await _viewModel.changePassword();
                                     if (_viewModel.status.isSuccess) {
                                       Navigator.pop(context);
+                                    } else {
+                                      DialogHelper.showError(context);
                                     }
+                                  } else {
+                                    DialogHelper.showError(context);
                                   }
                                 },
                                 text: 'Update Password',

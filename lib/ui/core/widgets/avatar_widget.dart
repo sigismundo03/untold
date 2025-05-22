@@ -31,21 +31,10 @@ class AvatarWidget extends StatelessWidget {
         Stack(
           alignment: Alignment.bottomRight,
           children: [
-            CachedNetworkImage(
-              imageUrl:
-                  assetName,
-              imageBuilder: (context, imageProvider) => Container(
-                width: 110.0,
-                height: 110.0,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  image:
-                      DecorationImage(image: imageProvider, fit: BoxFit.cover),
-                ),
-              ),
-              placeholder: (context, url) => CircularProgressIndicator(),
-              errorWidget: (context, url, error) => Icon(Icons.error),
-            ),
+            CacheImageWidget(assetName: assetName,
+            height: 110.0 ,
+            width: 110.0,),
+           
             if (isEdit)
               Positioned(
                 bottom: 0,
@@ -88,6 +77,39 @@ class AvatarWidget extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+}
+
+class CacheImageWidget extends StatelessWidget {
+  const CacheImageWidget({
+    super.key,
+    required this.assetName,
+    this.width,
+    this.height,
+  });
+
+  final String assetName;
+  final double? width;
+  final double? height;
+
+
+  @override
+  Widget build(BuildContext context) {
+    return CachedNetworkImage(
+      imageUrl:
+          assetName,
+      imageBuilder: (context, imageProvider) => Container(
+        width:width,
+        height: height,
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          image:
+              DecorationImage(image: imageProvider, fit: BoxFit.cover),
+        ),
+      ),
+      placeholder: (context, url) => CircularProgressIndicator(),
+      errorWidget: (context, url, error) => Icon(Icons.error),
     );
   }
 }

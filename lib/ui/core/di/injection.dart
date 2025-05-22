@@ -2,10 +2,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:untold/data/repositories/auth/auth_repository.dart';
 import 'package:untold/data/repositories/auth/auth_repository_imp.dart';
 import 'package:untold/data/repositories/profile_repository/profile_repository.dart';
 import 'package:untold/data/repositories/video_player/video_player_repository.dart';
+import 'package:untold/data/services/shared_prefs_helper/shared_preference_helper.dart';
 import 'package:untold/ui/home/view_model/home_view_model.dart';
 import 'package:untold/ui/profile/view_model/profile_view_model.dart';
 import 'package:untold/ui/sign_up/view_model/sign_up_view_model.dart';
@@ -28,10 +30,17 @@ final GetIt getIt = GetIt.instance;
 final GoogleSignIn googleSignIn = GoogleSignIn();
 final FirebaseAuth auth = FirebaseAuth.instance;
 
-void setupDependencies() {
+Future<void> setupDependencies() async {
+  final shared = await SharedPreferences.getInstance();
+
   // Services
   getIt.registerSingleton<ApiClient>(
     DioApiClient(baseUrl: 'https://untold-strapi.api.prod.loomi.com.br/api'),
+  );
+  getIt.registerSingleton<SharedPreferenceHelper>(
+    SharedPreferenceHelper(
+      prefs: shared,
+    ),
   );
 
   // Repositories
@@ -40,11 +49,14 @@ void setupDependencies() {
       apiClient: getIt(),
       auth: auth,
       googleSignIn: googleSignIn,
+      sharedPreferenceHelper: getIt(),
     ),
   );
 
   getIt.registerSingleton<ProfileRepository>(
-    ProfileRepositoryImp(apiClient: getIt(), auth: auth),
+    ProfileRepositoryImp(apiClient: getIt(), auth: auth,
+    sharedPreferenceHelper: getIt(),
+    ),
   );
 
   getIt.registerSingleton<VideoPlayerRepository>(
@@ -112,8 +124,8 @@ void setupDependencies() {
     ),
   );
 
-  getIt.registerFactory<CommentViewViewModel>(
-    () => CommentViewViewModel(
+  getIt.registerFactory<CommentViewModel>(
+    () => CommentViewModel(
       repository: getIt(),
       profileRepository: getIt(),
     ),

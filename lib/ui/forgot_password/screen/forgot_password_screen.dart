@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:untold/ui/core/widgets/exports.dart';
 
 import '../../../routing/app_routes.dart';
+import '../../../utils/dialog_helper.dart';
 import '../../core/di/injection.dart';
 import '../view_model/forgot_password_view_model.dart';
 
@@ -73,10 +74,16 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                       ? const CircularProgressIndicator()
                       : PrimaryButtonWidget(
                           onPressed: () async {
-                            await _forgotPasswordViewModel
-                                .sendPasswordResetEmail();
-                            Navigator.pushReplacementNamed(
-                                context, AppRoutes.forgotPasswordInstructions);
+                            if (_forgotPasswordViewModel.user.email != null &&
+                                _forgotPasswordViewModel
+                                    .user.email!.isNotEmpty) {
+                              await _forgotPasswordViewModel
+                                  .sendPasswordResetEmail();
+                              Navigator.pushReplacementNamed(context,
+                                  AppRoutes.forgotPasswordInstructions);
+                            } else {
+                              DialogHelper.showError(context);
+                            }
                           },
                           text: 'Send reset instructions',
                         ),

@@ -6,6 +6,8 @@ import 'package:untold/ui/core/di/injection.dart';
 import 'package:untold/ui/core/widgets/exports.dart';
 import 'package:untold/ui/login/view_model/login_view_model.dart';
 
+import '../../../utils/dialog_helper.dart';
+
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
@@ -104,6 +106,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
                           if (_loginViewModel.status.isSuccess) {
                             Navigator.pushNamed(context, AppRoutes.home);
+                          } else {
+                            DialogHelper.showErrorLogin(context);
                           }
                         },
                         text: 'Login',
@@ -121,13 +125,19 @@ class _LoginScreenState extends State<LoginScreen> {
                   SocialLoginButtonWidget(
                     color: Color.fromRGBO(188, 76, 241, 0.2),
                     image: 'assets/google.svg',
-                    onPressed: () {
-                      _loginViewModel.loginWithGoogle();
+                    onPressed: () async {
+                      await _loginViewModel.loginWithGoogle();
+                      if (_loginViewModel.status.isSuccess) {
+                        Navigator.pushNamed(context, AppRoutes.home);
+                      }
                     },
                   ),
                   SocialLoginButtonWidget(
                     color: Color.fromRGBO(255, 255, 255, 0.33),
                     image: 'assets/apple.svg',
+                    onPressed: () {
+                      DialogHelper.showAppleLoginError(context);
+                    },
                   ),
                 ],
               ),

@@ -4,6 +4,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:untold/ui/core/widgets/exports.dart';
 
 import '../../../domain/model/user_model.dart';
+import '../../../utils/dialog_helper.dart';
 import '../../core/di/injection.dart';
 import '../view_model/edit_profile_view_model.dart';
 
@@ -17,7 +18,7 @@ class EditProfileScreen extends StatefulWidget {
 
 class _EditProfileScreenState extends State<EditProfileScreen> {
   final EditProfileViewModel _viewModel = getIt.get<EditProfileViewModel>();
-  TextEditingController _nameCotroller = TextEditingController();
+  final TextEditingController _nameController = TextEditingController();
 
   Future<void> _pickImage(ImageSource source) async {
     await _viewModel.pickImage(source);
@@ -28,7 +29,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   @override
   void initState() {
     super.initState();
-    _nameCotroller.text = widget.user.name ?? 'Eva mendes';
+     _nameController.text = widget.user.name ?? 'Eva mendes';
   }
 
   @override
@@ -122,7 +123,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           return PrimaryTextFieldWidget(
                             hintText: widget.user.name ?? 'Eva mendes',
                             obscureText: false,
-                            controller: _nameCotroller,
+                            controller: _nameController,
                             onChanged: (value) {
                               _viewModel.setName(value);
                             },
@@ -141,8 +142,12 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                   if (_viewModel.validName) {
                                     await _viewModel.updatedProfile();
                                     if (_viewModel.status.isSuccess) {
-                                      Navigator.pop(context);
+                                      Navigator.pop(context, true);
+                                    } else {
+                                      DialogHelper.showError(context);
                                     }
+                                  } else {
+                                   DialogHelper.showError(context);
                                   }
                                 },
                                 text: 'Update profile',

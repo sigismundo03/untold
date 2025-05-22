@@ -7,6 +7,7 @@ import 'package:untold/routing/app_routes.dart';
 import 'package:untold/ui/core/widgets/exports.dart';
 import 'package:untold/ui/onboarding/view_model/onboarding_view_model.dart';
 
+import '../../../utils/dialog_helper.dart';
 import '../../core/di/injection.dart';
 import '../widgets/choose_image_card_widget.dart';
 
@@ -120,6 +121,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                                     context,
                                     AppRoutes.home,
                                     (Route<dynamic> route) => false);
+                              } else {
+                                DialogHelper.showError(context);
                               }
                             },
                             text: 'Continue',

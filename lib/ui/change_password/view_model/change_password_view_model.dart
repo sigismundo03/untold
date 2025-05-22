@@ -19,13 +19,13 @@ abstract class _ChangePasswordViewModelBase with Store {
   String _newPassWord = '';
 
   @observable
-  bool isObscure = false;
+  bool isObscure = true;
 
   @observable
-  bool isObscureConfirmPassWord = false;
+  bool isObscureConfirmPassWord = true;
 
   @observable
-  bool isObscureConfirmNewPassWord = false;
+  bool isObscureConfirmNewPassWord = true;
 
   @observable
   StatusEnum _status = StatusEnum.init;
@@ -74,13 +74,14 @@ abstract class _ChangePasswordViewModelBase with Store {
       _newPassWord == user.password &&
       _passWord.trim().isNotEmpty &&
       _newPassWord.trim().isNotEmpty &&
-      user.password!.trim().isNotEmpty;
+      user.password != null;
 
   @action
   Future<void> changePassword() async {
     setStatus(StatusEnum.loading);
     try {
-      await _profileRepository.changePassword(user.password!);
+      await _profileRepository.changePassword(
+          password: _passWord, newPassword: user.password!);
 
       setStatus(StatusEnum.success);
     } catch (e) {
