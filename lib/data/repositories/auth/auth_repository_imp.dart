@@ -31,6 +31,15 @@ class AuthRepositoryImp extends AuthRepository {
         email: email,
         password: password,
       );
+      _sharedPreferenceHelper.setString(
+        PreferenceKeysEnum.userEmail.name,
+        email,
+      );
+      _sharedPreferenceHelper.setString(
+        PreferenceKeysEnum.userPassword.name,
+        password,
+      );
+
       return credential.user;
     } catch (e) {
       throw Exception('Login failed: $e');

@@ -18,6 +18,9 @@ abstract class _ProfileViewModelBase with Store {
   @observable
   StatusEnum _status = StatusEnum.init;
   @observable
+  StatusEnum _statusDeleteUser = StatusEnum.init;
+
+  @observable
   StatusEnum _statusButton = StatusEnum.init;
 
   _ProfileViewModelBase(
@@ -30,6 +33,8 @@ abstract class _ProfileViewModelBase with Store {
 
   @computed
   StatusEnum get statusButton => _statusButton;
+  @computed
+  StatusEnum get statusDeleteUser => _statusDeleteUser;
 
   @action
   Future<void> getUser() async {
@@ -44,8 +49,14 @@ abstract class _ProfileViewModelBase with Store {
 
   @action
   Future<void> deleteUser() async {
-    await _profileRepository.userDelete("useID");
-    await logout();
+    _statusDeleteUser = StatusEnum.loading;
+    try {
+      await _profileRepository.userDelete(user.id );
+      await logout();
+      _statusDeleteUser = StatusEnum.success;
+    } catch (e) {
+      _statusDeleteUser = StatusEnum.error;
+    }
   }
 
   @action

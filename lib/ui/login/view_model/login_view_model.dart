@@ -77,11 +77,10 @@ abstract class _LoginViewModelBase with Store {
         setStatus(StatusEnum.error);
         return;
       }
+      setStatus(StatusEnum.success);
     } catch (e) {
       setStatus(StatusEnum.error);
     }
-
-    setStatus(StatusEnum.success);
   }
 
   @action

@@ -74,7 +74,7 @@ abstract class _ChangePasswordViewModelBase with Store {
       _newPassWord == user.password &&
       _passWord.trim().isNotEmpty &&
       _newPassWord.trim().isNotEmpty &&
-      user.password!.trim().isNotEmpty;
+      user.password != null;
 
   @action
   Future<void> changePassword() async {

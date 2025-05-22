@@ -23,6 +23,13 @@ mixin _$ProfileViewModel on _ProfileViewModelBase, Store {
       (_$statusButtonComputed ??= Computed<StatusEnum>(() => super.statusButton,
               name: '_ProfileViewModelBase.statusButton'))
           .value;
+  Computed<StatusEnum>? _$statusDeleteUserComputed;
+
+  @override
+  StatusEnum get statusDeleteUser => (_$statusDeleteUserComputed ??=
+          Computed<StatusEnum>(() => super.statusDeleteUser,
+              name: '_ProfileViewModelBase.statusDeleteUser'))
+      .value;
 
   late final _$userAtom =
       Atom(name: '_ProfileViewModelBase.user', context: context);
@@ -53,6 +60,22 @@ mixin _$ProfileViewModel on _ProfileViewModelBase, Store {
   set _status(StatusEnum value) {
     _$_statusAtom.reportWrite(value, super._status, () {
       super._status = value;
+    });
+  }
+
+  late final _$_statusDeleteUserAtom =
+      Atom(name: '_ProfileViewModelBase._statusDeleteUser', context: context);
+
+  @override
+  StatusEnum get _statusDeleteUser {
+    _$_statusDeleteUserAtom.reportRead();
+    return super._statusDeleteUser;
+  }
+
+  @override
+  set _statusDeleteUser(StatusEnum value) {
+    _$_statusDeleteUserAtom.reportWrite(value, super._statusDeleteUser, () {
+      super._statusDeleteUser = value;
     });
   }
 
@@ -101,7 +124,8 @@ mixin _$ProfileViewModel on _ProfileViewModelBase, Store {
     return '''
 user: ${user},
 status: ${status},
-statusButton: ${statusButton}
+statusButton: ${statusButton},
+statusDeleteUser: ${statusDeleteUser}
     ''';
   }
 }

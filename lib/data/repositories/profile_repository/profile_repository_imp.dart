@@ -45,21 +45,27 @@ class ProfileRepositoryImp implements ProfileRepository {
   }
 
   @override
-  Future<void> userDelete(String userId) async {
-    final email =
-        _sharedPreferenceHelper.getString(PreferenceKeysEnum.userEmail.name);
-    final password =
-        _sharedPreferenceHelper.getString(PreferenceKeysEnum.userPassword.name);
-
-    if (email != null && password != null) {
-      await _auth.signInWithEmailAndPassword(
-        email: email,
-        password: password,
-      );
+  Future<void> userDelete(int? userId) async {
+    if (userId == null) {
+      throw Exception('User not authenticated');
     }
+    try {
+      final email =
+          _sharedPreferenceHelper.getString(PreferenceKeysEnum.userEmail.name);
+      final password = _sharedPreferenceHelper
+          .getString(PreferenceKeysEnum.userPassword.name);
 
-    await _auth.currentUser?.delete();
-    await _apiClient.delete('/users/$userId');
+      if (email != null && password != null) {
+        await _auth.signInWithEmailAndPassword(
+          email: email,
+          password: password,
+        );
+      }
+      await _apiClient.delete('/users/$userId');
+      await _auth.currentUser?.delete();
+    } catch (e) {
+      throw Exception('User not authenticated');
+    }
   }
 
   @override
@@ -78,7 +84,7 @@ class ProfileRepositoryImp implements ProfileRepository {
     if (user != null) {
       await user.updatePassword(newPassword);
       await _apiClient.patch('/users/updateMe', body: {
-        'data': {'password':newPassword},
+        'data': {'password': newPassword},
       });
     } else {
       throw Exception('User not authenticated');
