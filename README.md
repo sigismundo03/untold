@@ -101,8 +101,8 @@ The repository includes a GitHub Actions workflow that installs Flutter dependen
 ### Setup
 
 ```bash
-git clone https://github.com/sigismundo03/untold.git
-cd untold
+git clone https://github.com/sigismundo03/flutter-streaming-app.git
+cd flutter-streaming-app
 flutter pub get
 flutter run
 ```
