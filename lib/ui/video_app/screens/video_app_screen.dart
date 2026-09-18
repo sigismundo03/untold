@@ -124,6 +124,7 @@ class _VideoAppScreenState extends State<VideoAppScreen> {
                                   AppRoutes.comments,
                                   arguments: widget.movie.id,
                                 );
+                                if (!context.mounted) return;
 
                                 FocusScope.of(context).unfocus();
                                 _viewModel.playing();
@@ -313,8 +314,13 @@ class VideoOverlayWidget extends StatelessWidget {
                             '${formatDuration(position)} ',
                             style: const TextStyle(color: Colors.white),
                           ),
-                          SvgPicture.asset('assets/fluent_full-screen.svg',
-                              color: Colors.white),
+                          SvgPicture.asset(
+                            'assets/fluent_full-screen.svg',
+                            colorFilter: const ColorFilter.mode(
+                              Colors.white,
+                              BlendMode.srcIn,
+                            ),
+                          ),
                         ],
                       ),
                     ),
