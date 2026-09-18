@@ -162,6 +162,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                                 onPressed: () async {
                                   if (_viewModel.validPassword) {
                                     await _viewModel.changePassword();
+                                    if (!context.mounted) return;
                                     if (_viewModel.status.isSuccess) {
                                       Navigator.pop(context);
                                     } else {
