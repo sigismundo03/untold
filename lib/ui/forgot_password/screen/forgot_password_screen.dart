@@ -79,6 +79,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                                     .user.email!.isNotEmpty) {
                               await _forgotPasswordViewModel
                                   .sendPasswordResetEmail();
+                              if (!context.mounted) return;
                               Navigator.pushReplacementNamed(context,
                                   AppRoutes.forgotPasswordInstructions);
                             } else {
