@@ -19,7 +19,7 @@ abstract class _HomeViewModelBase with Store {
   @observable
   StatusEnum status = StatusEnum.init;
 
-  RecoverMovieRepository _movieRepository;
+  final RecoverMovieRepository _movieRepository;
   _HomeViewModelBase({
     required RecoverMovieRepository movieRepository,
   }) : _movieRepository = movieRepository;
