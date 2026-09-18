@@ -16,7 +16,7 @@ class PrimaryButtonWidget extends StatelessWidget {
       decoration: BoxDecoration(
         boxShadow: [
           BoxShadow(
-            color: Colors.yellow.withOpacity(0.2),
+            color: Colors.yellow.withValues(alpha: 0.2),
             blurRadius: 12,
             spreadRadius: 1,
           ),
