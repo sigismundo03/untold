@@ -1,6 +1,6 @@
-# Untold
+# Flutter Streaming App
 
-Flutter application focused on authentication, user profiles and video content, built with a layered structure and repository abstractions.
+Flutter streaming application focused on authentication, user profiles and video content, built with a layered structure and repository abstractions.
 
 This repository is part of my public mobile portfolio and highlights practical use of Flutter, state management, dependency injection, REST integration, Firebase services and automated tests.
 
