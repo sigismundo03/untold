@@ -103,6 +103,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           if (_loginViewModel.isFormValid) {
                             await _loginViewModel.login();
                           }
+                          if (!context.mounted) return;
 
                           if (_loginViewModel.status.isSuccess) {
                             Navigator.pushNamed(context, AppRoutes.home);
@@ -127,6 +128,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     image: 'assets/google.svg',
                     onPressed: () async {
                       await _loginViewModel.loginWithGoogle();
+                      if (!context.mounted) return;
                       if (_loginViewModel.status.isSuccess) {
                         Navigator.pushNamed(context, AppRoutes.home);
                       }

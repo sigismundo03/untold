@@ -20,7 +20,7 @@ class AppTheme {
         ),
         inputDecorationTheme: InputDecorationTheme(
           filled: true,
-          fillColor: backgroundColor.withOpacity(0.2),
+          fillColor: backgroundColor.withValues(alpha: 0.2),
           labelStyle: const TextStyle(color: textColor),
           focusedBorder: OutlineInputBorder(
             borderSide: const BorderSide(color: secondaryColor),
@@ -50,7 +50,9 @@ class AppTheme {
   static MaterialColor _createMaterialColor(Color color) {
     List strengths = <double>[.05];
     Map<int, Color> swatch = {};
-    final int r = color.red, g = color.green, b = color.blue;
+    final int r = (color.r * 255.0).round();
+    final int g = (color.g * 255.0).round();
+    final int b = (color.b * 255.0).round();
 
     for (int i = 1; i < 10; i++) {
       strengths.add(0.1 * i);
@@ -64,6 +66,6 @@ class AppTheme {
         1,
       );
     }
-    return MaterialColor(color.value, swatch);
+    return MaterialColor(color.toARGB32(), swatch);
   }
 }

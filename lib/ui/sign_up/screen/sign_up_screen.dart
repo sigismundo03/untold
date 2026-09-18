@@ -74,10 +74,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     image: 'assets/google.svg',
                     onPressed: () async {
                       await _singUpViewModel.loginWithGoogle();
+                      if (!context.mounted) return;
                       if (_singUpViewModel.status.isSuccess) {
-                        if (mounted) {
-                          Navigator.pushNamed(context, AppRoutes.home);
-                        }
+                        Navigator.pushNamed(context, AppRoutes.home);
                       }
                     },
                   ),

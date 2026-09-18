@@ -22,6 +22,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
   Future<void> _pickImage(ImageSource source) async {
     await _viewModel.pickImage(source);
+    if (!mounted) return;
 
     Navigator.pop(context);
   }
@@ -141,6 +142,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                 onPressed: () async {
                                   if (_viewModel.validName) {
                                     await _viewModel.updatedProfile();
+                                    if (!context.mounted) return;
                                     if (_viewModel.status.isSuccess) {
                                       Navigator.pop(context, true);
                                     } else {

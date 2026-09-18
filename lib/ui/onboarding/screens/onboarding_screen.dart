@@ -31,6 +31,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
   Future<void> _pickImage(ImageSource source) async {
     await _onboardingViewModel.pickImage(source);
+    if (!mounted) return;
 
     Navigator.pop(context);
   }
@@ -116,6 +117,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                         : PrimaryButtonWidget(
                             onPressed: () async {
                               await _onboardingViewModel.register();
+                              if (!context.mounted) return;
                               if (_onboardingViewModel.status.isSuccess) {
                                 Navigator.pushNamedAndRemoveUntil(
                                     context,

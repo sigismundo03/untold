@@ -51,8 +51,9 @@ class _CommentsScreenState extends State<CommentsScreen> {
                         DeviceOrientation.landscapeRight,
                         DeviceOrientation.landscapeLeft,
                       ]);
-                      Navigator.pop(context);
+                      if (!context.mounted) return;
                       FocusScope.of(context).unfocus();
+                      Navigator.pop(context);
                     },
                   ),
                   Text(

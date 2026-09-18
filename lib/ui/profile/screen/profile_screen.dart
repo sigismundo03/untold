@@ -175,6 +175,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             textColor: Color.fromRGBO(217, 218, 222, 1),
                             onPressed: () async {
                               await _profileViewModel.logout();
+                              if (!context.mounted) return;
                               if (_profileViewModel.statusButton.isSuccess) {
                                 Navigator.pushNamedAndRemoveUntil(
                                     context, AppRoutes.login, (route) => false);
